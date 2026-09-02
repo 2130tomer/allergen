@@ -6,6 +6,7 @@ from dataclasses import replace
 from datetime import date
 
 from allergen_pipeline.catalog import departments, naming
+from allergen_pipeline.text import hebrew
 from allergen_pipeline.catalog.product import (
     RetailerOffer,
     build,
@@ -111,6 +112,7 @@ class TestProductLifecycle:
         assert set(product.retailer_ids) == {"shufersal", "rami_levy"}
 
     def test_alias_names_reach_the_search_index(self):
+        """האינדקס מנורמל, ולכן גם החיפוש בו חייב לעבור נרמול."""
         product = build(
             BAMBA,
             [
@@ -118,7 +120,7 @@ class TestProductLifecycle:
                 offer("rami_levy", "חטיף במבה"),
             ],
         )
-        assert "חטיף" in product.search_text
+        assert hebrew.normalize("חטיף") in product.search_text
 
     def test_merging_keeps_the_original_first_seen_date(self):
         first = replace(

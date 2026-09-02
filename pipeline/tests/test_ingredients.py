@@ -57,6 +57,7 @@ class TestFalsePositives:
     def test_soy_milk_is_soy_not_milk(self, ingredient_map):
         found = ingredient_map.allergen_ids("חלב סויה")
         assert "milk" not in found
+        assert "soy" in found
 
     def test_cocoa_butter_is_not_milk(self, ingredient_map):
         assert "milk" not in ingredient_map.allergen_ids("מסת קקאו, חמאת קקאו")
@@ -79,6 +80,35 @@ class TestFalsePositives:
     def test_empty_text_finds_nothing(self, ingredient_map):
         assert ingredient_map.allergen_ids(None) == set()
         assert ingredient_map.allergen_ids("") == set()
+
+
+class TestExclusionsAreScopedToOneAllergen:
+    """רגרסיה: ביטוי הרחקה מנטרל אלרגן אחד, לא את כל מי שנוגע באותן מילים.
+
+    הרשימה הגלובלית הקודמת גרמה ל"חמאת בוטנים" לנטרל גם את הבוטנים,
+    כלומר להחזיר חמאת בוטנים כמוצר נקי לגמרי. זה הכיוון המסוכן.
+    """
+
+    def test_peanut_butter_still_reports_peanuts(self, ingredient_map):
+        assert "peanuts" in ingredient_map.allergen_ids("חמאת בוטנים, מלח")
+
+    def test_almond_milk_reports_the_almond_and_not_the_milk(self, ingredient_map):
+        found = ingredient_map.allergen_ids("חלב שקדים, מים")
+        assert "almond" in found
+        assert "milk" not in found
+
+    def test_cashew_milk_reports_the_cashew_and_not_the_milk(self, ingredient_map):
+        found = ingredient_map.allergen_ids("חלב קשיו")
+        assert "cashew" in found
+        assert "milk" not in found
+
+    def test_almond_flour_reports_the_almond_and_not_the_gluten(self, ingredient_map):
+        found = ingredient_map.allergen_ids("קמח שקדים, ביצים")
+        assert "almond" in found
+        assert "gluten" not in found
+
+    def test_sesame_butter_still_reports_sesame(self, ingredient_map):
+        assert "sesame" in ingredient_map.allergen_ids("חמאת שומשום")
 
 
 class TestExplainability:

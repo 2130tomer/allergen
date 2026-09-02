@@ -33,9 +33,11 @@ def canonical_name(
         key = hebrew.normalize(name)
         by_normalized.setdefault(key, Counter())[name] += 1
 
+    # השם הנפוץ ביותר מנצח. בתיקו מנצח השם הארוך יותר, כי הוא בדרך כלל
+    # זה שכולל את שם היצרן ואת הגודל.
     best_key = max(
         by_normalized,
-        key=lambda key: (sum(by_normalized[key].values()), -len(key)),
+        key=lambda key: (sum(by_normalized[key].values()), len(key)),
     )
     return by_normalized[best_key].most_common(1)[0][0]
 
