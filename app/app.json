@@ -1,0 +1,44 @@
+{
+  "expo": {
+    "name": "אלרגן",
+    "slug": "allergen-il",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "scheme": "allergen",
+    "locales": {},
+    "extra": {
+      "supportedLocales": ["he"]
+    },
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#F2F4F5"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "il.allergen.app",
+      "infoPlist": {
+        "NSCameraUsageDescription": "המצלמה משמשת לסריקת ברקוד מאריזת המוצר. התמונה אינה נשמרת ואינה נשלחת.",
+        "CFBundleDevelopmentRegion": "he"
+      }
+    },
+    "android": {
+      "package": "il.allergen.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#F2F4F5"
+      },
+      "permissions": ["CAMERA"]
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "המצלמה משמשת לסריקת ברקוד מאריזת המוצר. התמונה אינה נשמרת ואינה נשלחת."
+        }
+      ],
+      "expo-font",
+      "expo-sqlite"
+    ]
+  }
+}
