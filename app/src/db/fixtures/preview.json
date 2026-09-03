@@ -1,0 +1,844 @@
+﻿{
+  "products": [
+    {
+      "barcode": "7290010777488",
+      "name": "10פיתות מחמצת300ג אקספרס",
+      "manufacturer": "פיתה אקספרס",
+      "departmentId": "bakery_rolls",
+      "quantity": "300.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7296073403227",
+      "name": "12גביעי ופל גלידריהMONRO",
+      "manufacturer": "גילרו בע\"מ",
+      "departmentId": "snacks_cookies",
+      "quantity": "132.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290019974345",
+      "name": "2 בייגל לל\"ג קפוא מולינו",
+      "manufacturer": "מולינו בייקרי",
+      "departmentId": "snacks_salty",
+      "quantity": "220.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7296073142041",
+      "name": "24גביעי וופל לגלידהMONRO",
+      "manufacturer": "גילרו בע\"מ",
+      "departmentId": "snacks_cookies",
+      "quantity": "120.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7296073006497",
+      "name": "30גביעי ופל לגלידה MONRO",
+      "manufacturer": "גילרו בע\"מ",
+      "departmentId": "snacks_cookies",
+      "quantity": "120.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290101114680",
+      "name": "4 מיני אייס דרים קפה200",
+      "manufacturer": "פלקו בעמ",
+      "departmentId": "beverages_hot",
+      "quantity": "200.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290101114642",
+      "name": "4 פרוזן יוגורט תות280ג",
+      "manufacturer": "פלקו בעמ",
+      "departmentId": "dairy_yogurt",
+      "quantity": "280.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290108509274",
+      "name": "4גבינות מגורדות300ג אירו",
+      "manufacturer": "אי וואר",
+      "departmentId": "dairy_cheese",
+      "quantity": "300.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290107971522",
+      "name": "4חט.בוטן+שקד קרנאצ FREE",
+      "manufacturer": "אמקו ספול",
+      "departmentId": "unclassified",
+      "quantity": "140.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290013121103",
+      "name": "4י שליש באגט400 גריןלייט",
+      "manufacturer": "4י שליש באגט400 גריןלייט",
+      "departmentId": "unclassified",
+      "quantity": "400.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290013121110",
+      "name": "4לחמניות בורגר350גריןליט",
+      "manufacturer": "4לחמניות בורגר350גריןליט",
+      "departmentId": "bakery_rolls",
+      "quantity": "350.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290013121158",
+      "name": "4לחמנית סנדביץ460גריןליט",
+      "manufacturer": "4לחמנית סנדביץ460גריןליט",
+      "departmentId": "unclassified",
+      "quantity": "460.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "5411188094159",
+      "name": "4מעדן סויה שוק.מריר אלפר",
+      "manufacturer": "אלפרו C.V.A",
+      "departmentId": "dairy_yogurt",
+      "quantity": "500.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290101113836",
+      "name": "5טילון גלידל שוקו פלדמן",
+      "manufacturer": "פלקו בעמ",
+      "departmentId": "dairy_milk",
+      "quantity": "285.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": true,
+      "allergensObservedOn": "2026-09-03"
+    },
+    {
+      "barcode": "7290015968102",
+      "name": "100 קיסמי שיניים עם חוט",
+      "manufacturer": "W.H.J.C.CO",
+      "departmentId": "unclassified",
+      "quantity": "1.00",
+      "unit": "יחידות",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290002109488",
+      "name": "100% קבב 440ג טיבון ויל",
+      "manufacturer": "טיבון ויל אחזקות בע\"מ",
+      "departmentId": "meat_fresh",
+      "quantity": "440.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290008344272",
+      "name": "100%המבורגר400ג טיבוןויל",
+      "manufacturer": "טיבון ויל אחזקות בע\"מ",
+      "departmentId": "unclassified",
+      "quantity": "400.00",
+      "unit": "גרם",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290014731264",
+      "name": "100כוסות לשתיה קרה 180מל",
+      "manufacturer": "YL TR",
+      "departmentId": "unclassified",
+      "quantity": "1.00",
+      "unit": "יחידות",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290020130396",
+      "name": "100כוסות פלסטיק חדפ 180מ",
+      "manufacturer": "ר.שמאי",
+      "departmentId": "unclassified",
+      "quantity": "1.00",
+      "unit": "יחידות",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290013843890",
+      "name": "100כפפות נטרילXLשחור KGR",
+      "manufacturer": "שניב תעשיות נייר",
+      "departmentId": "unclassified",
+      "quantity": "1.00",
+      "unit": "יחידות",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290013843678",
+      "name": "100כפפות ניטרילLשחור KGR",
+      "manufacturer": "שניב תעשיות נייר",
+      "departmentId": "unclassified",
+      "quantity": "1.00",
+      "unit": "יחידות",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290013843685",
+      "name": "100כפפות ניטרילMשחור KGR",
+      "manufacturer": "שניב תעשיות נייר",
+      "departmentId": "unclassified",
+      "quantity": "1.00",
+      "unit": "יחידות",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290013843692",
+      "name": "100כפפות ניטרילSשחור KGR",
+      "manufacturer": "שניב תעשיות נייר",
+      "departmentId": "unclassified",
+      "quantity": "1.00",
+      "unit": "יחידות",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    },
+    {
+      "barcode": "7290002008040",
+      "name": "100שיפודי במבוק30סמ הנמל",
+      "manufacturer": "הנמל",
+      "departmentId": "unclassified",
+      "quantity": "1.00",
+      "unit": "יחידות",
+      "imageUrl": null,
+      "imageSource": null,
+      "isActive": true,
+      "needsReview": false,
+      "hasAllergenData": false,
+      "allergensObservedOn": null
+    }
+  ],
+  "allergens": {
+    "7290010777488": {
+      "levels": {
+        "gluten": "contains",
+        "sesame": "may_contain",
+        "soy": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7296073403227": {
+      "levels": {
+        "brazil_nut": "may_contain",
+        "cashew": "may_contain",
+        "gluten": "contains",
+        "hazelnut": "may_contain",
+        "pecan": "may_contain",
+        "pistachio": "may_contain",
+        "soy": "contains",
+        "tree_nuts": "may_contain",
+        "walnut": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290019974345": {
+      "levels": {
+        "mustard": "may_contain",
+        "sesame": "contains",
+        "soy": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7296073142041": {
+      "levels": {
+        "brazil_nut": "may_contain",
+        "cashew": "may_contain",
+        "gluten": "contains",
+        "hazelnut": "may_contain",
+        "macadamia": "may_contain",
+        "pecan": "may_contain",
+        "pistachio": "may_contain",
+        "soy": "contains",
+        "tree_nuts": "may_contain",
+        "walnut": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7296073006497": {
+      "levels": {
+        "brazil_nut": "may_contain",
+        "cashew": "may_contain",
+        "gluten": "contains",
+        "hazelnut": "may_contain",
+        "macadamia": "may_contain",
+        "pecan": "may_contain",
+        "pistachio": "may_contain",
+        "soy": "contains",
+        "tree_nuts": "may_contain",
+        "walnut": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290101114680": {
+      "levels": {
+        "eggs": "may_contain",
+        "gluten": "may_contain",
+        "milk": "contains",
+        "peanuts": "may_contain",
+        "sesame": "may_contain",
+        "soy": "contains",
+        "tree_nuts": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290101114642": {
+      "levels": {
+        "eggs": "may_contain",
+        "gluten": "may_contain",
+        "milk": "contains",
+        "peanuts": "may_contain",
+        "sesame": "may_contain",
+        "soy": "may_contain",
+        "tree_nuts": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290108509274": {
+      "levels": {
+        "milk": "contains"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290107971522": {
+      "levels": {
+        "almond": "contains",
+        "cashew": "may_contain",
+        "hazelnut": "may_contain",
+        "milk": "may_contain",
+        "peanuts": "contains",
+        "pecan": "may_contain",
+        "pistachio": "contains",
+        "soy": "may_contain",
+        "tree_nuts": "contains",
+        "walnut": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290013121103": {
+      "levels": {
+        "eggs": "may_contain",
+        "soy": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290013121110": {
+      "levels": {
+        "eggs": "contains",
+        "sesame": "may_contain",
+        "soy": "contains",
+        "tree_nuts": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290013121158": {
+      "levels": {
+        "eggs": "may_contain",
+        "sesame": "contains",
+        "soy": "contains",
+        "tree_nuts": "may_contain"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "5411188094159": {
+      "levels": {
+        "soy": "contains"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290101113836": {
+      "levels": {
+        "eggs": "contains",
+        "gluten": "contains",
+        "milk": "contains",
+        "peanuts": "contains",
+        "sesame": "contains",
+        "soy": "contains",
+        "tree_nuts": "contains"
+      },
+      "sources": [
+        "retailer"
+      ],
+      "inferred": []
+    },
+    "7290015968102": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290002109488": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290008344272": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290014731264": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290020130396": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290013843890": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290013843678": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290013843685": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290013843692": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    },
+    "7290002008040": {
+      "levels": {},
+      "sources": [],
+      "inferred": []
+    }
+  },
+  "departments": [
+    {
+      "id": "dairy",
+      "labelHe": "חלב וביצים",
+      "parentId": null
+    },
+    {
+      "id": "dairy_milk",
+      "labelHe": "חלב ומשקאות חלב",
+      "parentId": "dairy"
+    },
+    {
+      "id": "dairy_cheese",
+      "labelHe": "גבינות",
+      "parentId": "dairy"
+    },
+    {
+      "id": "dairy_yogurt",
+      "labelHe": "יוגורט ומעדנים",
+      "parentId": "dairy"
+    },
+    {
+      "id": "dairy_butter",
+      "labelHe": "חמאה ושמנת",
+      "parentId": "dairy"
+    },
+    {
+      "id": "dairy_eggs",
+      "labelHe": "ביצים",
+      "parentId": "dairy"
+    },
+    {
+      "id": "bakery",
+      "labelHe": "לחם ומאפים",
+      "parentId": null
+    },
+    {
+      "id": "bakery_bread",
+      "labelHe": "לחמים",
+      "parentId": "bakery"
+    },
+    {
+      "id": "bakery_rolls",
+      "labelHe": "לחמניות ופיתות",
+      "parentId": "bakery"
+    },
+    {
+      "id": "bakery_pastry",
+      "labelHe": "מאפים ועוגות",
+      "parentId": "bakery"
+    },
+    {
+      "id": "bakery_crackers",
+      "labelHe": "קרקרים ולחמיות",
+      "parentId": "bakery"
+    },
+    {
+      "id": "beverages",
+      "labelHe": "משקאות",
+      "parentId": null
+    },
+    {
+      "id": "beverages_water",
+      "labelHe": "מים ומים מוגזים",
+      "parentId": "beverages"
+    },
+    {
+      "id": "beverages_soft",
+      "labelHe": "משקאות קלים",
+      "parentId": "beverages"
+    },
+    {
+      "id": "beverages_juice",
+      "labelHe": "מיצים",
+      "parentId": "beverages"
+    },
+    {
+      "id": "beverages_hot",
+      "labelHe": "קפה תה ושוקו",
+      "parentId": "beverages"
+    },
+    {
+      "id": "beverages_alcohol",
+      "labelHe": "אלכוהול",
+      "parentId": "beverages"
+    },
+    {
+      "id": "snacks",
+      "labelHe": "חטיפים ומתוקים",
+      "parentId": null
+    },
+    {
+      "id": "snacks_salty",
+      "labelHe": "חטיפים מלוחים",
+      "parentId": "snacks"
+    },
+    {
+      "id": "snacks_chocolate",
+      "labelHe": "שוקולד",
+      "parentId": "snacks"
+    },
+    {
+      "id": "snacks_candy",
+      "labelHe": "ממתקים",
+      "parentId": "snacks"
+    },
+    {
+      "id": "snacks_cookies",
+      "labelHe": "עוגיות ובופלות",
+      "parentId": "snacks"
+    },
+    {
+      "id": "snacks_nuts",
+      "labelHe": "פיצוחים ואגוזים",
+      "parentId": "snacks"
+    },
+    {
+      "id": "meat_fish",
+      "labelHe": "בשר ודגים",
+      "parentId": null
+    },
+    {
+      "id": "meat_fresh",
+      "labelHe": "בשר ועוף טרי",
+      "parentId": "meat_fish"
+    },
+    {
+      "id": "meat_processed",
+      "labelHe": "נקניקים ובשר מעובד",
+      "parentId": "meat_fish"
+    },
+    {
+      "id": "fish_fresh",
+      "labelHe": "דגים",
+      "parentId": "meat_fish"
+    },
+    {
+      "id": "frozen",
+      "labelHe": "קפואים",
+      "parentId": null
+    },
+    {
+      "id": "frozen_vegetables",
+      "labelHe": "ירקות קפואים",
+      "parentId": "frozen"
+    },
+    {
+      "id": "frozen_ready",
+      "labelHe": "מוכן ומבושל קפוא",
+      "parentId": "frozen"
+    },
+    {
+      "id": "frozen_desserts",
+      "labelHe": "גלידות וקינוחים קפואים",
+      "parentId": "frozen"
+    },
+    {
+      "id": "pantry",
+      "labelHe": "יבשים ודגנים",
+      "parentId": null
+    },
+    {
+      "id": "pantry_pasta",
+      "labelHe": "פסטה ואטריות",
+      "parentId": "pantry"
+    },
+    {
+      "id": "pantry_rice",
+      "labelHe": "אורז וקטניות",
+      "parentId": "pantry"
+    },
+    {
+      "id": "pantry_flour",
+      "labelHe": "קמחים ואפייה",
+      "parentId": "pantry"
+    },
+    {
+      "id": "pantry_cereal",
+      "labelHe": "דגני בוקר",
+      "parentId": "pantry"
+    },
+    {
+      "id": "canned",
+      "labelHe": "שימורים ומטבלים",
+      "parentId": null
+    },
+    {
+      "id": "canned_vegetables",
+      "labelHe": "שימורי ירקות",
+      "parentId": "canned"
+    },
+    {
+      "id": "canned_fish",
+      "labelHe": "שימורי דגים",
+      "parentId": "canned"
+    },
+    {
+      "id": "canned_spreads",
+      "labelHe": "ממרחים וסלטים",
+      "parentId": "canned"
+    },
+    {
+      "id": "condiments",
+      "labelHe": "רטבים ותבלינים",
+      "parentId": null
+    },
+    {
+      "id": "condiments_sauces",
+      "labelHe": "רטבים",
+      "parentId": "condiments"
+    },
+    {
+      "id": "condiments_spices",
+      "labelHe": "תבלינים",
+      "parentId": "condiments"
+    },
+    {
+      "id": "oils",
+      "labelHe": "שמנים וחומץ",
+      "parentId": null
+    },
+    {
+      "id": "produce",
+      "labelHe": "פירות וירקות",
+      "parentId": null
+    },
+    {
+      "id": "baby",
+      "labelHe": "מזון תינוקות",
+      "parentId": null
+    },
+    {
+      "id": "baby_formula",
+      "labelHe": "תמל ותחליפי חלב",
+      "parentId": "baby"
+    },
+    {
+      "id": "baby_food",
+      "labelHe": "מזון לתינוקות",
+      "parentId": "baby"
+    },
+    {
+      "id": "health",
+      "labelHe": "בריאות ותוספי תזונה",
+      "parentId": null
+    },
+    {
+      "id": "health_free_from",
+      "labelHe": "ללא גלוטן וטבעוני",
+      "parentId": "health"
+    },
+    {
+      "id": "non_food",
+      "labelHe": "לא מזון",
+      "parentId": null
+    },
+    {
+      "id": "unclassified",
+      "labelHe": "לא מסווג",
+      "parentId": null
+    }
+  ]
+}

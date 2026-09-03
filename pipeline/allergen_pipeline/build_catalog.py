@@ -331,6 +331,13 @@ def _parse_arguments(argv: list[str] | None) -> argparse.Namespace:
         help="קובץ קביעות קמעונאי מ-fetch_retailer_allergens",
     )
     argument_parser.add_argument(
+        "--retailers",
+        nargs="*",
+        default=[],
+        metavar="RETAILER",
+        help="רשתות נוספות מהפורטל המשותף, למשל rami_levy victory",
+    )
+    argument_parser.add_argument(
         "--cache-only",
         action="store_true",
         help="אל תפנה לרשת; השתמש רק במה שכבר במטמון",

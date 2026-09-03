@@ -18,6 +18,3 @@ data/snapshots/
 .env
 .DS_Store
 **/data/cache/
-
-# תצוגת web לבדיקת ממשק בלבד
-app/src/db/fixtures/
