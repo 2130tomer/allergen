@@ -74,10 +74,54 @@ def _read_fields(element: ET.Element) -> dict[str, str]:
     return values
 
 
-def _pick(values: dict[str, str], field: str) -> str | None:
+"""ערכי מציין-מקום שרשתות כותבות במקום להשאיר שדה ריק.
+
+רמי לוי כותבת את המחרוזת "לא ידוע" בשדות היצרן, ארץ הייצור ויחידת
+המידה. בלי הסינון הזה "לא ידוע" היה הופך לשם היצרן הנפוץ ביותר
+בקטלוג ומוצג למשתמש ככזה.
+"""
+_PLACEHOLDERS = frozenset(
+    {
+        "לא ידוע",
+        "לא רלוונטי",
+        "אין",
+        "-",
+        "--",
+        "---",
+        "n/a",
+        "na",
+        "null",
+        "none",
+        "unknown",
+        "0",
+    }
+)
+
+
+def _clean(value: str | None) -> str | None:
+    if value is None:
+        return None
+    stripped = value.strip()
+    if not stripped or stripped.lower() in _PLACEHOLDERS:
+        return None
+    return stripped
+
+
+def _pick(values: dict[str, str], field: str, clean: bool = True) -> str | None:
+    """הערך הראשון שקיים באחד מהאליאסים של השדה.
+
+    ``clean=False`` נדרש לשדות דגל מספריים: ItemType שווה "0" הוא ערך
+    תקף שמסמן פריט שקיל, ואסור שייבלע ברשימת מציין-המקום.
+    """
     for alias in _FIELD_ALIASES[field]:
-        if alias in values:
-            return values[alias]
+        if alias not in values:
+            continue
+        value = values[alias]
+        if not clean:
+            return value.strip() or None
+        cleaned = _clean(value)
+        if cleaned is not None:
+            return cleaned
     return None
 
 
@@ -87,6 +131,8 @@ def _parse_date(raw: str | None) -> date | None:
         return None
     text = raw.strip()
     for pattern in (
+        # רמי לוי מוסיפה אלפיות שנייה, שופרסל לא.
+        "%Y-%m-%dT%H:%M:%S.%f",
         "%Y-%m-%dT%H:%M:%S",
         "%Y-%m-%d %H:%M:%S",
         "%Y-%m-%d %H:%M",
@@ -135,7 +181,7 @@ def parse_bytes(
         if not raw_barcode or not name:
             continue
 
-        item_type = _pick(values, "item_type")
+        item_type = _pick(values, "item_type", clean=False)
         if item_type is not None and item_type.strip() != _BARCODED_ITEM_TYPE:
             skipped_weighted += 1
             continue

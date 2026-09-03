@@ -32,7 +32,7 @@ from .ingredients.mapping import IngredientAllergenMap
 from .domain.resolution import ResolvedAllergens, resolve
 from .snapshot import build as snapshot_builder
 from .sources.base import RunStats, SanityCheckFailed, check_run
-from .sources.price_transparency import parser, shufersal
+from .sources.price_transparency import parser, published_prices, retailers, shufersal
 
 DEFAULT_OUTPUT = Path("data/snapshots/allergen-snapshot.sqlite")
 DEFAULT_CACHE = Path("data/cache/openfoodfacts.json")
@@ -81,6 +81,45 @@ def collect_shufersal_offers(
     return offers, rejected
 
 
+def collect_published_prices_offers(
+    retailer_id: str,
+    username: str,
+    store_limit: int,
+    verbose: bool = True,
+) -> tuple[list[RetailerOffer], int]:
+    """מוריד ומפרק קבצי PriceFull מהפורטל המשותף."""
+    offers: list[RetailerOffer] = []
+    rejected = 0
+
+    with published_prices.make_client() as client:
+        try:
+            published_prices.login(client, username)
+        except Exception as error:  # noqa: BLE001 - רשת אחת לא מפילה ריצה
+            _log(verbose, f"  {retailer_id}: התחברות נכשלה, {error}")
+            return [], 0
+
+        remote_files = published_prices.list_price_full_files(client)
+        _log(verbose, f"  {retailer_id}: {len(remote_files)} קבצי קטלוג בפורטל")
+
+        for remote in remote_files[:store_limit]:
+            try:
+                raw = published_prices.download(client, remote)
+            except Exception as error:  # noqa: BLE001
+                _log(verbose, f"    דילוג על {remote.filename}: {error}")
+                continue
+
+            parsed = parser.parse_bytes(_gunzip(raw), retailer_id)
+            offers.extend(parsed.offers)
+            rejected += parsed.skipped_invalid_barcode
+            _log(
+                verbose,
+                f"    {remote.filename}: {len(parsed.offers)} פריטים, "
+                f"{parsed.skipped_invalid_barcode} ברקודים נפסלו",
+            )
+
+    return offers, rejected
+
+
 def _log(verbose: bool, message: str) -> None:
     if verbose:
         print(message)
@@ -116,6 +155,18 @@ def main(argv: list[str] | None = None) -> int:
         page_limit=arguments.pages,
         verbose=not arguments.quiet,
     )
+
+    for retailer in retailers.RETAILERS:
+        if not retailer.requires_login or retailer.id not in arguments.retailers:
+            continue
+        extra, extra_rejected = collect_published_prices_offers(
+            retailer_id=retailer.id,
+            username=retailer.username or "",
+            store_limit=arguments.stores,
+            verbose=not arguments.quiet,
+        )
+        offers.extend(extra)
+        rejected += extra_rejected
 
     if not offers:
         print("לא התקבלו פריטים. הריצה נפסלת ולא נכתב דבר.", file=sys.stderr)

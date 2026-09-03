@@ -193,6 +193,56 @@ class TestShufersalRealFormat:
         assert self.parsed().skipped_invalid_barcode == 1
 
 
+# מבנה אמיתי מקובץ PriceFull של רמי לוי. אותן תגיות כמו שופרסל, אבל
+# הערכים עצמם הם מציין-מקום, והתאריך כולל אלפיות שנייה.
+RAMI_LEVY_REAL_XML = """<Root>
+  <ChainID>7290058140886</ChainID>
+  <StoreID>001</StoreID>
+  <Items>
+    <Item>
+      <PriceUpdateTime>2025-02-18T15:52:25.000</PriceUpdateTime>
+      <ItemCode>7290017023212</ItemCode>
+      <ItemType>1</ItemType>
+      <ItemName>רביעיית פחיות שוופס</ItemName>
+      <ManufactureName>לא ידוע</ManufactureName>
+      <ManufactureCountry>לא ידוע</ManufactureCountry>
+      <UnitQty>לא ידוע</UnitQty>
+      <Quantity>1.32</Quantity>
+      <UnitOfMeasure>ליטר</UnitOfMeasure>
+      <QtyInPackage>לא ידוע</QtyInPackage>
+    </Item>
+  </Items>
+</Root>
+"""
+
+
+class TestRamiLevyRealFormat:
+    """רגרסיה מול המבנה שנצפה בפועל בקובץ של רמי לוי."""
+
+    def offer(self):
+        parsed = parser.parse_bytes(
+            RAMI_LEVY_REAL_XML.encode("utf-8"), "rami_levy", TODAY
+        )
+        return parsed.offers[0]
+
+    def test_the_placeholder_manufacturer_is_read_as_missing(self):
+        # בלי זה "לא ידוע" הופך לשם היצרן הנפוץ ביותר בקטלוג.
+        assert self.offer().manufacturer is None
+
+    def test_a_placeholder_falls_through_to_the_next_alias(self):
+        # UnitQty הוא "לא ידוע", אבל UnitOfMeasure מכיל "ליטר" אמיתי.
+        # מציין-מקום אינו עוצר את החיפוש; הוא מדלג לאליאס הבא.
+        assert self.offer().unit == "ליטר"
+
+    def test_a_timestamp_with_milliseconds_is_parsed(self):
+        assert self.offer().observed_on == date(2025, 2, 18)
+
+    def test_the_product_itself_is_still_kept(self):
+        """מוצר עם שדות חסרים הוא עדיין מוצר. הוא לא נזרק מהקטלוג."""
+        assert self.offer().barcode == "7290017023212"
+        assert self.offer().raw_name == "רביעיית פחיות שוופס"
+
+
 class TestRetailerConfig:
     def test_shufersal_and_rami_levy_come_first(self):
         first_two = [r.id for r in retailers.enabled_for_stage(1)]
