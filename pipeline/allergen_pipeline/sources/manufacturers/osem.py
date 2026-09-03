@@ -84,7 +84,11 @@ class _PanelParser(HTMLParser):
                 self._current_title = None
             return
         if self._current_title and text not in _PANEL_TITLES:
-            self.panels[self._current_title].append(text)
+            # אותו פאנל מופיע לפעמים יותר מפעם אחת בדף. בלי הסינון הזה
+            # תוכן האלרגנים משוכפל ומתקבל "בוטנים סויה בוטנים סויה".
+            collected = self.panels[self._current_title]
+            if text not in collected:
+                collected.append(text)
 
 
 def extract_barcode(html: str) -> str | None:

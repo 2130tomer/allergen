@@ -11,6 +11,13 @@ const QUOTES = /[׳״'"‘’“”ʼ`]/g;
 const DASHES = /[-‐‑‒–—―_/\\|]+/g;
 const NON_WORD = /[^\p{L}\p{N}]+/gu;
 const WHITESPACE = /\s+/g;
+
+/**
+ * ספרות דבוקות לאותיות. בקבצי הרשתות זה נפוץ מאוד: "100ג", "32יח",
+ * "5סכיני". בלי הפרדה האסימון כולו שונה מהמילה, ואף חיפוש לא מוצא אותו.
+ */
+const DIGIT_THEN_LETTER = /(\d)(?=[^\d\s])/gu;
+const LETTER_THEN_DIGIT = /([^\d\s])(?=\d)/gu;
 const NON_DIGITS = /[^0-9]/g;
 const DIGITS_ONLY = /^[0-9\s-]+$/;
 
@@ -63,6 +70,8 @@ export function normalize(text: string | null | undefined): string {
   result = result.replace(QUOTES, '');
   result = result.replace(DASHES, ' ');
   result = result.replace(NON_WORD, ' ');
+  result = result.replace(DIGIT_THEN_LETTER, '$1 ');
+  result = result.replace(LETTER_THEN_DIGIT, '$1 ');
   result = result.replace(/[ךםןףץ]/g, (letter) => FINAL_LETTERS[letter]);
   result = result.replace(WHITESPACE, ' ').trim();
   return result.toLowerCase();

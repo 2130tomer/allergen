@@ -159,18 +159,23 @@ export function BrowseScreen({ onSelectProduct }: Props): React.ReactElement {
             const children = departments.filter(
               (candidate) => candidate.parentId === department.id,
             );
+            // מחלקה בלי תת-מחלקות, כמו פירות וירקות, נפתחת ישירות מהכותרת
+            // שלה. בלי זה היא מוצגת ככותרת ריקה שאי אפשר ללחוץ עליה.
+            const openable = children.length > 0 ? children : [department];
             return (
               <View key={department.id} style={styles.departmentGroup}>
                 <Text style={styles.departmentTitle}>{department.labelHe}</Text>
                 <View style={styles.chips}>
-                  {children.map((child) => (
+                  {openable.map((child) => (
                     <Pressable
                       key={child.id}
                       accessibilityRole="button"
                       onPress={() => openSubDepartment(child.id)}
                       style={({ pressed }) => [styles.chip, pressed && styles.chipPressed]}
                     >
-                      <Text style={styles.chipText}>{child.labelHe}</Text>
+                      <Text style={styles.chipText}>
+                        {child.id === department.id ? 'הצג הכל' : child.labelHe}
+                      </Text>
                     </Pressable>
                   ))}
                 </View>

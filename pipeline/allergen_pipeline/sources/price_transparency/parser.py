@@ -23,17 +23,26 @@ from ..base import RunResult, RunStats, check_run
 _FIELD_ALIASES: dict[str, tuple[str, ...]] = {
     "barcode": ("itemcode", "item_code", "barcode"),
     "name": ("itemname", "item_name", "itemnm", "productname"),
+    # שופרסל כותבת ManufactureName ולא ManufacturerName. ההבדל נראה זניח
+    # ועלה בהרצה הראשונה על קובץ אמיתי כשם יצרן ריק בכל השורות.
     "manufacturer": (
         "manufacturername",
+        "manufacturename",
         "manufacturer_name",
         "manufacturername1",
+        "manufactureitemdescription",
         "manufacturedescription",
     ),
     "quantity": ("quantity", "qty"),
     "unit": ("unitqty", "unitofmeasure", "unitmeasure"),
     "item_type": ("itemtype", "item_type"),
     "internal_code": ("iteminternalcode", "internalcode"),
-    "update_date": ("priceupdatedate", "price_update_date", "updatedate"),
+    "update_date": (
+        "priceupdatedate",
+        "priceupdatetime",
+        "price_update_date",
+        "updatedate",
+    ),
 }
 
 _ITEM_TAGS = ("item", "product", "line")
@@ -73,11 +82,20 @@ def _pick(values: dict[str, str], field: str) -> str | None:
 
 
 def _parse_date(raw: str | None) -> date | None:
+    """כל צורות התאריך שנצפו אצל הרשתות, כולל ISO עם T של שופרסל."""
     if not raw:
         return None
-    for pattern in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%Y%m%d%H%M%S", "%Y%m%d"):
+    text = raw.strip()
+    for pattern in (
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+        "%Y-%m-%d",
+        "%Y%m%d%H%M%S",
+        "%Y%m%d",
+    ):
         try:
-            return datetime.strptime(raw.strip(), pattern).date()
+            return datetime.strptime(text, pattern).date()
         except ValueError:
             continue
     return None

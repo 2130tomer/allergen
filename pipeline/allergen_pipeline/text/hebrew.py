@@ -25,6 +25,12 @@ _DASHES = re.compile(r"[\-\u2010\u2011\u2012\u2013\u2014\u2015_/\|]+")
 _NON_WORD = re.compile(r"[^\w\u0590-\u05FF]+", re.UNICODE)
 _WHITESPACE = re.compile(r"\s+")
 
+# \u05E1\u05E4\u05E8\u05D5\u05EA \u05D3\u05D1\u05D5\u05E7\u05D5\u05EA \u05DC\u05D0\u05D5\u05EA\u05D9\u05D5\u05EA. \u05D1\u05E7\u05D1\u05E6\u05D9 \u05D4\u05E8\u05E9\u05EA\u05D5\u05EA \u05D6\u05D4 \u05E0\u05E4\u05D5\u05E5 \u05DE\u05D0\u05D5\u05D3: "100\u05D2", "32\u05D9\u05D7",
+# "5\u05E1\u05DB\u05D9\u05E0\u05D9". \u05D1\u05DC\u05D9 \u05D4\u05E4\u05E8\u05D3\u05D4 \u05D4\u05D0\u05E1\u05D9\u05DE\u05D5\u05DF \u05DB\u05D5\u05DC\u05D5 \u05E9\u05D5\u05E0\u05D4 \u05DE\u05D4\u05DE\u05D9\u05DC\u05D4, \u05D5\u05D0\u05E3 \u05DB\u05DC\u05DC \u05D5\u05D7\u05D9\u05E4\u05D5\u05E9 \u05DC\u05D0
+# \u05DE\u05D5\u05E6\u05D0\u05D9\u05DD \u05D0\u05D5\u05EA\u05D5.
+_DIGIT_THEN_LETTER = re.compile(r"(\d)(?=[^\d\s])")
+_LETTER_THEN_DIGIT = re.compile(r"([^\d\s])(?=\d)")
+
 _FINAL_LETTERS = str.maketrans("ךםןףץ", "כמנפצ")
 
 # תחיליות נפוצות. ארוכות קודם, כדי שהגזירה תנסה קודם את המפורשת יותר.
@@ -69,6 +75,8 @@ def normalize(text: str) -> str:
     result = _QUOTES.sub("", result)
     result = _DASHES.sub(" ", result)
     result = _NON_WORD.sub(" ", result)
+    result = _DIGIT_THEN_LETTER.sub(r"\1 ", result)
+    result = _LETTER_THEN_DIGIT.sub(r"\1 ", result)
     result = result.translate(_FINAL_LETTERS)
     result = _WHITESPACE.sub(" ", result).strip()
     return result.lower()

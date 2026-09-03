@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from datetime import date, datetime
+from pathlib import Path
 
 import pytest
 
@@ -52,6 +53,43 @@ PRICE_XML = """<?xml version="1.0" encoding="utf-8"?>
       <ItemType>1</ItemType>
       <ItemName>ביסלי גריל 70 גרם</ItemName>
       <ManufacturerName>אסם</ManufacturerName>
+    </Item>
+  </Items>
+</Root>
+"""
+
+# מבנה אמיתי מקובץ PriceFull של שופרסל. שמות התגיות כאן אינם המצאה:
+# ManufactureName ולא ManufacturerName, PriceUpdateTime ולא PriceUpdateDate,
+# ותאריך ISO עם T. שלושתם נשברו בהרצה הראשונה על נתונים אמיתיים.
+SHUFERSAL_REAL_XML = """<Root>
+  <ChainID>7290027600007</ChainID>
+  <SubChainID>001</SubChainID>
+  <StoreID>001</StoreID>
+  <BikoretNo>9</BikoretNo>
+  <Items>
+    <Item>
+      <PriceUpdateTime>2025-12-28T14:15:00</PriceUpdateTime>
+      <ItemCode>7290000066318</ItemCode>
+      <LastSaleDateTime>2026-09-01T20:08:28</LastSaleDateTime>
+      <ItemType>1</ItemType>
+      <ItemName>במבה אסם 80 גרם</ItemName>
+      <ManufactureName>אסם</ManufactureName>
+      <ManufactureCountry>IL</ManufactureCountry>
+      <ManufactureItemDescription>חטיף במבה</ManufactureItemDescription>
+      <UnitQty>גרם</UnitQty>
+      <Quantity>80.00</Quantity>
+      <UnitOfMeasure>גרם</UnitOfMeasure>
+      <bIsWeighted>0</bIsWeighted>
+      <QtyInPackage>1</QtyInPackage>
+      <ItemPrice>5.90</ItemPrice>
+      <ItemStatus />
+    </Item>
+    <Item>
+      <PriceUpdateTime>2024-12-31T12:36:00</PriceUpdateTime>
+      <ItemCode>10900302814</ItemCode>
+      <ItemType>1</ItemType>
+      <ItemName>ניילון נצמד</ItemName>
+      <ManufactureName>ריינולדס</ManufactureName>
     </Item>
   </Items>
 </Root>
@@ -129,6 +167,30 @@ class TestPriceTransparencyParsing:
             "ItemName", "itemname"
         )
         assert parser.parse_bytes(lowered.encode("utf-8"), "shufersal", TODAY).offers
+
+
+class TestShufersalRealFormat:
+    """רגרסיה מול המבנה שנצפה בפועל בקובץ של שופרסל."""
+
+    def parsed(self):
+        return parser.parse_bytes(
+            SHUFERSAL_REAL_XML.encode("utf-8"), "shufersal", TODAY
+        )
+
+    def test_the_manufacturer_name_is_read(self):
+        # התגית היא ManufactureName, בלי ה-r. בלי האליאס הזה כל שמות
+        # היצרנים חוזרים ריקים והקטלוג נראה תקין למרות שהוא לא.
+        bamba = next(o for o in self.parsed().offers if o.barcode == BAMBA)
+        assert bamba.manufacturer == "אסם"
+
+    def test_the_iso_update_time_is_parsed(self):
+        bamba = next(o for o in self.parsed().offers if o.barcode == BAMBA)
+        assert bamba.observed_on == date(2025, 12, 28)
+
+    def test_an_eleven_digit_internal_code_is_rejected(self):
+        # 11 ספרות אינו אורך GTIN חוקי; זהו קוד פנימי ולא מזהה מוצר.
+        assert all(o.barcode != "10900302814" for o in self.parsed().offers)
+        assert self.parsed().skipped_invalid_barcode == 1
 
 
 class TestRetailerConfig:
@@ -211,6 +273,53 @@ class TestOsemAdapter:
         )
         assert product.is_linkable is False
         assert manufacturer_base.to_claims(product, ingredient_map, TODAY) == []
+
+
+class TestOsemAgainstTheRealPage:
+    """מקבע שנחתך מדף מוצר אמיתי של אסם-נסטלה, לא מ-HTML שהומצא.
+
+    זו הבדיקה שמוכיחה שהמנגנון של ADR-0004 עובד על נתוני יצרן אמיתיים:
+    האתר מפרסם "בוטנים סויה" בשורה אחת, וההצלבה מול הרכיבים משחזרת את
+    ההבחנה שהמוצר מכיל בוטנים ורק עלול להכיל סויה.
+    """
+
+    def page(self) -> str:
+        fixture = Path(__file__).parent / "fixtures" / "osem_bamba_real.html"
+        return fixture.read_text(encoding="utf-8")
+
+    def product(self):
+        return osem.parse_product_page(self.page(), "https://example.test/bamba")
+
+    def test_the_barcode_is_recovered_from_the_image_path(self):
+        assert self.product().barcode == "7290001302279"
+
+    def test_the_real_ingredient_text_is_read(self):
+        ingredients = self.product().ingredients_text or ""
+        assert "בוטנים טחונים" in ingredients
+        assert "גריסי תירס" in ingredients
+
+    def test_the_flat_allergen_line_is_read_verbatim(self):
+        assert "בוטנים סויה" in self.product().raw_allergen_terms
+
+    def test_a_repeated_panel_is_not_concatenated(self):
+        """הדף האמיתי חוזר על פאנל האלרגנים, ואסור שייווצר כפל טקסט."""
+        terms = self.product().raw_allergen_terms
+        assert not any("בוטנים סויה בוטנים" in term for term in terms)
+
+    def test_the_flat_line_resolves_to_two_different_levels(self, ingredient_map):
+        claims = manufacturer_base.to_claims(
+            self.product(), ingredient_map, TODAY
+        )
+        levels = {claim.allergen_id: claim.level for claim in claims}
+        assert levels["peanuts"] is Level.CONTAINS
+        assert levels["soy"] is Level.MAY_CONTAIN
+
+    def test_both_levels_are_marked_inferred(self, ingredient_map):
+        """נגזרו מהצלבה, ולכן קביעה מפורשת ממקור אחר תגבר עליהן."""
+        claims = manufacturer_base.to_claims(
+            self.product(), ingredient_map, TODAY
+        )
+        assert all(claim.level_inferred for claim in claims)
 
 
 class TestOpenFoodFacts:

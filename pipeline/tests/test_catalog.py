@@ -52,6 +52,25 @@ class TestDepartments:
     def test_empty_name_is_unclassified(self):
         assert departments.classify("") == departments.UNCLASSIFIED_ID
 
+    def test_shampoo_is_not_food(self):
+        # רשתות המזון מוכרות גם פארם. הפריטים האלה לא נמחקים, כדי שסריקה
+        # תמיד תחזיר תשובה, אבל הם לא מופיעים בעיון לפי מחלקות מזון.
+        assert departments.classify("שמפו הד אנד שולדרס 700 מל") == departments.NON_FOOD_ID
+        assert departments.classify("סכיני גילוח ג'ילט 5 יח") == departments.NON_FOOD_ID
+        assert departments.is_non_food("נייר טואלט לילי 32 גליל")
+
+    def test_coconut_cream_is_still_food(self):
+        # "קרם" לבדו אינו כלל לא-מזון, בדיוק בגלל המקרה הזה.
+        assert not departments.is_non_food("קרם קוקוס 400 מל")
+
+    def test_hebrew_abbreviations_from_real_data_classify(self):
+        # קיצורים עם נקודה, כפי שהם מופיעים בקבצים של שופרסל.
+        assert departments.classify("שוק.מריר לינדט 70% 100ג") == "snacks_chocolate"
+        assert departments.classify("גב.עיזים שום ע.תיבול150ג") == "dairy_cheese"
+
+    def test_plural_forms_classify(self):
+        assert departments.classify("נקניקיות עוף 500 גרם") == "meat_processed"
+
     def test_top_level_of_a_subdepartment(self):
         assert departments.top_level_of("dairy_milk") == "dairy"
         assert departments.top_level_of("dairy") == "dairy"

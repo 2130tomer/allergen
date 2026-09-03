@@ -18,6 +18,13 @@ from ..domain.claims import AllergenClaim, Level, Source
 from ..text import hebrew
 
 API_PRODUCT_URL = "https://world.openfoodfacts.org/api/v2/product/{barcode}.json"
+API_SEARCH_URL = "https://world.openfoodfacts.org/api/v2/search"
+
+# ה-API מקבל כמה ברקודים מופרדים בפסיק בשאילתה אחת. בלי זה, העשרה של
+# קטלוג בגודל אמיתי הייתה דורשת עשרות אלפי בקשות.
+BATCH_SIZE = 50
+
+USER_AGENT = "allergen-il/0.1 (allergen catalog for Israel)"
 
 FIELDS = (
     "code",
@@ -32,56 +39,85 @@ FIELDS = (
     "countries_tags",
 )
 
-# מהתגית של Open Food Facts אל הרשימה הסגורה שלנו, בשתי השפות.
-_TAG_TO_ALLERGEN: dict[str, str] = {
-    "gluten": "gluten",
-    "wheat": "gluten",
-    "גלוטן": "gluten",
-    "חיטה": "gluten",
-    "milk": "milk",
-    "חלב": "milk",
-    "eggs": "eggs",
-    "egg": "eggs",
-    "ביצים": "eggs",
-    "peanuts": "peanuts",
-    "peanut": "peanuts",
-    "בוטנים": "peanuts",
-    "soybeans": "soy",
-    "soy": "soy",
-    "סויה": "soy",
-    "sesame-seeds": "sesame",
-    "sesame": "sesame",
-    "שומשום": "sesame",
-    "fish": "fish",
-    "דגים": "fish",
-    "crustaceans": "crustaceans",
-    "סרטנים": "crustaceans",
-    "molluscs": "molluscs",
-    "רכיכות": "molluscs",
-    "nuts": allergens.TREE_NUTS_ID,
-    "tree-nuts": allergens.TREE_NUTS_ID,
-    "אגוזים": allergens.TREE_NUTS_ID,
-    "almonds": "almond",
-    "שקדים": "almond",
-    "walnuts": "walnut",
-    "cashew": "cashew",
-    "cashew-nuts": "cashew",
-    "pecan-nuts": "pecan",
-    "pistachio": "pistachio",
-    "pistachios": "pistachio",
-    "hazelnuts": "hazelnut",
-    "macadamia-nuts": "macadamia",
-    "brazil-nuts": "brazil_nut",
-    "mustard": "mustard",
-    "חרדל": "mustard",
-    "celery": "celery",
-    "סלרי": "celery",
-    "lupin": "lupin",
-    "לופין": "lupin",
-    "sulphur-dioxide-and-sulphites": "sulphites",
-    "sulphites": "sulphites",
-    "סולפיטים": "sulphites",
+"""שמות אלרגנים בשפות שנצפו בפועל בתגיות של Open Food Facts.
+
+המאגר גלובלי ובעל תרומה פתוחה, ולכן מוצר ישראלי אחד יכול לשאת תגיות
+בעברית, אנגלית, רוסית, גרמנית, צרפתית או פולנית, לפי מי שהזין אותו.
+תגית שלא זוהתה מדווחת ואינה נבלעת בשקט, כדי שהרשימה כאן תתרחב לפי
+מה שבאמת מופיע ולא לפי ניחוש.
+"""
+_SYNONYMS: dict[str, tuple[str, ...]] = {
+    "gluten": (
+        "gluten", "גלוטן", "חיטה", "wheat", "blé", "ble", "trigo", "grano",
+        "weizen", "пшеница", "pszenica", "glutine", "glutenhaltige getreidesorten",
+        "barley", "orge", "gerste", "cebada", "ячмень", "jęczmień",
+        "rye", "seigle", "roggen", "centeno", "рожь", "żyto",
+        "oats", "avoine", "hafer", "avena", "овес", "owies",
+        "céréales contenant du gluten", "lepek",
+    ),
+    "milk": (
+        "milk", "חלב", "lait", "leche", "latte", "milch", "молоко", "mleko",
+        "mleka", "mléko", "leite", "süt", "lactose", "laktoza", "lactosa",
+        "сметана", "milchproteine", "produits laitiers", "dairy",
+    ),
+    "eggs": (
+        "eggs", "egg", "ביצים", "oeuf", "oeufs", "œufs", "huevo", "huevos",
+        "uova", "eier", "яйца", "jaja", "jaj", "vejce", "ovos",
+    ),
+    "peanuts": (
+        "peanuts", "peanut", "בוטנים", "arachide", "arachides", "cacahuete",
+        "cacahuètes", "cacahuetes", "erdnüsse", "erdnuss", "арахис",
+        "orzeszki ziemne", "amendoim", "arachidi",
+    ),
+    "soy": (
+        "soybeans", "soy", "soya", "סויה", "soja", "soia", "соя", "sója",
+        "sojabohnen",
+    ),
+    "sesame": (
+        "sesame-seeds", "sesame", "שומשום", "sésame", "sesamo", "sesam",
+        "ajonjolí", "кунжут", "sezam", "sesamsamen",
+    ),
+    "fish": (
+        "fish", "דגים", "poisson", "poissons", "pescado", "pesce", "fisch",
+        "рыба", "ryby", "peixe",
+    ),
+    "crustaceans": (
+        "crustaceans", "סרטנים", "crustacés", "crustaceos", "crustáceos",
+        "crostacei", "krebstiere", "ракообразные", "skorupiaki",
+    ),
+    "molluscs": (
+        "molluscs", "רכיכות", "mollusques", "moluscos", "molluschi",
+        "weichtiere", "моллюски", "mięczaki",
+    ),
+    allergens.TREE_NUTS_ID: (
+        "nuts", "tree-nuts", "אגוזים", "fruits à coque", "fruits a coque",
+        "noix", "nueces", "nüsse", "орехи", "orzechy", "frutos secos",
+    ),
+    "almond": ("almonds", "almond", "שקדים", "amande", "amandes", "almendra", "mandeln", "миндаль", "migdały"),
+    "walnut": ("walnuts", "walnut", "אגוזי מלך", "nuez", "walnüsse", "грецкие орехи"),
+    "cashew": ("cashew", "cashew-nuts", "קשיו", "noix de cajou", "anacardo", "cashewnüsse", "кешью", "nerkowce"),
+    "pecan": ("pecan-nuts", "pecan", "פקאן", "noix de pécan"),
+    "pistachio": ("pistachio", "pistachios", "פיסטוק", "pistache", "pistacho", "pistazien", "фисташки", "pistacje"),
+    "hazelnut": ("hazelnuts", "hazelnut", "אגוזי לוז", "noisette", "noisettes", "avellana", "haselnüsse", "фундук"),
+    "macadamia": ("macadamia-nuts", "macadamia", "מקדמיה"),
+    "brazil_nut": ("brazil-nuts", "brazil-nut", "אגוזי ברזיל", "noix du brésil"),
+    "mustard": ("mustard", "חרדל", "moutarde", "mostaza", "senape", "senf", "горчица", "gorczyca"),
+    "celery": ("celery", "סלרי", "céleri", "celeri", "apio", "sedano", "sellerie", "сельдерей", "seler"),
+    "lupin": ("lupin", "לופין", "lupino", "lupine", "łubin", "altramuces"),
+    "sulphites": (
+        "sulphur-dioxide-and-sulphites", "sulphites", "sulfites", "סולפיטים",
+        "sulfitos", "solfiti", "sulfite", "schwefeldioxid", "сульфиты",
+        "siarczyny", "anhydride sulfureux et sulfites", "dióxido de azufre y sulfitos",
+    ),
 }
+
+# מהתגית של Open Food Facts אל הרשימה הסגורה שלנו.
+_TAG_TO_ALLERGEN: dict[str, str] = {
+    synonym: allergen_id
+    for allergen_id, synonyms in _SYNONYMS.items()
+    for synonym in synonyms
+}
+
 
 
 @dataclass(frozen=True)
@@ -142,6 +178,58 @@ def parse_product(payload: dict) -> OffProduct | None:
         trace_ids=trace_ids,
         unmapped_tags=unmapped_allergens + unmapped_traces,
     )
+
+
+def parse_search_payload(payload: dict) -> list[OffProduct]:
+    """הופך תשובת חיפוש מרובת מוצרים לרשימת מוצרים."""
+    products: list[OffProduct] = []
+    for raw in payload.get("products") or []:
+        parsed = parse_product({"status": 1, "product": raw})
+        if parsed is not None:
+            products.append(parsed)
+    return products
+
+
+class ProductNotFound(Exception):
+    """המוצר אינו במאגר. אין מידע, ולא היעדר אלרגנים."""
+
+
+def fetch_one(client, barcode: str) -> OffProduct | None:
+    """מושך מוצר אחד.
+
+    נקודת הקצה הזו יציבה, בניגוד לחיפוש המרובה שמחזיר 503 באופן קבוע.
+    מדידה על נתונים אמיתיים: כ-0.23 שניות לבקשה, בלי כשלים.
+
+    מחזיר None כשהמוצר אינו קיים; זה מצב תקין ולא שגיאה.
+    """
+    response = client.get(
+        API_PRODUCT_URL.format(barcode=barcode),
+        params={"fields": ",".join(FIELDS)},
+    )
+    if response.status_code == 404:
+        return None
+    response.raise_for_status()
+    return parse_product(response.json())
+
+
+def fetch_batch(client, barcodes: list[str]) -> list[OffProduct]:
+    """מושך קבוצת ברקודים בבקשה אחת.
+
+    נשמר לשלמות, אך אינו בשימוש בצינור: נקודת הקצה של החיפוש המרובה
+    מחזירה 503 באופן קבוע. השתמשו ב-fetch_one עם מקביליות.
+    """
+    if not barcodes:
+        return []
+    response = client.get(
+        API_SEARCH_URL,
+        params={
+            "code": ",".join(barcodes),
+            "fields": ",".join(FIELDS),
+            "page_size": len(barcodes),
+        },
+    )
+    response.raise_for_status()
+    return parse_search_payload(response.json())
 
 
 def to_claims(product: OffProduct, observed_on: date) -> list[AllergenClaim]:

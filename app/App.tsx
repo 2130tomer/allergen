@@ -23,9 +23,17 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, AppState, I18nManager, StyleSheet, View } from 'react-native';
+import {
+  ActivityIndicator,
+  AppState,
+  I18nManager,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { installBundledSnapshot, type BootstrapOutcome } from './src/db/bootstrap';
 import { ProductScreenContainer } from './src/screens/ProductScreenContainer';
 import { BrowseScreen } from './src/screens/BrowseScreen';
 import { FilterScreen } from './src/screens/FilterScreen';
@@ -99,7 +107,12 @@ export default function App(): React.ReactElement | null {
   });
   const [gateOpen, setGateOpen] = useState(false);
   const [gateChecked, setGateChecked] = useState(false);
+  const [database, setDatabase] = useState<BootstrapOutcome | null>(null);
   const backgroundedAt = useRef<number | null>(null);
+
+  useEffect(() => {
+    installBundledSnapshot().then(setDatabase);
+  }, []);
 
   const evaluateGate = useCallback(async () => {
     const state = await readTermsState();
@@ -123,16 +136,29 @@ export default function App(): React.ReactElement | null {
   }, [evaluateGate]);
 
   useEffect(() => {
-    if (fontsLoaded && gateChecked) {
+    if (fontsLoaded && gateChecked && database) {
       SplashScreen.hideAsync().catch(() => undefined);
     }
-  }, [fontsLoaded, gateChecked]);
+  }, [fontsLoaded, gateChecked, database]);
 
-  if (!fontsLoaded || !gateChecked) {
+  if (!fontsLoaded || !gateChecked || !database) {
     return (
       <View style={styles.loading}>
         <ActivityIndicator color={color.action} />
       </View>
+    );
+  }
+
+  // בלי מאגר אין לאפליקציה מה להגיד, ועדיף לומר זאת מפורשות מאשר להציג
+  // מסכים ריקים שנראים כמו קטלוג בלי מוצרים.
+  if (database.kind === 'failed') {
+    return (
+      <SafeAreaProvider>
+        <View style={styles.loading}>
+          <Text style={styles.errorTitle}>המאגר לא נטען</Text>
+          <Text style={styles.errorBody}>{database.reason}</Text>
+        </View>
+      </SafeAreaProvider>
     );
   }
 
@@ -176,6 +202,21 @@ export default function App(): React.ReactElement | null {
 }
 
 const styles = StyleSheet.create({
+  errorTitle: {
+    ...typeScale.screenTitle,
+    color: color.ink,
+    textAlign: 'center',
+    writingDirection: 'rtl',
+    paddingHorizontal: 24,
+  },
+  errorBody: {
+    ...typeScale.body,
+    color: color.inkMuted,
+    textAlign: 'center',
+    writingDirection: 'rtl',
+    paddingHorizontal: 24,
+    paddingTop: 8,
+  },
   loading: {
     flex: 1,
     alignItems: 'center',

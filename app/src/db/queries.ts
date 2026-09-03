@@ -76,18 +76,31 @@ function toSummary(row: ProductRow): ProductSummary {
   };
 }
 
-export async function listDepartments(): Promise<Department[]> {
+/**
+ * מחלקות שאינן מוצגות בעיון.
+ *
+ * רשתות המזון מוכרות גם שמפו וסכיני גילוח. הפריטים האלה נשארים במאגר
+ * כדי שסריקה תמיד תחזיר תשובה, אבל אין להם מה לחפש בעץ מחלקות המזון.
+ * "לא מסווג" דווקא כן מוצג, כי הסתרה שקטה שלו תיראה כמו קטלוג חסר.
+ */
+export const HIDDEN_FROM_BROWSE = ['non_food'];
+
+export async function listDepartments(
+  includeHidden = false,
+): Promise<Department[]> {
   const connection = await openSnapshot();
   const rows = await connection.getAllAsync<{
     id: string;
     label_he: string;
     parent_id: string | null;
   }>('SELECT id, label_he, parent_id FROM departments');
-  return rows.map((row) => ({
-    id: row.id,
-    labelHe: row.label_he,
-    parentId: row.parent_id,
-  }));
+  return rows
+    .filter((row) => includeHidden || !HIDDEN_FROM_BROWSE.includes(row.id))
+    .map((row) => ({
+      id: row.id,
+      labelHe: row.label_he,
+      parentId: row.parent_id,
+    }));
 }
 
 export async function countProductsInDepartment(departmentId: string): Promise<number> {

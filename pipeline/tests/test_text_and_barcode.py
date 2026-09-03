@@ -24,6 +24,22 @@ class TestNormalization:
     def test_final_letters_are_unified(self):
         assert hebrew.normalize("לחם") == hebrew.normalize("לחמ")
 
+    def test_digits_glued_to_letters_are_separated(self):
+        """נפוץ מאוד בקבצי הרשתות: 100ג, 32יח, 5סכיני."""
+        assert hebrew.tokenize("במבה 100ג") == ["במבה", "100", "ג"]
+        assert hebrew.tokenize("5סכיני גילוח") == ["5", "סכיני", "גילוח"]
+        assert hebrew.tokenize("קלינקס 12*9יח") == ["קלינקס", "12", "9", "יח"]
+
+    def test_separating_digits_makes_the_word_findable(self):
+        assert hebrew.normalize("שוק.מריר לינדט 70% 100ג").split() == [
+            "שוק",
+            "מריר",
+            "לינדט",
+            "70",
+            "100",
+            "ג",
+        ]
+
     def test_whitespace_is_collapsed(self):
         assert hebrew.normalize("  במבה   אסם  ") == "במבה אסמ"
 
