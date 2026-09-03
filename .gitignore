@@ -22,3 +22,7 @@ data/snapshots/
 # תוצרי מיפוי, נבנים מחדש מהצינור
 pipeline/data/manufacturers.json
 pipeline/data/manufacturer_probe.json
+
+# פרויקט אנדרואיד נייטיבי, נוצר מחדש על ידי expo prebuild
+app/android/
+app/ios/
