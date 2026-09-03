@@ -19,6 +19,7 @@ import {
   type NativeStackNavigationProp,
 } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -79,6 +80,13 @@ function ScanTab(): React.ReactElement {
   return <ScannerScreen onFound={open} onNotFound={open} />;
 }
 
+/** אייקון לשונית. בלי אייקון מפורש הניווט מצייר צורת ברירת מחדל שדורסת את הכיתוב. */
+function tabIcon(name: React.ComponentProps<typeof MaterialCommunityIcons>['name']) {
+  return ({ color: tint, size }: { color: string; size: number }) => (
+    <MaterialCommunityIcons name={name} size={size} color={tint} />
+  );
+}
+
 function TabsNavigator(): React.ReactElement {
   return (
     <Tabs.Navigator
@@ -86,13 +94,31 @@ function TabsNavigator(): React.ReactElement {
         headerShown: false,
         tabBarActiveTintColor: color.action,
         tabBarInactiveTintColor: color.inkMuted,
-        tabBarLabelStyle: { fontFamily: font.bodyMedium, fontSize: 13 },
-        tabBarStyle: { backgroundColor: color.surface, borderTopColor: color.rule },
+        tabBarLabelStyle: { fontFamily: font.bodyMedium, fontSize: 12 },
+        tabBarStyle: {
+          backgroundColor: color.surface,
+          borderTopColor: color.rule,
+          height: 62,
+          paddingBottom: 6,
+          paddingTop: 6,
+        },
       }}
     >
-      <Tabs.Screen name="Browse" options={{ title: 'מוצרים' }} component={BrowseTab} />
-      <Tabs.Screen name="Scan" options={{ title: 'סריקה' }} component={ScanTab} />
-      <Tabs.Screen name="Filter" options={{ title: 'סינון' }} component={FilterScreen} />
+      <Tabs.Screen
+        name="Browse"
+        options={{ title: 'מוצרים', tabBarIcon: tabIcon('format-list-bulleted') }}
+        component={BrowseTab}
+      />
+      <Tabs.Screen
+        name="Scan"
+        options={{ title: 'סריקה', tabBarIcon: tabIcon('barcode-scan') }}
+        component={ScanTab}
+      />
+      <Tabs.Screen
+        name="Filter"
+        options={{ title: 'סינון', tabBarIcon: tabIcon('filter-variant') }}
+        component={FilterScreen}
+      />
     </Tabs.Navigator>
   );
 }
