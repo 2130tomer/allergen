@@ -17,3 +17,4 @@ data/snapshots/
 *.db
 .env
 .DS_Store
+**/data/cache/

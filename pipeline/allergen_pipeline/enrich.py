@@ -28,20 +28,31 @@ from .domain.claims import AllergenClaim, Level, Source
 from .ingredients.mapping import IngredientAllergenMap
 from .sources import openfoodfacts as off
 
-"""מגבלת הקצב של Open Food Facts.
+"""מגבלת הקצב של Open Food Facts, ומה שלמדנו עליה בדרך הקשה.
 
-המאגר מגביל קריאות מוצר ל-100 בקשות לדקה. ריצה ראשונה עם שמונה חוטים
-בלי ויסות ייצרה כ-35 בקשות בשנייה, פי עשרים מהמותר, ו-83 אחוז מהבקשות
-נכשלו. המספרים שהתקבלו ממנה היו חסרי משמעות.
+המאגר מתוחזק בהתנדבות ומגביל קריאות. ריצה ראשונה עם שמונה חוטים בלי
+ויסות ייצרה כ-35 בקשות בשנייה, ו-83 אחוז מהבקשות נכשלו; המספרים שהיא
+החזירה היו חסרי משמעות. ניסיון שני בתשעים לדקה עדיין קיבל 429, כנראה
+בגלל חלון עונשין שנפתח בעקבות הראשון.
 
-הוויסות כאן מכוון לתשעים לדקה, מתחת לתקרה. ריצה מלאה על קטלוג של
-עשרת אלפים מוצרים אורכת בערך שעתיים, וזה המחיר הנכון לשלם.
+הקצב כאן מכוון לשלושים לדקה. המשמעות היא שהעשרה מלאה של קטלוג בגודל
+אמיתי אורכת שעות, ולכן היא עבודת רקע מתוזמנת ולא פעולה אינטראקטיבית.
+המטמון על הדיסק הוא מה שהופך את זה לנסבל: כל ריצה ממשיכה מאיפה
+שהקודמת עצרה.
+
+ההעשרה אף פעם אינה תנאי לבניית הקטלוג. מוצר בלי מידע נכנס לאפליקציה
+עם "אין מידע", וזה מצב תקין. ראו ADR-0001.
 """
-REQUESTS_PER_MINUTE = 90
+REQUESTS_PER_MINUTE = 30
 WORKERS = 2
-MAX_RETRIES = 4
-RETRY_BACKOFF_SECONDS = 5.0
+MAX_RETRIES = 3
+RETRY_BACKOFF_SECONDS = 10.0
 REQUEST_TIMEOUT = 60.0
+
+# מעל שיעור הכשלים הזה ההעשרה נעצרת מעצמה. אין טעם להמשיך להטריד שרת
+# שכבר אמר לנו לא, והמספרים שיתקבלו יהיו ממילא חסרי משמעות.
+ABORT_ABOVE_FAILURE_RATE = 0.5
+MIN_ATTEMPTS_BEFORE_ABORT = 100
 
 
 class RateLimiter:
@@ -151,6 +162,7 @@ def collect_from_open_food_facts(
     ingredient_map: IngredientAllergenMap,
     progress_every: int = 20,
     verbose: bool = True,
+    cache_only: bool = False,
 ) -> tuple[dict[str, list[AllergenClaim]], dict[str, off.OffProduct], EnrichmentStats]:
     """אוסף קביעות לכל הברקודים, בקבוצות, עם מטמון."""
     stats = EnrichmentStats(requested=len(barcodes))
@@ -158,13 +170,19 @@ def collect_from_open_food_facts(
     products_by_barcode: dict[str, off.OffProduct] = {}
 
     missing = [barcode for barcode in barcodes if not cache.known(barcode)]
-    if missing and verbose:
-        print(f"  {len(barcodes) - len(missing)} מהמטמון, {len(missing)} לשאילתה")
 
-    if missing:
-        _fetch_missing(missing, cache, stats, progress_every, verbose)
-
-    cache.save()
+    if cache_only:
+        if verbose:
+            print(
+                f"  {len(barcodes) - len(missing)} מהמטמון, "
+                f"{len(missing)} ללא מידע (מצב מטמון בלבד, אין פנייה לרשת)"
+            )
+    else:
+        if missing and verbose:
+            print(f"  {len(barcodes) - len(missing)} מהמטמון, {len(missing)} לשאילתה")
+        if missing:
+            _fetch_missing(missing, cache, stats, progress_every, verbose)
+        cache.save()
 
     for barcode in barcodes:
         product = _from_payload(cache.get(barcode) or {})
@@ -198,7 +216,7 @@ def _fetch_missing(
 ) -> None:
     """מושך את מה שאינו במטמון, במקביל ועם ניסיונות חוזרים.
 
-    הקצב מווסת לתשעים בקשות לדקה. שני חוטים מספיקים בהחלט בקצב הזה,
+    הקצב מווסת לשלושים בקשות לדקה. שני חוטים מספיקים בהחלט בקצב הזה,
     והם קיימים רק כדי שהמתנה לתשובה אחת לא תעצור את התור.
     """
     completed = 0
@@ -227,7 +245,7 @@ def _fetch_missing(
                 cache.remember(barcode, _as_payload(product) if product else None)
 
                 # שמירת ביניים, כדי שהפסקה באמצע לא תאבד שעה של עבודה.
-                if completed % 250 == 0:
+                if completed % 100 == 0:
                     cache.save()
                     if verbose:
                         elapsed = (time.monotonic() - started) / 60
@@ -237,6 +255,27 @@ def _fetch_missing(
                             f"({rate:.0f} לדקה, {stats.failures} כשלים)",
                             flush=True,
                         )
+
+                if _should_abort(completed, stats.failures):
+                    print(
+                        f"  שיעור כשלים {stats.failures}/{completed}. "
+                        "המקור חוסם אותנו; עוצר ושומר את מה שהתקבל.",
+                        flush=True,
+                    )
+                    for pending in futures:
+                        pending.cancel()
+                    break
+
+
+def _should_abort(completed: int, failures: int) -> bool:
+    """עצירה עצמית כשברור שהמקור חוסם.
+
+    בלי זה ריצה ממשיכה שעות, מייצרת אלפי בקשות דחויות, ומחזירה מספרי
+    כיסוי שנראים כמו נתונים ואינם.
+    """
+    if completed < MIN_ATTEMPTS_BEFORE_ABORT:
+        return False
+    return failures / completed > ABORT_ABOVE_FAILURE_RATE
 
 
 def _fetch_with_retry(

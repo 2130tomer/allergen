@@ -177,6 +177,7 @@ def _enrich(
         observed_on=date.today(),
         ingredient_map=ingredient_map,
         verbose=not arguments.quiet,
+        cache_only=arguments.cache_only,
     )
 
     print(f"  נשאלו: {stats.requested}")
@@ -258,6 +259,11 @@ def _parse_arguments(argv: list[str] | None) -> argparse.Namespace:
         type=Path,
         default=DEFAULT_MANUFACTURER_CLAIMS,
         help="קובץ קביעות יצרן מ-fetch_manufacturers",
+    )
+    argument_parser.add_argument(
+        "--cache-only",
+        action="store_true",
+        help="אל תפנה לרשת; השתמש רק במה שכבר במטמון",
     )
     argument_parser.add_argument("--quiet", action="store_true")
     return argument_parser.parse_args(argv)
