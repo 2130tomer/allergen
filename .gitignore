@@ -18,3 +18,7 @@ data/snapshots/
 .env
 .DS_Store
 **/data/cache/
+
+# תוצרי מיפוי, נבנים מחדש מהצינור
+pipeline/data/manufacturers.json
+pipeline/data/manufacturer_probe.json
