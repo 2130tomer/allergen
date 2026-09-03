@@ -25,6 +25,7 @@ from .enrich import (
     OffCache,
     collect_from_open_food_facts,
     load_manufacturer_claims,
+    load_retailer_claims,
     merge_claim_sources,
 )
 from .ingredients.mapping import IngredientAllergenMap
@@ -36,6 +37,7 @@ from .sources.price_transparency import parser, shufersal
 DEFAULT_OUTPUT = Path("data/snapshots/allergen-snapshot.sqlite")
 DEFAULT_CACHE = Path("data/cache/openfoodfacts.json")
 DEFAULT_MANUFACTURER_CLAIMS = Path("data/cache/manufacturer_claims.json")
+DEFAULT_RETAILER_CLAIMS = Path("data/cache/shufersal_allergens.json")
 
 
 def collect_shufersal_offers(
@@ -190,6 +192,17 @@ def _enrich(
         top = sorted(stats.unmapped_tags.items(), key=lambda i: i[1], reverse=True)[:6]
         print("  תגיות שלא זוהו: " + ", ".join(f"{tag}({n})" for tag, n in top))
 
+    retailer = load_retailer_claims(arguments.retailer_claims, ingredient_map)
+    relevant_retailer = {
+        barcode: claim_list
+        for barcode, claim_list in retailer.items()
+        if barcode in products
+    }
+    print(
+        f"\nקביעות קמעונאי: {len(retailer)} במטמון, "
+        f"{len(relevant_retailer)} מהן על מוצרים שבקטלוג."
+    )
+
     manufacturer = load_manufacturer_claims(arguments.manufacturer_claims)
     relevant = {
         barcode: claim_list
@@ -200,7 +213,7 @@ def _enrich(
         f"\nקביעות יצרן: {len(manufacturer)} במטמון, "
         f"{len(relevant)} מהן על מוצרים שבקטלוג."
     )
-    return merge_claim_sources(claims, relevant)
+    return merge_claim_sources(claims, relevant_retailer, relevant)
 
 
 def _report_departments(products: dict[str, Product]) -> None:
@@ -259,6 +272,12 @@ def _parse_arguments(argv: list[str] | None) -> argparse.Namespace:
         type=Path,
         default=DEFAULT_MANUFACTURER_CLAIMS,
         help="קובץ קביעות יצרן מ-fetch_manufacturers",
+    )
+    argument_parser.add_argument(
+        "--retailer-claims",
+        type=Path,
+        default=DEFAULT_RETAILER_CLAIMS,
+        help="קובץ קביעות קמעונאי מ-fetch_retailer_allergens",
     )
     argument_parser.add_argument(
         "--cache-only",

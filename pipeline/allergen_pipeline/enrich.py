@@ -327,6 +327,47 @@ def load_manufacturer_claims(path: Path) -> dict[str, list[AllergenClaim]]:
     return claims_by_barcode
 
 
+def load_retailer_claims(
+    path: Path, ingredient_map: IngredientAllergenMap
+) -> dict[str, list[AllergenClaim]]:
+    """קורא קביעות קמעונאי שנשמרו על ידי fetch_retailer_allergens.
+
+    זהו מקור האלרגנים העיקרי של גרסה 1. הוא מפריד במפורש בין מכיל
+    לעלול להכיל, ולכן הקביעות שלו מפורשות ולא נגזרות. ראו ADR-0006.
+    """
+    if not path.exists():
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    from .sources.retailers import claims as retailer_claims
+    from .sources.retailers.shufersal_online import ShufersalProduct
+
+    by_barcode: dict[str, list[AllergenClaim]] = {}
+    for barcode, record in raw.items():
+        if not record:
+            continue
+        product = ShufersalProduct(
+            barcode=record.get("barcode", barcode),
+            page_url=record.get("page_url", ""),
+            name=record.get("name"),
+            brand=record.get("brand"),
+            is_food=bool(record.get("is_food", True)),
+            ingredients_text=record.get("ingredients_text"),
+            contains_terms=tuple(record.get("contains_terms") or ()),
+            may_contain_terms=tuple(record.get("may_contain_terms") or ()),
+        )
+        observed_on = date.fromisoformat(
+            record.get("observed_on") or date.today().isoformat()
+        )
+        found = retailer_claims.to_claims(product, ingredient_map, observed_on)
+        if found:
+            by_barcode[barcode] = found
+    return by_barcode
+
+
 def merge_claim_sources(
     *sources: dict[str, list[AllergenClaim]],
 ) -> dict[str, list[AllergenClaim]]:

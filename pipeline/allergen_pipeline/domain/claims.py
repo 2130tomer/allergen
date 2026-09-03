@@ -54,6 +54,7 @@ class Source(str, Enum):
     """הגורם שממנו הגיעה הקביעה."""
 
     MANUFACTURER = "manufacturer"
+    RETAILER = "retailer"
     OPEN_FOOD_FACTS = "open_food_facts"
     LABEL_EXTRACTION = "label_extraction"
     USER = "user"
@@ -64,20 +65,27 @@ class Source(str, Enum):
 
     @property
     def may_assert_absence(self) -> bool:
-        """רק הצהרת יצרן רשמית רשאית לשלול אלרגן. ראו ADR-0002."""
+        """רק הצהרת יצרן רשמית רשאית לשלול אלרגן. ראו ADR-0002.
+
+        קמעונאי אינו רשאי, גם כשהמידע שלו מפורט יותר משל היצרן. הוא
+        מעתיק תווית, ואינו האחראי עליה.
+        """
         return self is Source.MANUFACTURER
 
 
 _SOURCE_LABELS = {
     Source.MANUFACTURER: "אתר היצרן",
+    Source.RETAILER: "אתר הרשת",
     Source.OPEN_FOOD_FACTS: "Open Food Facts",
     Source.LABEL_EXTRACTION: "חילוץ מתמונת תווית",
     Source.USER: "דיווח משתמש",
 }
 
-# דרגת האמינות של המקור. גבוה יותר = אמין יותר.
+# דרגת האמינות של המקור. גבוה יותר = אמין יותר. ראו ADR-0006 להסבר
+# מדוע הקמעונאי יושב מעל Open Food Facts ומתחת ליצרן.
 _TIER = {
-    Source.MANUFACTURER: 4,
+    Source.MANUFACTURER: 5,
+    Source.RETAILER: 4,
     Source.OPEN_FOOD_FACTS: 3,
     Source.LABEL_EXTRACTION: 2,
     Source.USER: 1,

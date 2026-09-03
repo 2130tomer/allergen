@@ -30,6 +30,7 @@ import { color, radius, space, TOUCH_TARGET, typeScale } from '../theme';
 
 const SOURCE_LABEL: Record<string, string> = {
   manufacturer: 'אתר היצרן',
+  retailer: 'אתר הרשת',
   open_food_facts: 'Open Food Facts',
   label_extraction: 'חילוץ מתמונת תווית',
   user: 'דיווח משתמש',
