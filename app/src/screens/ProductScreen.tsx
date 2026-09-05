@@ -18,8 +18,11 @@ import { WarningBar } from '../components/WarningBar';
 import type { ProductDetail } from '../db/queries';
 import { applyFilter } from '../domain/filter';
 import {
+  CONFLICT_TITLE,
   IMAGE_CAPTION_SHORT,
   IMAGE_DISCLAIMER,
+  INGREDIENTS_KNOWN_NO_MATCH,
+  NOT_A_FOOD_PRODUCT,
   NO_ALLERGEN_DATA,
   REPORT_INACCURACY_LABEL,
   collectedOn,
@@ -30,6 +33,7 @@ import { color, radius, space, TOUCH_TARGET, typeScale } from '../theme';
 
 const SOURCE_LABEL: Record<string, string> = {
   manufacturer: 'אתר היצרן',
+  declared_free_from: 'הצהרת "ללא" על האריזה',
   retailer: 'אתר הרשת',
   open_food_facts: 'Open Food Facts',
   label_extraction: 'חילוץ מתמונת תווית',
@@ -81,7 +85,7 @@ export function ProductScreen({ product, onReportInaccuracy }: Props): React.Rea
 
         {product.conflicts.length > 0 ? (
           <View style={styles.conflict}>
-            <Text style={styles.conflictTitle}>סתירה בין מקורות</Text>
+            <Text style={styles.conflictTitle}>{CONFLICT_TITLE}</Text>
             {product.conflicts.map((message) => (
               <Text key={message} style={styles.conflictText}>
                 {message}
@@ -100,8 +104,14 @@ export function ProductScreen({ product, onReportInaccuracy }: Props): React.Rea
         ) : null}
 
         <Panel title="אלרגנים">
-          {product.hasAllergenData ? (
+          {product.departmentId === 'non_food' && !product.hasAllergenData ? (
+            <Text style={styles.noData}>{NOT_A_FOOD_PRODUCT}</Text>
+          ) : product.hasAllergenData ? (
             <AllergenLedger levels={product.levels} highlighted={highlighted} />
+          ) : product.ingredientsKnown ? (
+            /* שני מצבים שונים שנראו זהים עד כה. כאן יש בידינו רשימת
+               רכיבים מלאה שלא אותר בה אלרגן, וזה נתון — לא היעדר נתון. */
+            <Text style={styles.noData}>{INGREDIENTS_KNOWN_NO_MATCH}</Text>
           ) : (
             <Text style={styles.noData}>{NO_ALLERGEN_DATA}</Text>
           )}

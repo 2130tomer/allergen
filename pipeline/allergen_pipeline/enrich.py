@@ -342,8 +342,11 @@ def load_retailer_claims(
     except (OSError, json.JSONDecodeError):
         return {}
 
+    from .ingredients.free_from import FreeFromDetector
     from .sources.retailers import claims as retailer_claims
     from .sources.retailers.shufersal_online import ShufersalProduct
+
+    free_from = FreeFromDetector.load()
 
     by_barcode: dict[str, list[AllergenClaim]] = {}
     for barcode, record in raw.items():
@@ -362,7 +365,9 @@ def load_retailer_claims(
         observed_on = date.fromisoformat(
             record.get("observed_on") or date.today().isoformat()
         )
-        found = retailer_claims.to_claims(product, ingredient_map, observed_on)
+        found = retailer_claims.to_claims(
+            product, ingredient_map, observed_on, free_from=free_from
+        )
         if found:
             by_barcode[barcode] = found
     return by_barcode

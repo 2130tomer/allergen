@@ -20,7 +20,11 @@ def ingredient_map() -> IngredientAllergenMap:
 
 class TestPositiveDetection:
     def test_bamba_ingredients_yield_peanuts(self, ingredient_map):
-        assert ingredient_map.allergen_ids(BAMBA_INGREDIENTS) == {"peanuts"}
+        assert "peanuts" in ingredient_map.allergen_ids(BAMBA_INGREDIENTS)
+
+    def test_bamba_ingredients_also_yield_the_corn_grits(self, ingredient_map):
+        """הרכיב "גריסי תירס" מופיע ברשימה האמיתית ואינו בהצהרת האלרגנים."""
+        assert "corn" in ingredient_map.allergen_ids(BAMBA_INGREDIENTS)
 
     def test_soy_lecithin_is_detected(self, ingredient_map):
         assert "soy" in ingredient_map.allergen_ids("סוכר, לציטין סויה, וניל")
@@ -111,6 +115,29 @@ class TestExclusionsAreScopedToOneAllergen:
         assert "sesame" in ingredient_map.allergen_ids("חמאת שומשום")
 
 
+class TestIngredientsCarryingTheirOwnDisclaimer:
+    """רכיב שנושא הסתייגות "ללא גלוטן" צמודה אינו מעיד על גלוטן.
+
+    כולם נצפו ברשימות רכיבים אמיתיות של מוצרים ללא גלוטן. בלי החריגים
+    האלה מוצר ללא גלוטן סומן כמכיל גלוטן, כלומר הוסתר בדיוק ממי
+    שהאפליקציה נועדה לו.
+    """
+
+    def test_gluten_free_breadcrumbs_do_not_report_gluten(self, ingredient_map):
+        found = ingredient_map.allergen_ids("חזה עוף, פירורי לחם ללא גלוטן, מלח")
+        assert "gluten" not in found
+        assert "wheat" not in found
+
+    def test_gluten_free_wheat_starch_does_not_report_gluten(self, ingredient_map):
+        found = ingredient_map.allergen_ids("עמילן חיטה ללא גלוטן, קמח אורז")
+        assert "gluten" not in found
+
+    def test_plain_wheat_flour_still_reports_gluten(self, ingredient_map):
+        """החריג צר במכוון ואינו מחליש את הזיהוי הרגיל."""
+        found = ingredient_map.allergen_ids("קמח חיטה, סוכר")
+        assert {"gluten", "wheat"} <= found
+
+
 class TestExplainability:
     def test_a_match_reports_the_phrase_that_caused_it(self, ingredient_map):
         matches = ingredient_map.match("סוכר, לציטין סויה")
@@ -120,7 +147,11 @@ class TestExplainability:
 
     def test_matches_come_back_in_reading_order(self, ingredient_map):
         matches = ingredient_map.match("קמח חיטה, חמאה")
-        assert [m.allergen_id for m in matches] == ["gluten", "milk"]
+        assert [m.allergen_id for m in matches] == ["wheat", "milk"]
+
+    def test_the_parent_grain_is_derived_from_the_specific_one(self, ingredient_map):
+        """ההתאמה מזהה חיטה; גלוטן נגזר ממנה ואינו צורך את אותן מילים."""
+        assert ingredient_map.allergen_ids("קמח חיטה") >= {"wheat", "gluten"}
 
     def test_a_longer_phrase_wins_over_a_shorter_one(self, ingredient_map):
         matches = ingredient_map.match("אגוז מלך")

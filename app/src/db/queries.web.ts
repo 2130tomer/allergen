@@ -25,6 +25,8 @@ interface AllergenRecord {
 const PRODUCTS = preview.products as unknown as ProductSummary[];
 const ALLERGENS = preview.allergens as unknown as Record<string, AllergenRecord>;
 const DEPARTMENTS = preview.departments as unknown as Department[];
+const CONFLICTS = (preview as { conflicts?: Record<string, { message: string }[]> })
+  .conflicts ?? {};
 
 const HIDDEN = ['non_food'];
 
@@ -96,7 +98,7 @@ export async function loadProduct(barcode: string): Promise<ProductDetail | null
     ...summary,
     levels: record?.levels ?? {},
     sources: record?.sources ?? [],
-    conflicts: [],
+    conflicts: (CONFLICTS[summary.barcode] ?? []).map((row) => row.message),
     inferredAllergenIds: record?.inferred ?? [],
   };
 }

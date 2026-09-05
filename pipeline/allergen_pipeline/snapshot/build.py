@@ -54,6 +54,10 @@ CREATE TABLE products (
     is_active            INTEGER NOT NULL DEFAULT 1,
     needs_review         INTEGER NOT NULL DEFAULT 0,
     has_allergen_data    INTEGER NOT NULL DEFAULT 0,
+    -- קיימת רשימת רכיבים מלאה למוצר. נבדל מ-has_allergen_data: מוצר
+    -- יכול להיות בעל רשימת רכיבים שלא נמצא בה אף אלרגן, וזה נתון
+    -- שונה לחלוטין מהיעדר מידע. ראו INGREDIENTS_KNOWN_NO_MATCH בממשק.
+    ingredients_known    INTEGER NOT NULL DEFAULT 0,
     allergens_observed_on TEXT
 );
 
@@ -107,6 +111,7 @@ def build(
     path: Path,
     products: list[Product],
     resolved_by_barcode: dict[str, ResolvedAllergens],
+    ingredients_known: set[str] | None = None,
 ) -> SnapshotStats:
     """כותב קובץ תמונת מצב חדש. קובץ קיים נדרס."""
     if path.exists():
@@ -117,7 +122,9 @@ def build(
     try:
         connection.executescript(_SCHEMA)
         _write_reference_tables(connection)
-        stats = _write_products(connection, products, resolved_by_barcode)
+        stats = _write_products(
+            connection, products, resolved_by_barcode, ingredients_known or set()
+        )
         _write_meta(connection, stats)
         connection.commit()
         # VACUUM אינו יכול לרוץ בתוך טרנזקציה, ולכן מבטלים את הניהול האוטומטי.
@@ -149,6 +156,7 @@ def _write_products(
     connection: sqlite3.Connection,
     products: list[Product],
     resolved_by_barcode: dict[str, ResolvedAllergens],
+    known_ingredients: set[str],
 ) -> SnapshotStats:
     with_data = 0
     conflict_count = 0
@@ -165,8 +173,8 @@ def _write_products(
             INSERT INTO products (
                 barcode, name, manufacturer, department_id, quantity, unit,
                 image_url, image_source, is_active, needs_review,
-                has_allergen_data, allergens_observed_on
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                has_allergen_data, ingredients_known, allergens_observed_on
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             (
                 product.barcode,
@@ -180,6 +188,7 @@ def _write_products(
                 int(product.is_active),
                 int(product.needs_review),
                 int(has_data),
+                int(product.barcode in known_ingredients),
                 observed.isoformat() if observed else None,
             ),
         )

@@ -13,6 +13,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import gzip
 import sys
 from collections import defaultdict
@@ -195,13 +196,32 @@ def main(argv: list[str] | None = None) -> int:
     if arguments.allergens:
         claims_by_barcode = _enrich(products, arguments)
 
+    # תמונות מחוברות אחרי ההעשרה, כי מטמון היצרן שנקרא שם הוא גם
+    # המקור לתמונה העדיפה. ראו catalog/images.py לסדר העדיפות.
+    from .catalog import images as product_images
+
+    found = product_images.collect(
+        arguments.manufacturer_claims, arguments.cache, today
+    )
+    products, attached = product_images.attach(products, found)
+    print(
+        f"\nתמונות: {len(found)} זמינות לפי ברקוד, "
+        f"{attached} חוברו למוצרים בקטלוג."
+    )
+
     resolved: dict[str, ResolvedAllergens] = {
         barcode: resolve(claims_by_barcode.get(barcode, []))
         for barcode in products
     }
 
+    # מוצר שיש לו רשימת רכיבים אך לא נמצא בה אלרגן אינו "אין מידע".
+    # ההבחנה נשמרת במסד כדי שהממשק יוכל לנסח אותה נכון.
+    known_ingredients = _barcodes_with_ingredients(arguments.retailer_claims)
+
     output = arguments.output
-    result = snapshot_builder.build(output, list(products.values()), resolved)
+    result = snapshot_builder.build(
+        output, list(products.values()), resolved, known_ingredients
+    )
     size_mb = output.stat().st_size / (1024 * 1024)
 
     print(f"תמונת מצב נכתבה: {output} ({size_mb:.1f}MB)")
@@ -265,6 +285,21 @@ def _enrich(
         f"{len(relevant)} מהן על מוצרים שבקטלוג."
     )
     return merge_claim_sources(claims, relevant_retailer, relevant)
+
+
+def _barcodes_with_ingredients(retailer_claims: Path) -> set[str]:
+    """הברקודים שעבורם התקבלה רשימת רכיבים מלאה מהקמעונאי."""
+    if not retailer_claims.exists():
+        return set()
+    try:
+        raw = json.loads(retailer_claims.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return set()
+    return {
+        barcode
+        for barcode, record in raw.items()
+        if record and (record.get("ingredients_text") or "").strip()
+    }
 
 
 def _report_departments(products: dict[str, Product]) -> None:

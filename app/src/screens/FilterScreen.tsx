@@ -13,14 +13,9 @@ import React, { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {
-  TREE_NUTS_ID,
-  labelOf,
-  subtypesOf,
-  topLevelAllergens,
-} from '../domain/allergens';
+import { labelOf, subtypesOf, topLevelAllergens } from '../domain/allergens';
 import { gapWarnings } from '../domain/filter';
-import { AllergenMark } from '../components/AllergenMark';
+import { SelectionBox } from '../components/SelectionBox';
 import { Eyebrow, Panel, Rule } from '../components/Panel';
 import { useFilter } from '../state/FilterContext';
 import { color, radius, space, TOUCH_TARGET, typeScale } from '../theme';
@@ -40,7 +35,9 @@ const TAB_EXPLANATION: Record<Tab, string> = {
 export function FilterScreen(): React.ReactElement {
   const { selection, toggleContains, toggleMayContain, clear } = useFilter();
   const [tab, setTab] = useState<Tab>('contains');
-  const [nutsExpanded, setNutsExpanded] = useState(false);
+  // כל אלרגן-אב שיש לו תת-סוגים יכול להיפתח בנפרד. קודם היה כאן דגל
+  // בודד לאגוזי עץ, וכשנוספו תת-סוגי דגן וקטניות הם נשארו בלי מרחיב.
+  const [expanded, setExpanded] = useState<ReadonlySet<string>>(new Set());
 
   const active = tab === 'contains' ? selection.contains : selection.mayContain;
   const toggleActive = tab === 'contains' ? toggleContains : toggleMayContain;
@@ -96,7 +93,15 @@ export function FilterScreen(): React.ReactElement {
           <Eyebrow>{TAB_EXPLANATION[tab]}</Eyebrow>
           {rows.map((allergen, index) => {
             const isSelected = active.has(allergen.id);
-            const isNuts = allergen.id === TREE_NUTS_ID;
+            const subtypes = subtypesOf(allergen.id);
+            const isOpen = expanded.has(allergen.id);
+            const toggleOpen = () =>
+              setExpanded((current) => {
+                const next = new Set(current);
+                if (next.has(allergen.id)) next.delete(allergen.id);
+                else next.add(allergen.id);
+                return next;
+              });
             return (
               <View key={allergen.id}>
                 {index > 0 ? <Rule /> : null}
@@ -107,57 +112,42 @@ export function FilterScreen(): React.ReactElement {
                   onPress={() => toggleActive(allergen.id)}
                   style={styles.row}
                 >
-                  <AllergenMark
-                    level={
-                      isSelected
-                        ? tab === 'contains'
-                          ? 'contains'
-                          : 'may_contain'
-                        : 'absent'
-                    }
-                  />
+                  <SelectionBox selected={isSelected} tone={tab} />
                   <Text style={[styles.rowLabel, isSelected && styles.rowLabelSelected]}>
                     {allergen.labelHe}
                   </Text>
-                  {isNuts ? (
+                  {subtypes.length > 0 ? (
                     <Pressable
                       accessibilityRole="button"
                       accessibilityLabel={
-                        nutsExpanded ? 'סגור תת-סוגי אגוזים' : 'פתח תת-סוגי אגוזים'
+                        isOpen
+                          ? `סגור תת-סוגי ${allergen.labelHe}`
+                          : `פתח תת-סוגי ${allergen.labelHe}`
                       }
                       hitSlop={12}
-                      onPress={() => setNutsExpanded((open) => !open)}
+                      onPress={toggleOpen}
                     >
                       <Text style={styles.disclosure}>
-                        {nutsExpanded ? 'סגור' : 'לפי סוג'}
+                        {isOpen ? 'סגור' : 'לפי סוג'}
                       </Text>
                     </Pressable>
                   ) : null}
                 </Pressable>
 
-                {isNuts && nutsExpanded
-                  ? subtypesOf(TREE_NUTS_ID).map((subtype) => {
+                {subtypes.length > 0 && isOpen
+                  ? subtypes.map((subtype) => {
                       const subtypeSelected =
-                        active.has(subtype.id) || active.has(TREE_NUTS_ID);
+                        active.has(subtype.id) || active.has(allergen.id);
                       return (
                         <Pressable
                           key={subtype.id}
                           accessibilityRole="checkbox"
                           accessibilityState={{ checked: subtypeSelected }}
-                          disabled={active.has(TREE_NUTS_ID)}
+                          disabled={active.has(allergen.id)}
                           onPress={() => toggleActive(subtype.id)}
                           style={[styles.row, styles.subtypeRow]}
                         >
-                          <AllergenMark
-                            level={
-                              subtypeSelected
-                                ? tab === 'contains'
-                                  ? 'contains'
-                                  : 'may_contain'
-                                : 'absent'
-                            }
-                            size={18}
-                          />
+                          <SelectionBox selected={subtypeSelected} tone={tab} size={18} />
                           <Text style={styles.subtypeLabel}>{subtype.labelHe}</Text>
                         </Pressable>
                       );
@@ -168,11 +158,18 @@ export function FilterScreen(): React.ReactElement {
           })}
         </Panel>
 
-        {active.has(TREE_NUTS_ID) && nutsExpanded ? (
-          <Text style={styles.note}>
-            סימנת אגוזי עץ, ולכן כל תת-הסוגים כלולים.
-          </Text>
-        ) : null}
+        {rows
+          .filter(
+            (allergen) =>
+              active.has(allergen.id) &&
+              expanded.has(allergen.id) &&
+              subtypesOf(allergen.id).length > 0,
+          )
+          .map((allergen) => (
+            <Text key={allergen.id} style={styles.note}>
+              {`סימנת ${allergen.labelHe}, ולכן כל תת-הסוגים כלולים.`}
+            </Text>
+          ))}
       </ScrollView>
     </SafeAreaView>
   );

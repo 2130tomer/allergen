@@ -10,6 +10,7 @@ from __future__ import annotations
 from datetime import date
 
 from ...domain.claims import AllergenClaim, Level, Source
+from ...ingredients.free_from import FreeFromDetector
 from ...ingredients.mapping import IngredientAllergenMap
 from .shufersal_online import ShufersalProduct
 
@@ -18,6 +19,7 @@ def to_claims(
     product: ShufersalProduct,
     ingredient_map: IngredientAllergenMap,
     observed_on: date,
+    free_from: FreeFromDetector | None = None,
 ) -> list[AllergenClaim]:
     """קביעות מפורשות משני השדות, ועוד אלרגנים נסתרים מהרכיבים."""
     contains = _map_terms(product.contains_terms, ingredient_map)
@@ -45,6 +47,46 @@ def to_claims(
     )
     claims.extend(
         _hidden_from_ingredients(product, contains | may_contain, ingredient_map, observed_on)
+    )
+    if free_from is not None:
+        claims.extend(_declared_claims(product, free_from, observed_on))
+    return claims
+
+
+def _declared_claims(
+    product: ShufersalProduct,
+    free_from: FreeFromDetector,
+    observed_on: date,
+) -> list[AllergenClaim]:
+    """הצהרות "ללא" ו"דל" שמופיעות על האריזה.
+
+    ההצהרות נקראות משם המוצר ומטקסט התווית. הן אינן מתנגשות כאן עם
+    קביעות אחרות ואינן מבטלות אותן: סתירה בין הצהרת "ללא חלב" לבין
+    אבקת חלב ברשימת הרכיבים היא ממצא שיש להציג למשתמש, לא ממצא
+    שמכריעים בשקט. ההכרעה והסימון שייכים ל-domain.resolution.
+
+    הצהרת הפחתה נרשמת כנוכחות. מוצר דל לקטוז מכיל לקטוז.
+    """
+    declared, reduced = free_from.detect(product.name, product.ingredients_text)
+    claims = [
+        AllergenClaim(
+            allergen_id=claim.allergen_id,
+            level=Level.ABSENT,
+            source=Source.DECLARED_FREE_FROM,
+            observed_on=observed_on,
+            source_ref=product.page_url,
+        )
+        for claim in declared
+    ]
+    claims.extend(
+        AllergenClaim(
+            allergen_id=claim.allergen_id,
+            level=Level.CONTAINS,
+            source=Source.DECLARED_FREE_FROM,
+            observed_on=observed_on,
+            source_ref=product.page_url,
+        )
+        for claim in reduced
     )
     return claims
 

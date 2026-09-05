@@ -135,8 +135,15 @@ class IngredientAllergenMap:
         return matches
 
     def allergen_ids(self, ingredients_text: str | None) -> set[str]:
-        """רק מזהי האלרגנים, לשימוש בפירוק רשימה שטוחה."""
-        return {match.allergen_id for match in self.match(ingredients_text)}
+        """מזהי האלרגנים שהטקסט מעיד עליהם, כולל הנגררים.
+
+        ההרחבה נעשית כאן ולא אצל הקוראים, כי מנוע ההתאמה צורך אסימונים:
+        "קמח חיטה" מתאים לביטוי אחד בלבד, ולכן חיטה וגלוטן אינם יכולים
+        להתאים שניהם לאותן מילים. במקום לשכפל את המונחים בשתי רשימות,
+        הבן מזוהה והאב נגזר ממנו. ראו allergens.expand_detected.
+        """
+        detected = {match.allergen_id for match in self.match(ingredients_text)}
+        return allergens.expand_detected(detected)
 
 
 def _find_all(forms: list[frozenset[str]], phrase: tuple[str, ...]) -> list[int]:

@@ -41,6 +41,38 @@ describe('היררכיית אגוזים', () => {
   });
 });
 
+describe('גרירת בטיחות בין קבוצות', () => {
+  it('בחירת קטניות גוררת גם בוטנים, סויה ולופין', () => {
+    // השלושה מוצגים בנפרד בממשק כדי שלא ייקברו מתחת לקטגוריה, ולכן
+    // הם אינם בנים של קטניות בהיררכיה. הגרירה היא שמחברת ביניהם.
+    const expanded = expandSelection(['legumes']);
+    expect(expanded.has('peanuts')).toBe(true);
+    expect(expanded.has('soy')).toBe(true);
+    expect(expanded.has('lupin')).toBe(true);
+  });
+
+  it('בחירת קטניות גוררת גם את תת-הסוגים שלה', () => {
+    expect(expandSelection(['legumes']).has('fava_bean')).toBe(true);
+  });
+
+  it('בחירת בוטנים אינה גוררת את שאר הקטניות', () => {
+    // הגרירה חד-כיוונית. מי שאלרגי לבוטנים אינו בהכרח רגיש לעדשים.
+    expect([...expandSelection(['peanuts'])]).toEqual(['peanuts']);
+  });
+
+  it('בחירת לקטוז אינה גוררת חלב', () => {
+    // חלב נטול לקטוז הוא מוצר קיים, ומי שמסנן לקטוז אמור לראות אותו.
+    expect([...expandSelection(['lactose'])]).toEqual(['lactose']);
+  });
+
+  it('בחירת גלוטן גוררת את כל תת-סוגי הדגן', () => {
+    const expanded = expandSelection(['gluten']);
+    for (const id of ['wheat', 'barley', 'rye', 'oats', 'spelt']) {
+      expect(expanded.has(id)).toBe(true);
+    }
+  });
+});
+
 describe('סינון', () => {
   it('בחירה ריקה מציגה הכל', () => {
     expect(applyFilter(EMPTY_SELECTION, bamba).visibility).toBe('visible');

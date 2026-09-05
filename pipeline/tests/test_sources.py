@@ -365,11 +365,27 @@ class TestOsemAgainstTheRealPage:
         assert levels["soy"] is Level.MAY_CONTAIN
 
     def test_both_levels_are_marked_inferred(self, ingredient_map):
-        """נגזרו מהצלבה, ולכן קביעה מפורשת ממקור אחר תגבר עליהן."""
+        """נגזרו מהצלבה, ולכן קביעה מפורשת ממקור אחר תגבר עליהן.
+
+        הסימון חל על שתי הקביעות שמקורן ברשימה השטוחה בלבד. אלרגן
+        שנמצא ברכיבים ולא הופיע בהצהרה, כמו התירס שבגריסים, הוא עדות
+        ישירה ולכן קביעתו מפורשת במכוון.
+        """
         claims = manufacturer_base.to_claims(
             self.product(), ingredient_map, TODAY
         )
-        assert all(claim.level_inferred for claim in claims)
+        from_flat_line = [c for c in claims if c.allergen_id in {"peanuts", "soy"}]
+        assert len(from_flat_line) == 2
+        assert all(claim.level_inferred for claim in from_flat_line)
+
+    def test_an_undeclared_ingredient_is_an_explicit_claim(self, ingredient_map):
+        """התירס שבגריסים אינו בהצהרת אסם, והוא נרשם כעדות ישירה."""
+        claims = manufacturer_base.to_claims(
+            self.product(), ingredient_map, TODAY
+        )
+        corn = next(c for c in claims if c.allergen_id == "corn")
+        assert corn.level is Level.CONTAINS
+        assert corn.level_inferred is False
 
 
 class TestOpenFoodFacts:

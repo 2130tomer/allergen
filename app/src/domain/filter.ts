@@ -11,10 +11,16 @@ import { expandSelection, labelOf } from './allergens';
 
 export type Level = 'contains' | 'may_contain' | 'absent' | 'unknown';
 
+/**
+ * absent אינו "לא הוזכר" אלא "הוצהר במפורש שאינו קיים".
+ *
+ * ההבחנה מהותית ומגובה במודל: רק הצהרת יצרן או הצהרת "ללא" מודפסת על
+ * האריזה מייצרות את המצב הזה, ולעולם לא היעדר אזכור. ראו ADR-0002.
+ */
 export const LEVEL_LABEL: Record<Level, string> = {
   contains: 'מכיל',
   may_contain: 'עלול להכיל',
-  absent: 'לא צוין ברשימת האלרגנים',
+  absent: 'הוצהר "ללא"',
   unknown: 'אין מידע',
 };
 

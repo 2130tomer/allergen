@@ -131,6 +131,9 @@ export async function fetchFromOpenFoodFacts(
       imageSource: 'Open Food Facts',
       isActive: true,
       needsReview: false,
+      // מוצר שהתקבל מ-Open Food Facts בזמן אמת אינו נושא את רשימת
+      // הרכיבים שלנו, ולכן אינו זכאי לניסוח "רשימת רכיבים ידועה".
+      ingredientsKnown: false,
       hasAllergenData: contains.length + traces.length > 0,
       allergensObservedOn: new Date().toISOString().slice(0, 10),
       levels,

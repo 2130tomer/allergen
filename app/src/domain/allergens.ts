@@ -1,9 +1,11 @@
 /**
- * הרשימה הסגורה של האלרגנים והיררכיית אגוזי העץ.
+ * הרשימה הסגורה של האלרגנים וההיררכיה שביניהם.
  *
- * מראה של pipeline/allergen_pipeline/domain/allergens.py. הרשימה נטענת
- * גם מתמונת המצב, אך מוגדרת כאן כדי שהממשק יוכל להיבנות לפני שהמסד
- * נפתח, וכדי שסדר התצוגה יהיה שלנו ולא סדר השורות במסד.
+ * מראה של pipeline/allergen_pipeline/domain/allergens.py, ונוצר ממנו
+ * אוטומטית. אין לערוך ידנית: כל שינוי מתחיל בצד הפייתון.
+ *
+ * הרשימה נטענת גם מתמונת המצב, אך מוגדרת כאן כדי שהממשק יוכל להיבנות
+ * לפני שהמסד נפתח, וכדי שסדר התצוגה יהיה שלנו ולא סדר השורות במסד.
  */
 
 export const TREE_NUTS_ID = 'tree_nuts';
@@ -12,32 +14,64 @@ export interface Allergen {
   id: string;
   labelHe: string;
   parentId: string | null;
+  /** הערה קצרה שמוצגת כשהשם לבדו אינו חד-משמעי. */
+  noteHe?: string;
 }
 
 export const ALLERGEN_LIST: readonly Allergen[] = [
-  { id: 'gluten', labelHe: 'גלוטן', parentId: null },
-  { id: 'milk', labelHe: 'חלב', parentId: null },
-  { id: 'eggs', labelHe: 'ביצים', parentId: null },
-  { id: 'peanuts', labelHe: 'בוטנים', parentId: null },
-  { id: 'sesame', labelHe: 'שומשום', parentId: null },
-  { id: 'soy', labelHe: 'סויה', parentId: null },
-  { id: TREE_NUTS_ID, labelHe: 'אגוזי עץ', parentId: null },
-  { id: 'almond', labelHe: 'שקד', parentId: TREE_NUTS_ID },
-  { id: 'walnut', labelHe: 'אגוז מלך', parentId: TREE_NUTS_ID },
-  { id: 'cashew', labelHe: 'קשיו', parentId: TREE_NUTS_ID },
-  { id: 'pecan', labelHe: 'פקאן', parentId: TREE_NUTS_ID },
-  { id: 'pistachio', labelHe: 'פיסטוק', parentId: TREE_NUTS_ID },
-  { id: 'hazelnut', labelHe: 'אגוז לוז', parentId: TREE_NUTS_ID },
-  { id: 'macadamia', labelHe: 'מקדמיה', parentId: TREE_NUTS_ID },
-  { id: 'brazil_nut', labelHe: 'אגוז ברזיל', parentId: TREE_NUTS_ID },
-  { id: 'fish', labelHe: 'דגים', parentId: null },
-  { id: 'crustaceans', labelHe: 'סרטנים', parentId: null },
-  { id: 'molluscs', labelHe: 'רכיכות', parentId: null },
-  { id: 'mustard', labelHe: 'חרדל', parentId: null },
-  { id: 'celery', labelHe: 'סלרי', parentId: null },
-  { id: 'lupin', labelHe: 'לופין', parentId: null },
-  { id: 'sulphites', labelHe: 'סולפיטים', parentId: null },
+  { id: "gluten", labelHe: "גלוטן", parentId: null },
+  { id: "wheat", labelHe: "חיטה", parentId: "gluten" },
+  { id: "barley", labelHe: "שעורה", parentId: "gluten" },
+  { id: "rye", labelHe: "שיפון", parentId: "gluten" },
+  { id: "oats", labelHe: "שיבולת שועל", parentId: "gluten" },
+  { id: "spelt", labelHe: "כוסמין", parentId: "gluten" },
+  { id: "milk", labelHe: "חלב", parentId: null },
+  { id: "lactose", labelHe: "לקטוז", parentId: null, noteHe: "רגישות לסוכר החלב. אינו זהה לאלרגיה לחלבון חלב." },
+  { id: "eggs", labelHe: "ביצים", parentId: null },
+  { id: "peanuts", labelHe: "בוטנים", parentId: null },
+  { id: "soy", labelHe: "סויה", parentId: null },
+  { id: "sesame", labelHe: "שומשום", parentId: null },
+  { id: "fish", labelHe: "דגים", parentId: null },
+  { id: "crustaceans", labelHe: "סרטנים", parentId: null },
+  { id: "molluscs", labelHe: "רכיכות", parentId: null },
+  { id: "tree_nuts", labelHe: "אגוזי עץ", parentId: null },
+  { id: "almond", labelHe: "שקד", parentId: "tree_nuts" },
+  { id: "walnut", labelHe: "אגוז מלך", parentId: "tree_nuts" },
+  { id: "cashew", labelHe: "קשיו", parentId: "tree_nuts" },
+  { id: "pecan", labelHe: "פקאן", parentId: "tree_nuts" },
+  { id: "pistachio", labelHe: "פיסטוק", parentId: "tree_nuts" },
+  { id: "hazelnut", labelHe: "אגוז לוז", parentId: "tree_nuts" },
+  { id: "macadamia", labelHe: "מקדמיה", parentId: "tree_nuts" },
+  { id: "brazil_nut", labelHe: "אגוז ברזיל", parentId: "tree_nuts" },
+  { id: "pine_nut", labelHe: "צנוברים", parentId: "tree_nuts" },
+  { id: "chestnut", labelHe: "ערמונים", parentId: "tree_nuts" },
+  { id: "legumes", labelHe: "קטניות", parentId: null },
+  { id: "fava_bean", labelHe: "פול", parentId: "legumes", noteHe: "רלוונטי לנשאי חסר G6PD (פאביזם)." },
+  { id: "chickpea", labelHe: "חומוס", parentId: "legumes" },
+  { id: "lentil", labelHe: "עדשים", parentId: "legumes" },
+  { id: "pea", labelHe: "אפונה", parentId: "legumes" },
+  { id: "bean", labelHe: "שעועית", parentId: "legumes" },
+  { id: "mustard", labelHe: "חרדל", parentId: null },
+  { id: "celery", labelHe: "סלרי", parentId: null },
+  { id: "lupin", labelHe: "לופין", parentId: null },
+  { id: "sulphites", labelHe: "סולפיטים", parentId: null },
+  { id: "corn", labelHe: "תירס", parentId: null },
+  { id: "coconut", labelHe: "קוקוס", parentId: null },
+  { id: "sunflower", labelHe: "חמניות", parentId: null },
+  { id: "buckwheat", labelHe: "כוסמת", parentId: null },
+  { id: "gelatin", labelHe: "ג'לטין", parentId: null },
+  { id: "yeast", labelHe: "שמרים", parentId: null },
 ];
+
+/**
+ * גרירות בטיחות שאינן חלק מההיררכיה.
+ *
+ * בחירת "קטניות" גוררת בוטנים, סויה ולופין, שמוצגים בנפרד כדי שלא
+ * ייקברו מתחת לקטגוריה. ראו את ההסבר המלא בצד הפייתון.
+ */
+const IMPLIES: Record<string, readonly string[]> = {
+  "legumes": ["peanuts", "soy", "lupin"],
+};
 
 const BY_ID = new Map(ALLERGEN_LIST.map((allergen) => [allergen.id, allergen]));
 
@@ -68,15 +102,25 @@ export function ancestorsOf(id: string): string[] {
 }
 
 /**
- * בחירת אגוז-אב תופסת את כל בניו.
+ * הרחבת בחירה לכל מה שהיא תופסת בפועל.
  *
- * מי שמסנן אגוזי עץ חייב שיוסתר גם מוצר שמסומן קשיו בלבד.
+ * שני מנגנונים: ירידה בהיררכיה (אגוזי עץ תופס קשיו) וגרירת בטיחות
+ * (קטניות תופס בוטנים). שניהם מורחבים עד למיצוי.
  */
 export function expandSelection(selected: Iterable<string>): Set<string> {
   const expanded = new Set(selected);
-  for (const id of Array.from(expanded)) {
-    for (const subtype of subtypesOf(id)) {
-      expanded.add(subtype.id);
+  const pending = Array.from(expanded);
+  while (pending.length > 0) {
+    const current = pending.pop() as string;
+    const reached = [
+      ...subtypesOf(current).map((allergen) => allergen.id),
+      ...(IMPLIES[current] ?? []),
+    ];
+    for (const id of reached) {
+      if (!expanded.has(id)) {
+        expanded.add(id);
+        pending.push(id);
+      }
     }
   }
   return expanded;

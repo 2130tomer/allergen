@@ -4,19 +4,25 @@
  * ארבעה מצבים, וכל אחד נבדל מהאחרים גם בצורה ולא רק בצבע, כדי שהוא
  * יעבוד גם בעיוורון צבעים וגם בשמש ישירה מול מדף:
  *
- *   מכיל        ריבוע מלא
- *   עלול להכיל  קווקוו אלכסוני
- *   אין מידע    מסגרת מקווקוות וריק במרכז
- *   לא צוין     מסגרת דקה ושקטה
+ *   מכיל          ריבוע מלא
+ *   עלול להכיל    קווקוו אלכסוני
+ *   אין מידע      מסגרת מקווקוות וריק במרכז
+ *   הוצהר "ללא"   ריבוע ירוק עם סימן וי
  *
- * המצב "אין מידע" מצויר בכוונה כמשהו רועש ולא כהיעדר. זו הנקודה שבה
- * אפליקציות אחרות מציגות וי ירוק, ואצלנו אסור להציג שום דבר שנקרא
- * כאישור. ראו CONTEXT.md, מונחים אסורים.
+ * שני המצבים האחרונים הם לב העניין, וההבדל ביניהם הוא ההבדל בין
+ * אפליקציה בטוחה למסוכנת:
+ *
+ * "אין מידע" מצויר בכוונה כמשהו רועש ולא כהיעדר שקט. זו הנקודה שבה
+ * אפליקציות אחרות מציגות וי ירוק על סמך כלום.
+ *
+ * הירוק שמור אך ורק להצהרת "ללא" מפורשת שהיצרן הדפיס על האריזה, והוא
+ * לעולם אינו מסקנה שלנו. הוא אומר "היצרן הצהיר", לא "בדקנו ומצאנו".
+ * ראו CONTEXT.md, מונחים אסורים.
  */
 
 import React from 'react';
 import { View } from 'react-native';
-import Svg, { Defs, Line, Pattern, Rect } from 'react-native-svg';
+import Svg, { Defs, Line, Path, Pattern, Rect } from 'react-native-svg';
 
 import type { Level } from '../domain/filter';
 import { color } from '../theme';
@@ -94,15 +100,28 @@ export function AllergenMark({ level, size = 22 }: Props): React.ReactElement {
         )}
 
         {level === 'absent' && (
-          <Rect
-            x={inset}
-            y={inset}
-            width={box}
-            height={box}
-            fill="none"
-            stroke={color.rule}
-            strokeWidth={1.5}
-          />
+          <>
+            <Rect
+              x={inset}
+              y={inset}
+              width={box}
+              height={box}
+              fill={color.declaredFreeSoft}
+              stroke={color.declaredFree}
+              strokeWidth={1.5}
+            />
+            {/* הווי הוא ההבחנה שאינה תלויה בצבע. */}
+            <Path
+              d={`M ${size * 0.28} ${size * 0.52}
+                  L ${size * 0.44} ${size * 0.68}
+                  L ${size * 0.74} ${size * 0.33}`}
+              stroke={color.declaredFree}
+              strokeWidth={2.2}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+          </>
         )}
       </Svg>
     </View>
@@ -118,6 +137,8 @@ export function inkForLevel(level: Level): string {
       return color.caution;
     case 'unknown':
       return color.unknown;
+    case 'absent':
+      return color.declaredFree;
     default:
       return color.inkMuted;
   }

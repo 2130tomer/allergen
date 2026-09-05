@@ -54,6 +54,7 @@ class Source(str, Enum):
     """הגורם שממנו הגיעה הקביעה."""
 
     MANUFACTURER = "manufacturer"
+    DECLARED_FREE_FROM = "declared_free_from"
     RETAILER = "retailer"
     OPEN_FOOD_FACTS = "open_food_facts"
     LABEL_EXTRACTION = "label_extraction"
@@ -65,16 +66,25 @@ class Source(str, Enum):
 
     @property
     def may_assert_absence(self) -> bool:
-        """רק הצהרת יצרן רשמית רשאית לשלול אלרגן. ראו ADR-0002.
+        """מי רשאי לשלול אלרגן. ראו ADR-0002 ו-ADR-0007.
 
-        קמעונאי אינו רשאי, גם כשהמידע שלו מפורט יותר משל היצרן. הוא
-        מעתיק תווית, ואינו האחראי עליה.
+        שני מקורות בלבד. הראשון הוא הצהרת היצרן. השני הוא הצהרת "ללא"
+        מפורשת המודפסת על האריזה — היא אמנם מגיעה אלינו דרך הקמעונאי,
+        אך היא אינה שלו: היא טענה מוסדרת של היצרן, שהוא נושא באחריות
+        עליה, והקמעונאי רק מעתיק אותה.
+
+        קמעונאי אינו רשאי לשלול אלרגן בכל דרך אחרת, גם כשהמידע שלו
+        מפורט יותר משל היצרן. הוא מעתיק תווית, ואינו האחראי עליה.
+
+        היעדר ראיה לעולם אינו ראיה להיעדר: שום מקור אינו רשאי לקבוע
+        ABSENT רק משום שהאלרגן לא הופיע ברשימה.
         """
-        return self is Source.MANUFACTURER
+        return self in (Source.MANUFACTURER, Source.DECLARED_FREE_FROM)
 
 
 _SOURCE_LABELS = {
     Source.MANUFACTURER: "אתר היצרן",
+    Source.DECLARED_FREE_FROM: "הצהרת \"ללא\" על האריזה",
     Source.RETAILER: "אתר הרשת",
     Source.OPEN_FOOD_FACTS: "Open Food Facts",
     Source.LABEL_EXTRACTION: "חילוץ מתמונת תווית",
@@ -85,6 +95,7 @@ _SOURCE_LABELS = {
 # מדוע הקמעונאי יושב מעל Open Food Facts ומתחת ליצרן.
 _TIER = {
     Source.MANUFACTURER: 5,
+    Source.DECLARED_FREE_FROM: 5,
     Source.RETAILER: 4,
     Source.OPEN_FOOD_FACTS: 3,
     Source.LABEL_EXTRACTION: 2,

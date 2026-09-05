@@ -22,6 +22,13 @@ export interface ProductSummary {
   isActive: boolean;
   needsReview: boolean;
   hasAllergenData: boolean;
+  /**
+   * קיימת רשימת רכיבים מלאה למוצר.
+   *
+   * נבדל מ-hasAllergenData: מוצר יכול להיות בעל רשימת רכיבים שלא נמצא
+   * בה אף אלרגן. זה נתון, ולא היעדר נתון, והממשק מנסח אותו אחרת.
+   */
+  ingredientsKnown: boolean;
   allergensObservedOn: string | null;
 }
 
@@ -50,13 +57,14 @@ interface ProductRow {
   is_active: number;
   needs_review: number;
   has_allergen_data: number;
+  ingredients_known: number;
   allergens_observed_on: string | null;
 }
 
 const PRODUCT_COLUMNS = `
   barcode, name, manufacturer, department_id, quantity, unit,
   image_url, image_source, is_active, needs_review,
-  has_allergen_data, allergens_observed_on
+  has_allergen_data, ingredients_known, allergens_observed_on
 `;
 
 function toSummary(row: ProductRow): ProductSummary {
@@ -72,6 +80,7 @@ function toSummary(row: ProductRow): ProductSummary {
     isActive: row.is_active === 1,
     needsReview: row.needs_review === 1,
     hasAllergenData: row.has_allergen_data === 1,
+    ingredientsKnown: row.ingredients_known === 1,
     allergensObservedOn: row.allergens_observed_on,
   };
 }

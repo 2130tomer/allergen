@@ -45,6 +45,11 @@ import { needsAcceptance, readTermsState, recordAcceptance } from './src/state/t
 import { color, font, typeScale } from './src/theme';
 
 // עברית היא שפת הממשק היחידה, ולכן RTL נכפה ואינו נגזר מהגדרות המכשיר.
+//
+// שתי השורות האלה נחוצות אך אינן מספיקות. באנדרואיד forceRTL תופס רק
+// אחרי הפעלה מחדש של התהליך, ולכן בהתקנה ראשונה הממשק אינו נפרס לימין
+// למרות הקריאה. מה שנושא בפועל את הכיוון הוא ברירת המחדל שבסולם
+// הטיפוגרפיה ו-row-reverse המפורש בשורות. ראו theme.ts.
 I18nManager.allowRTL(true);
 I18nManager.forceRTL(true);
 
@@ -179,7 +184,7 @@ export default function App(): React.ReactElement | null {
   // מסכים ריקים שנראים כמו קטלוג בלי מוצרים.
   if (database.kind === 'failed') {
     return (
-      <SafeAreaProvider>
+      <SafeAreaProvider style={styles.root}>
         <View style={styles.loading}>
           <Text style={styles.errorTitle}>המאגר לא נטען</Text>
           <Text style={styles.errorBody}>{database.reason}</Text>
@@ -194,7 +199,7 @@ export default function App(): React.ReactElement | null {
   };
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={styles.root}>
       <StatusBar style="dark" />
       {gateOpen ? (
         <FilterProvider>
@@ -228,18 +233,19 @@ export default function App(): React.ReactElement | null {
 }
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+  },
   errorTitle: {
     ...typeScale.screenTitle,
     color: color.ink,
     textAlign: 'center',
-    writingDirection: 'rtl',
     paddingHorizontal: 24,
   },
   errorBody: {
     ...typeScale.body,
     color: color.inkMuted,
     textAlign: 'center',
-    writingDirection: 'rtl',
     paddingHorizontal: 24,
     paddingTop: 8,
   },
