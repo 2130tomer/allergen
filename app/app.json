@@ -2,7 +2,7 @@
   "expo": {
     "name": "אלרגן",
     "slug": "allergen-il",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "scheme": "allergen",
@@ -28,6 +28,7 @@
     },
     "android": {
       "package": "il.allergen.app",
+      "versionCode": 2,
       "adaptiveIcon": {
         "backgroundColor": "#F2F4F5"
       },

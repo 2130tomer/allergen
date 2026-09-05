@@ -3,7 +3,7 @@
   {
    "barcode": "0305213079004",
    "name": "תחליב גוף וזלין 600 מ\"ל",
-   "manufacturer": "יוניליוור גפרסון ארה\"ב",
+   "manufacturer": "וזלין תחליב גוף להזנ",
    "departmentId": "non_food",
    "quantity": "600.00",
    "unit": "מיליליטר",
@@ -32,9 +32,9 @@
   },
   {
    "barcode": "0728229123811",
-   "name": "ציפס ירקות ים תיכוני110",
-   "manufacturer": "היין סלסטיאל גרופ",
-   "departmentId": "beverages_alcohol",
+   "name": "טרה ציפס ירקות ים תי",
+   "manufacturer": "Global Gourmet Products LTD",
+   "departmentId": "unclassified",
    "quantity": "110.00",
    "unit": "גרם",
    "imageUrl": "https://images.openfoodfacts.org/images/products/072/822/912/3811/front_de.32.400.jpg",
@@ -47,8 +47,8 @@
   },
   {
    "barcode": "0856591000109",
-   "name": "עוגיות מזרחיות פריכות400",
-   "manufacturer": "מאפיית יוסף ושמחה עבאדי",
+   "name": "עוגיות מזרחיות פריך",
+   "manufacturer": "עבאדי",
    "departmentId": "snacks_cookies",
    "quantity": "400.00",
    "unit": "גרם",
@@ -63,7 +63,7 @@
   {
    "barcode": "0884912126115",
    "name": "דגני גרייט גריינס דטה453",
-   "manufacturer": "פוסט קונסיומר ברנדס",
+   "manufacturer": "פוסט",
    "departmentId": "unclassified",
    "quantity": "453.00",
    "unit": "גרם",
@@ -78,7 +78,7 @@
   {
    "barcode": "0884912129512",
    "name": "דגני קוקו פבלס 311 גרם",
-   "manufacturer": "דגני קוקו פבלס 311 גרם",
+   "manufacturer": "פוסט",
    "departmentId": "unclassified",
    "quantity": "311.00",
    "unit": "גרם",
@@ -108,7 +108,7 @@
   {
    "barcode": "0884912359155",
    "name": "האני באנצס רוסטד 340 גרם",
-   "manufacturer": "האני באנצס רוסטד 340 גרם",
+   "manufacturer": "פוסט",
    "departmentId": "unclassified",
    "quantity": "340.00",
    "unit": "גרם",
@@ -123,7 +123,7 @@
   {
    "barcode": "0884912359162",
    "name": "הני בנצס אלמונד 340גר",
-   "manufacturer": "הני בנצס אלמונד 340גר",
+   "manufacturer": "פוסט",
    "departmentId": "unclassified",
    "quantity": "340.00",
    "unit": "גרם",
@@ -153,7 +153,7 @@
   {
    "barcode": "0884912359483",
    "name": "האני בנצס+חתיכות תות312",
-   "manufacturer": "האני בנצס+חתיכות תות312",
+   "manufacturer": "פוסט האני באנצס תות",
    "departmentId": "unclassified",
    "quantity": "312.00",
    "unit": "גרם",
@@ -243,7 +243,7 @@
   {
    "barcode": "3034250007813",
    "name": "קלינקס טישו כיס 12*9יח",
-   "manufacturer": "קלינקס טישו כיס 12*9יח",
+   "manufacturer": "קלינקס ממחטות כיס 12",
    "departmentId": "non_food",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -273,7 +273,7 @@
   {
    "barcode": "3046920023047",
    "name": "לינדט אקסלנס פיסטוק 100",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -303,7 +303,7 @@
   {
    "barcode": "3046920028004",
    "name": "שוק.מריר לינדט 70% 100ג",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -318,7 +318,7 @@
   {
    "barcode": "3046920028363",
    "name": "שוק.מריר לינדט 85% 100ג",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -333,7 +333,7 @@
   {
    "barcode": "3046920028752",
    "name": "שוק.מריר לינדט מנטה 100ג",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -348,7 +348,7 @@
   {
    "barcode": "3046920029674",
    "name": "שוקולד מריר לינדט מלח 10",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -363,7 +363,7 @@
   {
    "barcode": "3046920029759",
    "name": "שוק.מריר לינדט 90% 100ג",
-   "manufacturer": "לינדט ושפרונגלי קילשברג",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -423,7 +423,7 @@
   {
    "barcode": "3387390320244",
    "name": "פיטנס דגני בוקר פירות375",
-   "manufacturer": "סי. פי. צרפת",
+   "manufacturer": "פיטנס",
    "departmentId": "pantry_cereal",
    "quantity": "375.00",
    "unit": "גרם",
@@ -453,7 +453,7 @@
   {
    "barcode": "3574660058857",
    "name": "גונסון בייבי שמן 500 מל",
-   "manufacturer": "CILAG GMBH INTERNATIONAL",
+   "manufacturer": "גונסון בייבי שמן 500",
    "departmentId": "oils",
    "quantity": "500.00",
    "unit": "מיליליטר",
@@ -468,7 +468,7 @@
   {
    "barcode": "3574660089547",
    "name": "טמפוני או בה נורמל 32 יח",
-   "manufacturer": "JOHNSON&JOHNSON",
+   "manufacturer": "או בה",
    "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -497,8 +497,8 @@
   },
   {
    "barcode": "3574660333466",
-   "name": "32טמפ. או-בה פרוקומפ.מינ",
-   "manufacturer": "JOHNSON&JOHNSON",
+   "name": "אובה פרוקומפורט מיני",
+   "manufacturer": "או בה",
    "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -692,8 +692,8 @@
   },
   {
    "barcode": "3574669907729",
-   "name": "גונסון שמפו גולד 750 מל",
-   "manufacturer": "CILAG GMBH INTERNATIONAL",
+   "name": "גונסון בייבי שמפו גו",
+   "manufacturer": "גונסון",
    "departmentId": "non_food",
    "quantity": "750.00",
    "unit": "מיליליטר",
@@ -707,8 +707,8 @@
   },
   {
    "barcode": "3574669908948",
-   "name": "גונסון אל סבון עדין750מ",
-   "manufacturer": "CILAG GMBH INTERNATIONAL",
+   "name": "גונסון בייבי אל סבון",
+   "manufacturer": "גונסון בייבי אל סבון",
    "departmentId": "non_food",
    "quantity": "750.00",
    "unit": "מיליליטר",
@@ -723,7 +723,7 @@
   {
    "barcode": "3600522632436",
    "name": "ק.לילה55 אייג ספשיאליסט",
-   "manufacturer": "קרלסרו, גרמניה",
+   "manufacturer": "karlsruhe",
    "departmentId": "unclassified",
    "quantity": "50.00",
    "unit": "מיליליטר",
@@ -736,18 +736,18 @@
    "allergensObservedOn": null
   },
   {
-   "barcode": "3600524163075",
-   "name": "שמפו הידרה היאלורוני500מ",
-   "manufacturer": "לוריאל-אלביב",
+   "barcode": "3600523816699",
+   "name": "קרם לחות פעולה משולש",
+   "manufacturer": "karlsruhe",
    "departmentId": "non_food",
-   "quantity": "500.00",
+   "quantity": "50.00",
    "unit": "מיליליטר",
    "imageUrl": null,
    "imageSource": null,
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": false,
-   "ingredientsKnown": false,
+   "ingredientsKnown": true,
    "allergensObservedOn": null
   },
   {
@@ -768,12 +768,12 @@
   {
    "barcode": "4000417019004",
    "name": "שוק.ריטר חלב אגוז שלם100",
-   "manufacturer": "אלפרד ריטר",
+   "manufacturer": "ריטר ספורט",
    "departmentId": "dairy_milk",
    "quantity": "100.00",
    "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
+   "imageUrl": "https://images.openfoodfacts.org/images/products/400/041/701/9004/front_fr.56.400.jpg",
+   "imageSource": "Open Food Facts",
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
@@ -782,9 +782,9 @@
   },
   {
    "barcode": "7290011570644",
-   "name": "קמח לחם ללא גלוטן 500 גר",
-   "manufacturer": "אשבל מזון פונקציונלי בע\\",
-   "departmentId": "bakery_bread",
+   "name": "קמח כרגיל תערובת להכ",
+   "manufacturer": "תומר",
+   "departmentId": "pantry_flour",
    "quantity": "500.00",
    "unit": "גרם",
    "imageUrl": null,
@@ -798,7 +798,7 @@
   {
    "barcode": "7290011876722",
    "name": "שניצל לל\"ג 600ג מאמא עוף",
-   "manufacturer": "תנובה גליל שותפות מוגבלת",
+   "manufacturer": "תנובה",
    "departmentId": "meat_fresh",
    "quantity": "600.00",
    "unit": "גרם",
@@ -842,8 +842,8 @@
   },
   {
    "barcode": "7290013121028",
-   "name": "לחם לבן ללא גלוטן 500גרם",
-   "manufacturer": "לחם לבן ללא גלוטן 500גרם",
+   "name": "לחם לבן פרוס ללא גלו",
+   "manufacturer": "אביב קונדיטוריה מעולה בע\"מ",
    "departmentId": "bakery_bread",
    "quantity": "500.00",
    "unit": "גרם",
@@ -857,8 +857,8 @@
   },
   {
    "barcode": "7290013121035",
-   "name": "לחם פשתן ללא גלוטן 500גר",
-   "manufacturer": "לחם פשתן ללא גלוטן 500גר",
+   "name": "לחם פשתן פרוס 500 גר",
+   "manufacturer": "אביב קונדיטוריה מעולה בע\"מ",
    "departmentId": "bakery_bread",
    "quantity": "500.00",
    "unit": "גרם",
@@ -872,8 +872,8 @@
   },
   {
    "barcode": "7290013121127",
-   "name": "לחמניות מיני לא גלוטן420",
-   "manufacturer": "לחמניות מיני לא גלוטן420",
+   "name": "לחמניות מיני ללא גלו",
+   "manufacturer": "אביב קונדיטוריה מעולה בע\"מ",
    "departmentId": "bakery_rolls",
    "quantity": "460.00",
    "unit": "גרם",
@@ -902,8 +902,8 @@
   },
   {
    "barcode": "7290013121776",
-   "name": "לחם כפרי ללת\"ס700 גרם",
-   "manufacturer": "לחם כפרי ללת\"ס700 גרם",
+   "name": "לחם כפרי ללא סוכר 70",
+   "manufacturer": "אביב קונדיטוריה מעולה בע\"מ",
    "departmentId": "bakery_bread",
    "quantity": "700.00",
    "unit": "גרם",
@@ -932,8 +932,8 @@
   },
   {
    "barcode": "7290014692305",
-   "name": "גבינת קממבר 125ג אירו",
-   "manufacturer": "גבינת קממבר 125ג אירו",
+   "name": "גבינת קממבר 125גר יו",
+   "manufacturer": "ארלה",
    "departmentId": "dairy_cheese",
    "quantity": "125.00",
    "unit": "גרם",
@@ -992,8 +992,8 @@
   },
   {
    "barcode": "7290015599054",
-   "name": "צהובה טבעונית צדר 200גר",
-   "manufacturer": "צהובה טבעונית צדר 200גר",
+   "name": "תחליף צהובה טבעונית",
+   "manufacturer": "תחליף צהובה טבעונית",
    "departmentId": "dairy_cheese",
    "quantity": "200.00",
    "unit": "גרם",
@@ -1022,8 +1022,8 @@
   },
   {
    "barcode": "7290015599078",
-   "name": "צהובה טבעו.עשבי תיבול200",
-   "manufacturer": "צהובה טבעו.עשבי תיבול200",
+   "name": "צהובה טבעונית ע.תיבו",
+   "manufacturer": "צהובה טבעונית ע.תיבו",
    "departmentId": "dairy_cheese",
    "quantity": "200.00",
    "unit": "גרם",
@@ -1172,9 +1172,9 @@
   },
   {
    "barcode": "7290017040554",
-   "name": "מאפה דונאטס תות  111 גרם",
-   "manufacturer": "מאפה דונאטס תות  111 גרם",
-   "departmentId": "bakery_pastry",
+   "name": "עוגיות אישיות ללא גל",
+   "manufacturer": "עוגיות אישיות ללא גל",
+   "departmentId": "snacks_cookies",
    "quantity": "111.00",
    "unit": "גרם",
    "imageUrl": null,
@@ -1589,7 +1589,8 @@
     "wheat": "may_contain"
    },
    "sources": [
-    "retailer"
+    "retailer",
+    "open_food_facts"
    ],
    "inferred": []
   },
