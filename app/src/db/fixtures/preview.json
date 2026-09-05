@@ -2,7 +2,7 @@
  "products": [
   {
    "barcode": "0305213079004",
-   "name": "תחליב גוף וזלין 600 מ\"ל",
+   "name": "וזלין תחליב גוף להזנ",
    "manufacturer": "וזלין תחליב גוף להזנ",
    "departmentId": "non_food",
    "quantity": "600.00",
@@ -32,8 +32,8 @@
   },
   {
    "barcode": "0728229123811",
-   "name": "טרה ציפס ירקות ים תי",
-   "manufacturer": "Global Gourmet Products LTD",
+   "name": "טרה ירקות שורש בתיבו",
+   "manufacturer": "טארה",
    "departmentId": "unclassified",
    "quantity": "110.00",
    "unit": "גרם",
@@ -62,7 +62,7 @@
   },
   {
    "barcode": "0884912126115",
-   "name": "דגני גרייט גריינס דטה453",
+   "name": "גרייט גריינס דגני בו",
    "manufacturer": "פוסט",
    "departmentId": "unclassified",
    "quantity": "453.00",
@@ -77,9 +77,9 @@
   },
   {
    "barcode": "0884912129512",
-   "name": "דגני קוקו פבלס 311 גרם",
-   "manufacturer": "פוסט",
-   "departmentId": "unclassified",
+   "name": "קוקו פבלס דגני בוקר",
+   "manufacturer": "קוקו פבלס דגני בוקר",
+   "departmentId": "pantry_cereal",
    "quantity": "311.00",
    "unit": "גרם",
    "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/212/9512/front_en.51.400.jpg",
@@ -92,7 +92,7 @@
   },
   {
    "barcode": "0884912129710",
-   "name": "פרוטי פבלס דגנים 311 גרם",
+   "name": "פוסט דגני פרוטי פבלס",
    "manufacturer": "פוסט",
    "departmentId": "unclassified",
    "quantity": "311.00",
@@ -108,8 +108,8 @@
   {
    "barcode": "0884912359155",
    "name": "האני באנצס רוסטד 340 גרם",
-   "manufacturer": "פוסט",
-   "departmentId": "unclassified",
+   "manufacturer": "האני באנצ' דגני בוקר",
+   "departmentId": "pantry_cereal",
    "quantity": "340.00",
    "unit": "גרם",
    "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/235/9155/front_en.56.400.jpg",
@@ -122,9 +122,9 @@
   },
   {
    "barcode": "0884912359162",
-   "name": "הני בנצס אלמונד 340גר",
-   "manufacturer": "פוסט",
-   "departmentId": "unclassified",
+   "name": "האני באנצ' דגני בוקר",
+   "manufacturer": "האני באנצ' דגני בוקר",
+   "departmentId": "pantry_cereal",
    "quantity": "340.00",
    "unit": "גרם",
    "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/235/9162/front_en.64.400.jpg",
@@ -137,8 +137,8 @@
   },
   {
    "barcode": "0884912359421",
-   "name": "האני באנצס פקאן מייפל340",
-   "manufacturer": "פוסט פודס",
+   "name": "האני באנצס פקאן מייפ",
+   "manufacturer": "האני באנצס פקאן מייפ",
    "departmentId": "unclassified",
    "quantity": "340.00",
    "unit": "גרם",
@@ -152,7 +152,7 @@
   },
   {
    "barcode": "0884912359483",
-   "name": "האני בנצס+חתיכות תות312",
+   "name": "פוסט האני באנצס תות",
    "manufacturer": "פוסט האני באנצס תות",
    "departmentId": "unclassified",
    "quantity": "312.00",
@@ -182,9 +182,9 @@
   },
   {
    "barcode": "3014260262693",
-   "name": "מכשיר גילוח ונוס+2סכינים",
-   "manufacturer": "פרוקטר & גמבל",
-   "departmentId": "non_food",
+   "name": "מכשיר ונוס+2 סכינים",
+   "manufacturer": "פרוקטר אנד גמבל",
+   "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "יחידות",
    "imageUrl": null,
@@ -242,8 +242,8 @@
   },
   {
    "barcode": "3034250007813",
-   "name": "קלינקס טישו כיס 12*9יח",
-   "manufacturer": "קלינקס ממחטות כיס 12",
+   "name": "קלינקס טישו ממחטות כ",
+   "manufacturer": "קימברלי קלארק איטליה",
    "departmentId": "non_food",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -287,7 +287,7 @@
   },
   {
    "barcode": "3046920027281",
-   "name": "לינד.אקסלנס קרמל סולט100",
+   "name": "לינדט אקסלנס קרמל מל",
    "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
@@ -332,7 +332,7 @@
   },
   {
    "barcode": "3046920028752",
-   "name": "שוק.מריר לינדט מנטה 100ג",
+   "name": "לינדט אקסלנס מנטה 10",
    "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
@@ -422,7 +422,7 @@
   },
   {
    "barcode": "3387390320244",
-   "name": "פיטנס דגני בוקר פירות375",
+   "name": "פיטנס דגני בוקר מחיט",
    "manufacturer": "פיטנס",
    "departmentId": "pantry_cereal",
    "quantity": "375.00",
@@ -452,7 +452,7 @@
   },
   {
    "barcode": "3574660058857",
-   "name": "גונסון בייבי שמן 500 מל",
+   "name": "גונסון בייבי שמן 500",
    "manufacturer": "גונסון בייבי שמן 500",
    "departmentId": "oils",
    "quantity": "500.00",
@@ -467,7 +467,7 @@
   },
   {
    "barcode": "3574660089547",
-   "name": "טמפוני או בה נורמל 32 יח",
+   "name": "או.בה קלאסי נורמל 32",
    "manufacturer": "או בה",
    "departmentId": "unclassified",
    "quantity": "1.00",
@@ -542,8 +542,8 @@
   },
   {
    "barcode": "3574661003924",
-   "name": "ליסטרין טוטל קר500מל",
-   "manufacturer": "JOHNSON&JOHNSON",
+   "name": "מי פה ליסטרין 500 מ\"",
+   "manufacturer": "גונסון אנד גונסון",
    "departmentId": "non_food",
    "quantity": "500.00",
    "unit": "מיליליטר",
@@ -647,8 +647,8 @@
   },
   {
    "barcode": "3574661552576",
-   "name": "קרפרי מגן רגיל טנגו 56יח",
-   "manufacturer": "JOHNSON&JOHNSON",
+   "name": "קרפרי מגן תחתון כותו",
+   "manufacturer": "Johnson Toilet-IT",
    "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -721,33 +721,33 @@
    "allergensObservedOn": null
   },
   {
-   "barcode": "3600522632436",
-   "name": "ק.לילה55 אייג ספשיאליסט",
-   "manufacturer": "karlsruhe",
-   "departmentId": "unclassified",
-   "quantity": "50.00",
+   "barcode": "3600524163075",
+   "name": "שמפו אלביב Hydra Hya",
+   "manufacturer": "RAMBOUILLET",
+   "departmentId": "non_food",
+   "quantity": "500.00",
    "unit": "מיליליטר",
    "imageUrl": null,
    "imageSource": null,
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": false,
-   "ingredientsKnown": true,
+   "ingredientsKnown": false,
    "allergensObservedOn": null
   },
   {
-   "barcode": "3600523816699",
-   "name": "קרם לחות פעולה משולש",
-   "manufacturer": "karlsruhe",
+   "barcode": "3600524163082",
+   "name": "אלביב מרכך משקם 500 מל",
+   "manufacturer": "לוריאל-אלביב",
    "departmentId": "non_food",
-   "quantity": "50.00",
+   "quantity": "500.00",
    "unit": "מיליליטר",
    "imageUrl": null,
    "imageSource": null,
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": false,
-   "ingredientsKnown": true,
+   "ingredientsKnown": false,
    "allergensObservedOn": null
   },
   {
@@ -767,7 +767,7 @@
   },
   {
    "barcode": "4000417019004",
-   "name": "שוק.ריטר חלב אגוז שלם100",
+   "name": "ריטר חלב/אג 10 יח'",
    "manufacturer": "ריטר ספורט",
    "departmentId": "dairy_milk",
    "quantity": "100.00",
@@ -796,6 +796,36 @@
    "allergensObservedOn": "2026-09-05"
   },
   {
+   "barcode": "7290011570781",
+   "name": "קמח כרגיל ללא גלוטן",
+   "manufacturer": "קמח כרגיל ללא גלוטן",
+   "departmentId": "pantry_flour",
+   "quantity": "450.00",
+   "unit": "גרם",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": "2026-09-05"
+  },
+  {
+   "barcode": "7290011570798",
+   "name": "קמח כרגיל ללא גלוטן",
+   "manufacturer": "קמח כרגיל ללא גלוטן",
+   "departmentId": "pantry_flour",
+   "quantity": "450.00",
+   "unit": "גרם",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": "2026-09-05"
+  },
+  {
    "barcode": "7290011876722",
    "name": "שניצל לל\"ג 600ג מאמא עוף",
    "manufacturer": "תנובה",
@@ -813,7 +843,7 @@
   {
    "barcode": "7290011876739",
    "name": "אצבע שניצל ללג600מאמאעוף",
-   "manufacturer": "תנובה גליל שותפות מוגבלת",
+   "manufacturer": "תנובה",
    "departmentId": "meat_fresh",
    "quantity": "600.00",
    "unit": "גרם",
@@ -834,6 +864,21 @@
    "unit": "גרם",
    "imageUrl": null,
    "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": "2026-09-05"
+  },
+  {
+   "barcode": "7290012522581",
+   "name": "שניצל תירס ללא גלוטן",
+   "manufacturer": "טבעול",
+   "departmentId": "meat_fresh",
+   "quantity": "664.00",
+   "unit": "גרם",
+   "imageUrl": "https://www.osem-nestle.co.il/sites/site.prod.osem-nestle.co.il/files/product_images_new/6927243_7290012522581_Enlarge.jpg?v=1788547433",
+   "imageSource": "אתר היצרן",
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
@@ -873,7 +918,7 @@
   {
    "barcode": "7290013121127",
    "name": "לחמניות מיני ללא גלו",
-   "manufacturer": "אביב קונדיטוריה מעולה בע\"מ",
+   "manufacturer": "גרין לייט",
    "departmentId": "bakery_rolls",
    "quantity": "460.00",
    "unit": "גרם",
@@ -1007,8 +1052,8 @@
   },
   {
    "barcode": "7290015599061",
-   "name": "צהובה טבעונית מוצרלה200ג",
-   "manufacturer": "אריויה",
+   "name": "צהובה טבעונית בטעם מ",
+   "manufacturer": "צהובה טבעונית בטעם מ",
    "departmentId": "dairy_cheese",
    "quantity": "200.00",
    "unit": "גרם",
@@ -1037,8 +1082,8 @@
   },
   {
    "barcode": "7290015879705",
-   "name": "תערובתאיטלקית לאפיה לל\"ג",
-   "manufacturer": "כללי",
+   "name": "תערובת אפיה לל\"ג מול",
+   "manufacturer": "תערובת אפיה לל\"ג מול",
    "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "קילוגרם",
@@ -1051,24 +1096,9 @@
    "allergensObservedOn": "2026-09-05"
   },
   {
-   "barcode": "7290015879729",
-   "name": "תערובת לאפיה ללא גלוטן.",
-   "manufacturer": "כללי",
-   "departmentId": "health_free_from",
-   "quantity": "500.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
    "barcode": "7290016505016",
    "name": "שוקולד פנדה קלאסי 100 גר",
-   "manufacturer": "פנדה מוצרים טבעונים בע\"מ",
+   "manufacturer": "פנדה",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -1113,12 +1143,12 @@
   {
    "barcode": "7290016505177",
    "name": "פנדה קרם אגוזים 100 גרם",
-   "manufacturer": "פנדה מוצרים טבעונים בע\"מ",
+   "manufacturer": "פנדה",
    "departmentId": "snacks_nuts",
    "quantity": "100.00",
    "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
+   "imageUrl": "https://images.openfoodfacts.org/images/products/729/001/650/5177/front_en.3.400.jpg",
+   "imageSource": "Open Food Facts",
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
@@ -1161,36 +1191,6 @@
    "manufacturer": "PAZZAMI\\n",
    "departmentId": "unclassified",
    "quantity": "330.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290017040554",
-   "name": "עוגיות אישיות ללא גל",
-   "manufacturer": "עוגיות אישיות ללא גל",
-   "departmentId": "snacks_cookies",
-   "quantity": "111.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290017040578",
-   "name": "מאפה דונאטס שוקולד 111 ג",
-   "manufacturer": "מאפה דונאטס שוקולד 111 ג",
-   "departmentId": "snacks_chocolate",
-   "quantity": "111.00",
    "unit": "גרם",
    "imageUrl": null,
    "imageSource": null,
@@ -1606,6 +1606,32 @@
    ],
    "inferred": []
   },
+  "7290011570781": {
+   "levels": {
+    "eggs": "may_contain",
+    "gluten": "absent",
+    "sesame": "may_contain",
+    "soy": "may_contain"
+   },
+   "sources": [
+    "retailer",
+    "declared_free_from"
+   ],
+   "inferred": []
+  },
+  "7290011570798": {
+   "levels": {
+    "eggs": "may_contain",
+    "gluten": "absent",
+    "sesame": "may_contain",
+    "soy": "may_contain"
+   },
+   "sources": [
+    "retailer",
+    "declared_free_from"
+   ],
+   "inferred": []
+  },
   "7290011876722": {
    "levels": {
     "corn": "contains",
@@ -1647,6 +1673,24 @@
    },
    "sources": [
     "retailer",
+    "declared_free_from"
+   ],
+   "inferred": []
+  },
+  "7290012522581": {
+   "levels": {
+    "celery": "may_contain",
+    "corn": "contains",
+    "eggs": "may_contain",
+    "gluten": "absent",
+    "mustard": "may_contain",
+    "sesame": "may_contain",
+    "soy": "may_contain",
+    "yeast": "contains"
+   },
+   "sources": [
+    "retailer",
+    "manufacturer",
     "declared_free_from"
    ],
    "inferred": []
@@ -1846,19 +1890,6 @@
    ],
    "inferred": []
   },
-  "7290015879729": {
-   "levels": {
-    "gluten": "absent",
-    "mustard": "may_contain",
-    "sesame": "may_contain",
-    "soy": "may_contain"
-   },
-   "sources": [
-    "declared_free_from",
-    "retailer"
-   ],
-   "inferred": []
-  },
   "7290016505016": {
    "levels": {
     "coconut": "contains",
@@ -1967,49 +1998,6 @@
    },
    "sources": [
     "retailer"
-   ],
-   "inferred": []
-  },
-  "7290017040554": {
-   "levels": {
-    "almond": "may_contain",
-    "coconut": "contains",
-    "corn": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "hazelnut": "contains",
-    "lactose": "contains",
-    "milk": "contains",
-    "pistachio": "may_contain",
-    "soy": "contains",
-    "sunflower": "contains",
-    "tree_nuts": "contains",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290017040578": {
-   "levels": {
-    "almond": "may_contain",
-    "coconut": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "hazelnut": "contains",
-    "lactose": "contains",
-    "milk": "contains",
-    "pistachio": "may_contain",
-    "soy": "contains",
-    "sunflower": "contains",
-    "tree_nuts": "contains",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
    ],
    "inferred": []
   }
