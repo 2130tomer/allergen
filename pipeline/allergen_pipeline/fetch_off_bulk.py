@@ -66,7 +66,10 @@ def main(argv: list[str] | None = None) -> int:
 
     headers = {"User-Agent": off.USER_AGENT, "Accept": "application/json"}
     added = with_image = with_allergens = 0
-    page = 1
+    # ההמשך הוא לפי עמוד ולא לפי מטמון. דילוג על ברקוד מוכר חוסך כתיבה
+    # אך לא את הבקשה עצמה, והמקור חוסם על מספר בקשות ולא על תוכנן. מי
+    # שממשיך ריצה שנקטעה מתחיל מהעמוד שנעצר בו.
+    page = arguments.start_page
     total = None
 
     with httpx.Client(headers=headers, timeout=REQUEST_TIMEOUT, follow_redirects=True) as client:
@@ -99,7 +102,7 @@ def main(argv: list[str] | None = None) -> int:
                 cache.save()
                 print(f"  עמוד {page}: נוספו {added} עד כה", flush=True)
 
-            if arguments.pages and page >= arguments.pages:
+            if arguments.pages and page - arguments.start_page + 1 >= arguments.pages:
                 break
             if total is not None and page * PAGE_SIZE >= total:
                 break
@@ -121,6 +124,7 @@ def _parse_arguments(argv: list[str] | None) -> argparse.Namespace:
     parser.add_argument("--cache", type=Path, default=DEFAULT_CACHE)
     parser.add_argument("--country", default="israel")
     parser.add_argument("--pages", type=int, default=None, help="הגבלת עמודים לבדיקה")
+    parser.add_argument("--start-page", type=int, default=1, help="המשך ריצה שנקטעה")
     return parser.parse_args(argv)
 
 
