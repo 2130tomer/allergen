@@ -12,6 +12,7 @@ from datetime import date
 from ...domain.claims import AllergenClaim, Level, Source
 from ...ingredients.free_from import FreeFromDetector
 from ...ingredients.mapping import IngredientAllergenMap
+from .rami_levy_online import RamiLevyProduct
 from .shufersal_online import ShufersalProduct
 
 
@@ -50,6 +51,84 @@ def to_claims(
     )
     if free_from is not None:
         claims.extend(_declared_claims(product, free_from, observed_on))
+    return claims
+
+
+def rami_levy_to_claims(
+    product: RamiLevyProduct,
+    ingredient_map: IngredientAllergenMap,
+    observed_on: date,
+    free_from: FreeFromDetector | None = None,
+) -> list[AllergenClaim]:
+    """קביעות ממוצר של רמי לוי.
+
+    כאן האלרגנים כבר מפוענחים מקודים לרשימה הסגורה, ולכן אין מיפוי
+    מונחים. הרמה מגיעה מהשדה שבו הקוד הופיע, ולכן level_inferred כבוי
+    בדיוק כמו אצל שופרסל.
+
+    שים לב שקוד שאינו במילון אינו הופך לשום קביעה, וגם אינו הופך את
+    המוצר לנקי: הוא נספר ב-unknown_codes ומדווח. היעדר פענוח הוא היעדר
+    מידע, לא היעדר אלרגן.
+    """
+    contains = set(product.contains_ids)
+    may_contain = set(product.may_contain_ids) - contains
+
+    claims = [
+        AllergenClaim(
+            allergen_id=allergen_id,
+            level=Level.CONTAINS,
+            source=Source.RETAILER,
+            observed_on=observed_on,
+            source_ref=product.page_url,
+        )
+        for allergen_id in sorted(contains)
+    ]
+    claims.extend(
+        AllergenClaim(
+            allergen_id=allergen_id,
+            level=Level.MAY_CONTAIN,
+            source=Source.RETAILER,
+            observed_on=observed_on,
+            source_ref=product.page_url,
+        )
+        for allergen_id in sorted(may_contain)
+    )
+
+    if product.ingredients_text:
+        from_ingredients = ingredient_map.allergen_ids(product.ingredients_text)
+        claims.extend(
+            AllergenClaim(
+                allergen_id=allergen_id,
+                level=Level.CONTAINS,
+                source=Source.RETAILER,
+                observed_on=observed_on,
+                source_ref=f"{product.page_url}#ingredients",
+            )
+            for allergen_id in sorted(from_ingredients - contains - may_contain)
+        )
+
+    if free_from is not None:
+        declared, reduced = free_from.detect(product.name, product.ingredients_text)
+        claims.extend(
+            AllergenClaim(
+                allergen_id=claim.allergen_id,
+                level=Level.ABSENT,
+                source=Source.DECLARED_FREE_FROM,
+                observed_on=observed_on,
+                source_ref=product.page_url,
+            )
+            for claim in declared
+        )
+        claims.extend(
+            AllergenClaim(
+                allergen_id=claim.allergen_id,
+                level=Level.CONTAINS,
+                source=Source.DECLARED_FREE_FROM,
+                observed_on=observed_on,
+                source_ref=product.page_url,
+            )
+            for claim in reduced
+        )
     return claims
 
 
