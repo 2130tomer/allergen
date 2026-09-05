@@ -1,6 +1,21 @@
 {
  "products": [
   {
+   "barcode": "0305213079004",
+   "name": "תחליב גוף וזלין 600 מ\"ל",
+   "manufacturer": "יוניליוור גפרסון ארה\"ב",
+   "departmentId": "non_food",
+   "quantity": "600.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
    "barcode": "0644209307579",
    "name": "ת.לעוגת שוקולד432ג דנקן",
    "manufacturer": "קונגרה ברנדס",
@@ -166,6 +181,51 @@
    "allergensObservedOn": null
   },
   {
+   "barcode": "3014260262693",
+   "name": "מכשיר גילוח ונוס+2סכינים",
+   "manufacturer": "פרוקטר & גמבל",
+   "departmentId": "non_food",
+   "quantity": "1.00",
+   "unit": "יחידות",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3014260287030",
+   "name": "5סכיני גילוח חד\"פ גילט",
+   "manufacturer": "פרוקטר & גמבל",
+   "departmentId": "non_food",
+   "quantity": "1.00",
+   "unit": "יחידות",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/301/426/028/7030/front_en.3.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3014260294243",
+   "name": "6סכין גילוח חדפ גילט",
+   "manufacturer": "פרוקטר & גמבל",
+   "departmentId": "non_food",
+   "quantity": "1.00",
+   "unit": "יחידות",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
    "barcode": "3017800501627",
    "name": "גרעיני תירס3*150ג דוסי",
    "manufacturer": "גרעיני תירס3*150ג דוסי",
@@ -179,6 +239,21 @@
    "hasAllergenData": true,
    "ingredientsKnown": true,
    "allergensObservedOn": "2026-09-05"
+  },
+  {
+   "barcode": "3034250007813",
+   "name": "קלינקס טישו כיס 12*9יח",
+   "manufacturer": "קלינקס טישו כיס 12*9יח",
+   "departmentId": "non_food",
+   "quantity": "1.00",
+   "unit": "יחידות",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920021777",
@@ -406,6 +481,21 @@
    "allergensObservedOn": null
   },
   {
+   "barcode": "3574660239829",
+   "name": "קרם ידיים ניוטרוגינה 75",
+   "manufacturer": "JOHNSON&JOHNSON",
+   "departmentId": "non_food",
+   "quantity": "75.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
    "barcode": "3574660333466",
    "name": "32טמפ. או-בה פרוקומפ.מינ",
    "manufacturer": "JOHNSON&JOHNSON",
@@ -436,6 +526,51 @@
    "allergensObservedOn": null
   },
   {
+   "barcode": "3574660514643",
+   "name": "קרם רב\"ש ניוטרוגינה300מ",
+   "manufacturer": "JOHNSON&JOHNSON",
+   "departmentId": "non_food",
+   "quantity": "300.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3574661003924",
+   "name": "ליסטרין טוטל קר500מל",
+   "manufacturer": "JOHNSON&JOHNSON",
+   "departmentId": "non_food",
+   "quantity": "500.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3574661098531",
+   "name": "תח.גוף ניוטרוגינה מ400",
+   "manufacturer": "ש.שסטוביץ",
+   "departmentId": "non_food",
+   "quantity": "400.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
    "barcode": "3574661098937",
    "name": "תח. גוף נטרוגינה יבש400",
    "manufacturer": "JOHNSON&JOHNSON",
@@ -448,6 +583,36 @@
    "needsReview": false,
    "hasAllergenData": false,
    "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3574661200019",
+   "name": "תח.ניוטרוגינה ויזבלי400",
+   "manufacturer": "JOHNSON&JOHNSON",
+   "departmentId": "non_food",
+   "quantity": "400.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3574661391373",
+   "name": "תחליב גוף הידרובוסט400מל",
+   "manufacturer": "תחליב גוף הידרובוסט400מל",
+   "departmentId": "non_food",
+   "quantity": "400.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
    "allergensObservedOn": null
   },
   {
@@ -526,6 +691,36 @@
    "allergensObservedOn": null
   },
   {
+   "barcode": "3574669907729",
+   "name": "גונסון שמפו גולד 750 מל",
+   "manufacturer": "CILAG GMBH INTERNATIONAL",
+   "departmentId": "non_food",
+   "quantity": "750.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3574669908948",
+   "name": "גונסון אל סבון עדין750מ",
+   "manufacturer": "CILAG GMBH INTERNATIONAL",
+   "departmentId": "non_food",
+   "quantity": "750.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
    "barcode": "3600522632436",
    "name": "ק.לילה55 אייג ספשיאליסט",
    "manufacturer": "קרלסרו, גרמניה",
@@ -538,6 +733,21 @@
    "needsReview": false,
    "hasAllergenData": false,
    "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3600524163075",
+   "name": "שמפו הידרה היאלורוני500מ",
+   "manufacturer": "לוריאל-אלביב",
+   "departmentId": "non_food",
+   "quantity": "500.00",
+   "unit": "מיליליטר",
+   "imageUrl": null,
+   "imageSource": null,
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": false,
+   "ingredientsKnown": false,
    "allergensObservedOn": null
   },
   {

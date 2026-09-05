@@ -65,6 +65,15 @@ def pick_barcodes(cursor: sqlite3.Cursor) -> list[str]:
                where has_allergen_data = 0 and department_id <> 'non_food'
                limit ?""",
         ),
+        (
+            # מוצר שאינו מזון מפעיל מסך נפרד (NOT_A_FOOD_PRODUCT), ולא את
+            # "אין מידע". בלי דלי ייעודי המצב הזה לא הופיע במקבע כלל, כי כל
+            # שאר הדליים מסננים non_food במפורש, והממשק שלו לא נראה בבדיקה.
+            "מוצר שאינו מזון",
+            """select barcode from products
+               where department_id = 'non_food' and has_allergen_data = 0
+               limit ?""",
+        ),
     ]
 
     chosen: list[str] = []
