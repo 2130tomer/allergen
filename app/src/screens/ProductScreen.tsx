@@ -97,8 +97,8 @@ export function ProductScreen({ product, onReportInaccuracy }: Props): React.Rea
         {product.needsReview ? (
           <View style={styles.review}>
             <Text style={styles.reviewText}>
-              המוצר הזה מסומן לבדיקה אצלנו. ייתכן שהמידע המוצג שייך למוצר קודם באותו
-              ברקוד.
+              המוצר הזה מסומן לבדיקה. ייתכן שהמקור הפסיק לדווח או שהמוצר השתנה.
+              יש לבדוק את התווית שעל האריזה.
             </Text>
           </View>
         ) : null}
@@ -130,7 +130,7 @@ export function ProductScreen({ product, onReportInaccuracy }: Props): React.Rea
                 {collectedOn(formatDate(product.allergensObservedOn))}
               </Text>
             </>
-          ) : null}
+          ) : <Text style={styles.sourceLine}>תאריך איסוף המידע אינו ידוע</Text>}
           {product.inferredAllergenIds.length > 0 ? (
             <>
               <Rule />

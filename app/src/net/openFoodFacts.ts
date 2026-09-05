@@ -11,6 +11,8 @@
 
 import type { ProductDetail } from '../db/queries';
 import type { Level } from '../domain/filter';
+import tagMap from '../domain/offTagMap.json';
+import { normalize } from '../text/hebrew';
 
 const PRODUCT_URL = 'https://world.openfoodfacts.org/api/v2/product';
 const FIELDS = [
@@ -25,68 +27,23 @@ const FIELDS = [
 
 const REQUEST_TIMEOUT_MS = 6000;
 
-const TAG_TO_ALLERGEN: Record<string, string> = {
-  gluten: 'gluten',
-  wheat: 'gluten',
-  גלוטן: 'gluten',
-  חיטה: 'gluten',
-  milk: 'milk',
-  חלב: 'milk',
-  eggs: 'eggs',
-  egg: 'eggs',
-  ביצים: 'eggs',
-  peanuts: 'peanuts',
-  peanut: 'peanuts',
-  בוטנים: 'peanuts',
-  soybeans: 'soy',
-  soy: 'soy',
-  סויה: 'soy',
-  'sesame-seeds': 'sesame',
-  sesame: 'sesame',
-  שומשום: 'sesame',
-  fish: 'fish',
-  דגים: 'fish',
-  crustaceans: 'crustaceans',
-  סרטנים: 'crustaceans',
-  molluscs: 'molluscs',
-  רכיכות: 'molluscs',
-  nuts: 'tree_nuts',
-  'tree-nuts': 'tree_nuts',
-  אגוזים: 'tree_nuts',
-  almonds: 'almond',
-  שקדים: 'almond',
-  walnuts: 'walnut',
-  cashew: 'cashew',
-  'cashew-nuts': 'cashew',
-  'pecan-nuts': 'pecan',
-  pistachio: 'pistachio',
-  pistachios: 'pistachio',
-  hazelnuts: 'hazelnut',
-  'macadamia-nuts': 'macadamia',
-  'brazil-nuts': 'brazil_nut',
-  mustard: 'mustard',
-  חרדל: 'mustard',
-  celery: 'celery',
-  סלרי: 'celery',
-  lupin: 'lupin',
-  לופין: 'lupin',
-  'sulphur-dioxide-and-sulphites': 'sulphites',
-  sulphites: 'sulphites',
-  סולפיטים: 'sulphites',
-};
+const TAG_TO_ALLERGEN: Record<string, string> = tagMap;
 
-function mapTags(tags: unknown): string[] {
+export function mapTags(tags: unknown): string[] {
   if (!Array.isArray(tags)) return [];
   const mapped = new Set<string>();
   for (const tag of tags) {
     if (typeof tag !== 'string') continue;
-    const key = (tag.includes(':') ? tag.split(':').pop() ?? '' : tag).trim().toLowerCase();
-    const allergenId = TAG_TO_ALLERGEN[key];
+    const key = tag.slice(tag.indexOf(':') + 1).trim().toLowerCase();
+    const allergenId = TAG_TO_ALLERGEN[key] ?? TAG_TO_ALLERGEN[normalize(key)];
     if (allergenId) mapped.add(allergenId);
   }
   return [...mapped];
 }
 
+export class ProductLookupError extends Error {
+  constructor(public readonly kind: 'network' | 'service' | 'invalid') { super(kind); }
+}
 export async function fetchFromOpenFoodFacts(
   barcode: string,
 ): Promise<ProductDetail | null> {
@@ -98,13 +55,17 @@ export async function fetchFromOpenFoodFacts(
       `${PRODUCT_URL}/${encodeURIComponent(barcode)}.json?fields=${FIELDS}`,
       { signal: controller.signal, headers: { 'User-Agent': 'Allergen-IL/0.1' } },
     );
-    if (!response.ok) return null;
+    if (!response.ok && response.status !== 404) throw new ProductLookupError('service');
 
     const payload = (await response.json()) as {
       status?: number;
       product?: Record<string, unknown>;
     };
-    if (payload.status !== 1 || !payload.product) return null;
+    if (payload.status === 0) return null;
+    if (payload.status !== 1 || !payload.product || typeof payload.product !== 'object') {
+      throw new ProductLookupError('invalid');
+    }
+    if (String(payload.product.code ?? '') !== barcode) throw new ProductLookupError('invalid');
 
     const product = payload.product;
     const contains = mapTags(product.allergens_tags);
@@ -141,9 +102,9 @@ export async function fetchFromOpenFoodFacts(
       conflicts: [],
       inferredAllergenIds: [],
     };
-  } catch {
-    // אין רשת, פסק זמן, או תשובה לא צפויה. אין תשובה, ולא ניחוש.
-    return null;
+  } catch (error) {
+    if (error instanceof ProductLookupError) throw error;
+    throw new ProductLookupError('network');
   } finally {
     clearTimeout(timeout);
   }

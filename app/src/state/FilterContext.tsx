@@ -20,7 +20,8 @@ import {
   EMPTY_SELECTION,
   deserialize,
   serialize,
-  toggle,
+  withPolicy,
+  type FilterPolicy,
   type FilterSelection,
 } from '../domain/filter';
 
@@ -29,8 +30,7 @@ const STORAGE_KEY = 'allergen.filter.v1';
 interface FilterContextValue {
   selection: FilterSelection;
   isLoaded: boolean;
-  toggleContains: (allergenId: string) => void;
-  toggleMayContain: (allergenId: string) => void;
+  setPolicy: (allergenId: string, policy: FilterPolicy) => void;
   clear: () => void;
 }
 
@@ -74,10 +74,7 @@ export function FilterProvider({
     () => ({
       selection,
       isLoaded,
-      toggleContains: (allergenId) =>
-        persist({ ...selection, contains: toggle(selection.contains, allergenId) }),
-      toggleMayContain: (allergenId) =>
-        persist({ ...selection, mayContain: toggle(selection.mayContain, allergenId) }),
+      setPolicy: (id, policy) => persist(withPolicy(selection, id, policy)),
       clear: () => persist(EMPTY_SELECTION),
     }),
     [selection, isLoaded, persist],

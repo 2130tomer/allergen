@@ -288,7 +288,7 @@ def fetch_batch(client, barcodes: list[str]) -> list[OffProduct]:
     return parse_search_payload(response.json())
 
 
-def to_claims(product: OffProduct, observed_on: date) -> list[AllergenClaim]:
+def to_claims(product: OffProduct, observed_on: date | None) -> list[AllergenClaim]:
     """קביעות מפורשות. שני השדות נפרדים במקור, ולכן הרמה אינה נגזרת.
 
     אלרגן שמופיע בשני השדות נחשב מכיל: זו הרמה המחמירה מבין השתיים.
