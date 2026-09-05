@@ -32,14 +32,24 @@ DEFAULT_CACHE = Path("data/cache/openfoodfacts.json")
 PAGE_SIZE = 100
 REQUEST_TIMEOUT = 90.0
 #: הקצב מתון בכוונה. בקשת חיפוש כבדה בהרבה מבקשת מוצר בודד.
-SECONDS_BETWEEN_PAGES = 3.0
-MAX_RETRIES = 3
+SECONDS_BETWEEN_PAGES = 6.0
+
+#: המתנות בין ניסיונות, בשניות.
+#:
+#: הן ארוכות כי החסימה שנצפתה כאן אינה רגעית. אחרי כעשרה עמודים המקור
+#: החזיר 401 ואחר כך 503 לאורך דקות ארוכות, גם על בקשה בודדת. ויתור
+#: אחרי שלושה ניסיונות קצרים הפך ריצה שאפשר להשלים בהמתנה לריצה
+#: שנקטעת באמצע ומשאירה את רוב הקטלוג בלי תמונה.
+RETRY_BACKOFF = (30, 120, 300, 600, 900)
 
 
 def fetch_page(client: httpx.Client, country: str, page: int) -> tuple[list[dict], int]:
     """עמוד אחד של תוצאות. מחזיר את המוצרים ואת סך התוצאות."""
     last: Exception | None = None
-    for attempt in range(MAX_RETRIES):
+    for attempt, wait in enumerate((0, *RETRY_BACKOFF)):
+        if wait:
+            print(f"    ממתין {wait} שניות לפני ניסיון {attempt}", flush=True)
+            time.sleep(wait)
         try:
             response = client.get(
                 SEARCH_URL,
@@ -55,7 +65,6 @@ def fetch_page(client: httpx.Client, country: str, page: int) -> tuple[list[dict
             return list(payload.get("products") or []), int(payload.get("count") or 0)
         except Exception as error:  # noqa: BLE001
             last = error
-            time.sleep(5 * (attempt + 1))
     raise last if last else RuntimeError(f"page {page}")
 
 
