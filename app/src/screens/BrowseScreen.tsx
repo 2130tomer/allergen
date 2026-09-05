@@ -20,10 +20,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ProductList } from '../components/ProductList';
 import {
+  catalogStats,
   levelsFor,
   listByDepartment,
   listDepartments,
   search,
+  type CatalogStats,
   type Department,
   type ProductSummary,
 } from '../db/queries';
@@ -31,6 +33,26 @@ import type { AllergenLevels } from '../domain/filter';
 import { looksLikeBarcode } from '../text/hebrew';
 import { useFilter } from '../state/FilterContext';
 import { color, radius, space, TOUCH_TARGET, typeScale } from '../theme';
+
+/**
+ * מספר עגול עם תווית, ברצועת מסך הבית.
+ *
+ * המספרים בספרות לטיניות ובכיוון שמאל-לימין גם בתוך ממשק עברי, כי
+ * ספרה הפוכה נקראת כמספר אחר.
+ */
+function Stat({ value, label }: { value: string; label: string }): React.ReactElement {
+  return (
+    <View style={styles.stat}>
+      <Text style={styles.statValue}>{value}</Text>
+      <Text style={styles.statLabel}>{label}</Text>
+    </View>
+  );
+}
+
+/** אלפים מופרדים בפסיק, כדי ש-30594 ייקרא במבט. */
+function formatCount(value: number): string {
+  return value.toLocaleString('en-US');
+}
 
 interface Props {
   onSelectProduct: (barcode: string) => void;
@@ -44,9 +66,13 @@ export function BrowseScreen({ onSelectProduct }: Props): React.ReactElement {
   const [products, setProducts] = useState<ProductSummary[]>([]);
   const [levels, setLevels] = useState<Record<string, AllergenLevels>>({});
   const [isLoading, setIsLoading] = useState(false);
+  const [stats, setStats] = useState<CatalogStats | null>(null);
 
   useEffect(() => {
     listDepartments().then(setDepartments).catch(() => setDepartments([]));
+    // כישלון כאן מסתיר את הרצועה ואינו מפיל את המסך: המספרים הם הקשר
+    // ולא תוכן, והמחלקות חשובות מהם.
+    catalogStats().then(setStats).catch(() => setStats(null));
   }, []);
 
   const loadLevels = useCallback(async (found: ProductSummary[]) => {
@@ -155,6 +181,24 @@ export function BrowseScreen({ onSelectProduct }: Props): React.ReactElement {
         />
       ) : (
         <ScrollView contentContainerStyle={styles.departments}>
+          <View style={styles.hero}>
+            <Text style={styles.heroTitle}>מה יש בפנים, לפני שקונים</Text>
+            <Text style={styles.heroBody}>
+              סורקים ברקוד או מחפשים מוצר, ומקבלים לכל אלרגן אחד משלושה מצבים:
+              מכיל, עלול להכיל, או אין מידע. לעולם לא "בטוח".
+            </Text>
+            {stats ? (
+              <View style={styles.statsRow}>
+                <Stat value={formatCount(stats.foodProducts)} label="מוצרי מזון" />
+                <Stat
+                  value={formatCount(stats.withAllergenData)}
+                  label="עם מידע אלרגנים"
+                />
+                <Stat value={formatCount(stats.withImage)} label="עם תמונה" />
+              </View>
+            ) : null}
+          </View>
+
           {topLevel.map((department) => {
             const children = departments.filter(
               (candidate) => candidate.parentId === department.id,
@@ -217,6 +261,49 @@ const styles = StyleSheet.create({
   backText: { ...typeScale.label, color: color.action },
   loader: { marginTop: space.lg },
   departments: { padding: space.lg, gap: space.xl },
+  hero: {
+    backgroundColor: color.action,
+    borderRadius: radius.card,
+    padding: space.lg,
+    gap: space.sm,
+  },
+  heroTitle: {
+    ...typeScale.screenTitle,
+    fontSize: 22,
+    color: color.onAction,
+    textAlign: 'right',
+    writingDirection: 'rtl',
+  },
+  heroBody: {
+    ...typeScale.body,
+    fontSize: 14,
+    color: color.onAction,
+    opacity: 0.92,
+    textAlign: 'right',
+    writingDirection: 'rtl',
+  },
+  statsRow: {
+    flexDirection: 'row-reverse',
+    marginTop: space.sm,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderTopColor: 'rgba(255,255,255,0.35)',
+    paddingTop: space.md,
+  },
+  stat: { flex: 1, alignItems: 'center', gap: 2 },
+  statValue: {
+    ...typeScale.bodyStrong,
+    fontSize: 17,
+    color: color.onAction,
+    textAlign: 'center',
+    writingDirection: 'ltr',
+  },
+  statLabel: {
+    ...typeScale.caption,
+    fontSize: 11,
+    color: color.onAction,
+    opacity: 0.85,
+    textAlign: 'center',
+  },
   departmentGroup: { gap: space.sm },
   departmentTitle: {
     ...typeScale.screenTitle,

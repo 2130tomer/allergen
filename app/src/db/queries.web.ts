@@ -11,7 +11,13 @@
 
 import type { AllergenLevels, Level } from '../domain/filter';
 import { looksLikeBarcode, normalize, normalizeBarcode } from '../text/hebrew';
-import type { Department, ProductDetail, ProductSummary, SearchResults } from './queries';
+import type {
+  CatalogStats,
+  Department,
+  ProductDetail,
+  ProductSummary,
+  SearchResults,
+} from './queries';
 import preview from './fixtures/preview.json';
 
 export { HIDDEN_FROM_BROWSE } from './queries';
@@ -38,6 +44,15 @@ export async function listDepartments(includeHidden = false): Promise<Department
 
 export async function countProductsInDepartment(departmentId: string): Promise<number> {
   return (await listByDepartment(departmentId)).length;
+}
+
+export async function catalogStats(): Promise<CatalogStats> {
+  const food = PRODUCTS.filter((product) => product.departmentId !== 'non_food');
+  return {
+    foodProducts: food.length,
+    withAllergenData: food.filter((product) => product.hasAllergenData).length,
+    withImage: food.filter((product) => product.imageUrl).length,
+  };
 }
 
 export async function listByDepartment(

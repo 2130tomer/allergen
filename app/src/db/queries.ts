@@ -125,6 +125,41 @@ export async function countProductsInDepartment(departmentId: string): Promise<n
   return row?.total ?? 0;
 }
 
+/** מספרי הקטלוג, להצגה במסך הבית. */
+export interface CatalogStats {
+  foodProducts: number;
+  withAllergenData: number;
+  withImage: number;
+}
+
+/**
+ * המספרים מוצגים למשתמש ולא רק ללוג, וזו החלטה ולא נוחות.
+ *
+ * הכיסוי אינו מחמיא: רוב המוצרים בקטלוג הם בלי מידע אלרגנים. להסתיר
+ * זאת היה יוצר רושם שהאפליקציה יודעת יותר משהיא יודעת, וזה בדיוק
+ * הרושם שמסוכן כאן. מי שרואה מראש כמה מהקטלוג מכוסה מבין למה "אין
+ * מידע" הוא תשובה נפוצה, ולא חושב שמדובר בתקלה.
+ */
+export async function catalogStats(): Promise<CatalogStats> {
+  const connection = await openSnapshot();
+  const row = await connection.getFirstAsync<{
+    food: number;
+    allergens: number;
+    images: number;
+  }>(
+    `SELECT COUNT(*) AS food,
+            SUM(CASE WHEN has_allergen_data = 1 THEN 1 ELSE 0 END) AS allergens,
+            SUM(CASE WHEN image_url IS NOT NULL THEN 1 ELSE 0 END) AS images
+       FROM products
+      WHERE is_active = 1 AND department_id <> 'non_food'`,
+  );
+  return {
+    foodProducts: row?.food ?? 0,
+    withAllergenData: row?.allergens ?? 0,
+    withImage: row?.images ?? 0,
+  };
+}
+
 export async function listByDepartment(
   departmentId: string,
   limit = 200,
