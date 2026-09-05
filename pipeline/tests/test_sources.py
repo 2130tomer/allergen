@@ -436,3 +436,79 @@ class TestOpenFoodFacts:
         product = off.parse_product(payload)
         assert product.allergen_ids == ()
         assert "unobtainium" in product.unmapped_tags
+
+
+class TestOffImageSelection:
+    """בחירת תמונת המוצר מ-Open Food Facts.
+
+    OFF מחזיק גם תמונות שהעלה היצרן (חשבונות org-*) וגם צילומי קהילה.
+    תמונת יצרן תואמת את מה שעל המדף ואיכותה עקבית, ולכן היא מועדפת גם
+    כשצילום הקהילה מופיע ראשון או בשפת הממשק. הרעיון יובא מגרסת הווב.
+    """
+
+    @staticmethod
+    def _product(display, images, front_url=None):
+        product = {
+            "code": BAMBA,
+            "selected_images": {"front": {"display": display}},
+            "images": images,
+        }
+        if front_url is not None:
+            product["image_front_url"] = front_url
+        return product
+
+    def test_an_official_image_beats_a_community_one_even_in_another_language(self):
+        product = self._product(
+            display={
+                "he": "https://off/community_he.jpg",
+                "en": "https://off/official_en.jpg",
+            },
+            images={
+                "front_he": {"imgid": "3"},
+                "front_en": {"imgid": "7"},
+                "3": {"uploader": "someuser"},
+                "7": {"uploader": "org-osem"},
+            },
+        )
+        assert off.pick_image(product) == "https://off/official_en.jpg"
+
+    def test_an_uploader_with_a_producer_suffix_counts_as_official(self):
+        product = self._product(
+            display={"he": "https://off/front_he.jpg"},
+            images={"front_he": {"imgid": "1"}, "1": {"uploader": "osem-producer"}},
+        )
+        assert off.pick_image(product) == "https://off/front_he.jpg"
+
+    def test_a_community_only_product_keeps_the_first_candidate(self):
+        product = self._product(
+            display={"he": "https://off/community_he.jpg"},
+            images={"front_he": {"imgid": "1"}, "1": {"uploader": "anon"}},
+        )
+        assert off.pick_image(product) == "https://off/community_he.jpg"
+
+    def test_the_flat_front_url_is_used_when_no_selected_images_exist(self):
+        product = {"code": BAMBA, "image_front_url": "https://off/flat.jpg"}
+        assert off.pick_image(product) == "https://off/flat.jpg"
+
+    def test_a_product_without_any_image_yields_none(self):
+        assert off.pick_image({"code": BAMBA}) is None
+
+    def test_parse_product_prefers_the_official_image(self):
+        payload = {
+            "status": 1,
+            "product": self._product(
+                display={
+                    "he": "https://off/community_he.jpg",
+                    "en": "https://off/official_en.jpg",
+                },
+                images={
+                    "front_he": {"imgid": "3"},
+                    "front_en": {"imgid": "7"},
+                    "3": {"uploader": "someuser"},
+                    "7": {"uploader": "org-osem"},
+                },
+                front_url="https://off/community_he.jpg",
+            ),
+        }
+        product = off.parse_product(payload)
+        assert product.image_url == "https://off/official_en.jpg"
