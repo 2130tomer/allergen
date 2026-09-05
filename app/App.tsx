@@ -44,14 +44,20 @@ import { FilterProvider } from './src/state/FilterContext';
 import { needsAcceptance, readTermsState, recordAcceptance } from './src/state/terms';
 import { color, font, typeScale } from './src/theme';
 
-// עברית היא שפת הממשק היחידה, ולכן RTL נכפה ואינו נגזר מהגדרות המכשיר.
+// עברית היא שפת הממשק היחידה, והכיוון נישא כולו בעיצוב: textAlign
+// ו-writingDirection על כל סולם הטיפוגרפיה, ו-row-reverse מפורש בכל
+// שורה שסדר האיברים בה משמעותי. ראו theme.ts.
 //
-// שתי השורות האלה נחוצות אך אינן מספיקות. באנדרואיד forceRTL תופס רק
-// אחרי הפעלה מחדש של התהליך, ולכן בהתקנה ראשונה הממשק אינו נפרס לימין
-// למרות הקריאה. מה שנושא בפועל את הכיוון הוא ברירת המחדל שבסולם
-// הטיפוגרפיה ו-row-reverse המפורש בשורות. ראו theme.ts.
-I18nManager.allowRTL(true);
-I18nManager.forceRTL(true);
+// לכן RTL של המנוע מכובה במפורש, וזה נראה הפוך מהכוונה עד שמבינים
+// למה. row-reverse אינו מוחלט אלא יחסי לכיוון המנוע: כשהמנוע ב-RTL
+// הוא ממראה את השורה בעצמו, ו-row-reverse ממראה אותה בחזרה לשמאל-
+// לימין. כלומר הפעלת forceRTL יחד עם row-reverse מבטלת את עצמה.
+//
+// זה גם הסביר תקלה שנראתה אקראית: forceRTL באנדרואיד תופס רק אחרי
+// הפעלה מחדש של התהליך, ולכן הריצה הראשונה אחרי התקנה נראתה תקינה
+// והריצות שאחריה התהפכו. עם המנוע מכובה הפריסה זהה בכל ריצה.
+I18nManager.allowRTL(false);
+I18nManager.forceRTL(false);
 
 SplashScreen.preventAutoHideAsync().catch(() => undefined);
 

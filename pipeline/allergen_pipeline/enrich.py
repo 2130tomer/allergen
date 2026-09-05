@@ -420,6 +420,57 @@ def load_rami_levy_claims(
     return by_barcode
 
 
+def free_from_claims_from_names(
+    names_by_barcode: dict[str, str | None],
+    observed_on: date,
+) -> dict[str, list[AllergenClaim]]:
+    """הצהרות "ללא" שמופיעות בשם המוצר עצמו.
+
+    עד כה הזיהוי רץ רק בתוך מתאמי הקמעונאים, ולכן חל על החלק הקטן של
+    הקטלוג שנמשך מהם. רוב המוצרים מגיעים מקבצי שקיפות המחירים בלבד,
+    ושמם לא נסרק מעולם. התוצאה הייתה שמוצר ששמו "לחם לבן ללא גלוטן"
+    הוצג כמוצר שאין עליו מידע, בעוד שהמדף שממנו הוא נלקח הוא בדיוק
+    המדף שהמשתמש מחפש.
+
+    שם המוצר בקובץ השקיפות הוא השם שהיצרן מפרסם, ולכן "ללא גלוטן" בו
+    הוא הצהרת יצרן ולא ניחוש שלנו. זה הבסיס שADR-0007 מתיר לסמן בו
+    היעדר. הרשימה עצמה שמרנית ומתוחזקת ידנית, ו"דל" גובר על "ללא"
+    ונרשם כנוכחות.
+    """
+    from .ingredients.free_from import FreeFromDetector
+
+    detector = FreeFromDetector.load()
+    claims: dict[str, list[AllergenClaim]] = {}
+
+    for barcode, name in names_by_barcode.items():
+        if not name:
+            continue
+        declared, reduced = detector.detect(name)
+        found = [
+            AllergenClaim(
+                allergen_id=claim.allergen_id,
+                level=Level.ABSENT,
+                source=Source.DECLARED_FREE_FROM,
+                observed_on=observed_on,
+                source_ref="שם המוצר",
+            )
+            for claim in declared
+        ]
+        found.extend(
+            AllergenClaim(
+                allergen_id=claim.allergen_id,
+                level=Level.CONTAINS,
+                source=Source.DECLARED_FREE_FROM,
+                observed_on=observed_on,
+                source_ref="שם המוצר",
+            )
+            for claim in reduced
+        )
+        if found:
+            claims[barcode] = found
+    return claims
+
+
 def merge_claim_sources(
     *sources: dict[str, list[AllergenClaim]],
 ) -> dict[str, list[AllergenClaim]]:

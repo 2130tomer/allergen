@@ -1,15 +1,19 @@
 /**
- * פאנל בסגנון תווית מזון.
+ * כרטיס תוכן.
  *
- * המסכים בנויים מקווים דקים ותיבות ולא מכרטיסים מרחפים עם צל. זה לא
- * טעם: האפליקציה אומרת למשתמש ללכת לקרוא את התווית על האריזה, וכדאי
- * שהיא תיראה כמו הדבר שהיא מפנה אליו.
+ * הגרסה הראשונה חיקתה תווית מזון: קווים דקים, פינות חדות, בלי צל.
+ * הרעיון היה שהאפליקציה תיראה כמו הדבר שהיא מפנה אליו. בפועל זה יצא
+ * שטוח, וקשה היה להבחין היכן נגמר פריט ומתחיל הבא, במיוחד ברשימה
+ * ארוכה על מסך טלפון. הכרטיס המעוגל עם צל נמוך מפריד בלי להוסיף רעש.
+ *
+ * מה שנשמר מהגרסה הקודמת הוא האיפוק: אין גרדיאנטים, אין צבע דקורטיבי,
+ * והצבע היחיד שנושא משמעות הוא צבע מצב האלרגן.
  */
 
 import React from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 
-import { color, space, typeScale } from '../theme';
+import { cardShadow, color, radius, space, typeScale } from '../theme';
 
 interface PanelProps {
   title?: string;
@@ -43,10 +47,13 @@ export function Eyebrow({ children }: { children: string }): React.ReactElement 
 const styles = StyleSheet.create({
   panel: {
     backgroundColor: color.surface,
-    borderTopWidth: 2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: color.ruleStrong,
-    borderBottomColor: color.rule,
+    borderRadius: radius.card,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.rule,
+    marginHorizontal: space.md,
+    marginBottom: space.md,
+    overflow: 'hidden',
+    ...cardShadow,
   },
   header: {
     paddingHorizontal: space.lg,

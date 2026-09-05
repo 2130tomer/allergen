@@ -25,6 +25,7 @@ from .domain.claims import AllergenClaim
 from .enrich import (
     OffCache,
     collect_from_open_food_facts,
+    free_from_claims_from_names,
     load_manufacturer_claims,
     load_rami_levy_claims,
     load_retailer_claims,
@@ -295,7 +296,25 @@ def _enrich(
         f"\nקביעות יצרן: {len(manufacturer)} במטמון, "
         f"{len(relevant)} מהן על מוצרים שבקטלוג."
     )
-    return merge_claim_sources(claims, relevant_retailer, relevant_rami, relevant)
+
+    # רץ על כל הקטלוג ולא רק על מה שנמשך ממקור אלרגנים, כי מוצר שכל
+    # מה שידוע עליו הוא שמו הוא בדיוק המקרה שבו "ללא גלוטן" שבשם הוא
+    # כל המידע הקיים.
+    # גם השמות החלופיים, ולא רק הקנוני: אותו מוצר נקרא ברשת אחת
+    # "לחם ללא גלוטן" ובאחרת "לחם", והשם שנבחר כקנוני הוא עניין של
+    # סדר ולא של תוכן.
+    declared = free_from_claims_from_names(
+        {
+            barcode: " ".join((product.canonical_name, *product.aliases))
+            for barcode, product in products.items()
+        },
+        date.today(),
+    )
+    print(f"\nהצהרות ללא שזוהו משם המוצר: {len(declared)} מוצרים.")
+
+    return merge_claim_sources(
+        claims, relevant_retailer, relevant_rami, relevant, declared
+    )
 
 
 def _barcodes_with_ingredients(retailer_claims: Path) -> set[str]:
