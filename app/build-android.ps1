@@ -71,8 +71,15 @@ $task = if ($Variant -eq 'release') { 'assembleRelease' } else { 'assembleDebug'
 #     המחיר: התקנה מעט איטית יותר ותפיסת דיסק גדולה יותר במכשיר.
 #
 #   enableProguard / ShrinkResources  מכווצים קוד ומשאבים.
+#
+# אזהרה למי שיחזיר לכאן את android.injected.build.abi: אל תעשו זאת.
+# הדגל אמנם מצמצם ל-arm64, אבל AGP מפרש אותו כבנייה למכשיר מחובר,
+# מסמן את החבילה android:testOnly="true", וכותב אותה ל-intermediates
+# במקום ל-outputs. אנדרואיד דוחה חבילת testOnly בהתקנה רגילה עם
+# "החבילה אינה תקפה", והיא ניתנת להתקנה רק ב-adb install -t. הצמצום
+# נעשה עכשיו ב-abiFilters שב-build.gradle, שחל גם על ספריות
+# צד-שלישי ואינו פוגע בהתקנה.
 $slimArguments = @(
-    '-Pandroid.injected.build.abi=arm64-v8a',
     '-Pexpo.useLegacyPackaging=true',
     '-Pandroid.enableProguardInReleaseBuilds=true',
     '-Pandroid.enableShrinkResourcesInReleaseBuilds=true'
@@ -92,14 +99,17 @@ finally {
     Pop-Location
 }
 
-# מחפשים גם ב-intermediates ולא רק ב-outputs, וזו אינה קפדנות יתר.
-# הדגל android.injected.build.abi גורם ל-AGP להפנות את הפלט (ראו את
-# המשימה createReleaseApkListingFileRedirect), וה-APK הסופי נוחת תחת
-# intermediates בעוד ש-outputs נשאר עם קובץ מריצה קודמת. חיפוש ב-
-# outputs בלבד החזיר APK ישן ודיווח עליו כאילו נבנה זה עתה.
+# מחפשים גם ב-intermediates ולא רק ב-outputs. בבנייה תקינה ה-APK נמצא
+# ב-outputs, אבל דגלים שמכוונים לבנייה למכשיר מחובר מפנים אותו ל-
+# intermediates ומשאירים ב-outputs קובץ מריצה קודמת. חיפוש ב-outputs
+# בלבד החזיר פעם APK בן שעות ודיווח עליו כאילו נבנה זה עתה.
+#
+# שימו לב לסוגריים סביב כל Join-Path. בלעדיהם הפסיק נקשר לפרמטר של
+# Join-Path עצמו במקום להפריד בין איברי המערך, והסקריפט נופל על
+# CannotConvertArgument.
 $apkSearchPaths = @(
-    Join-Path $androidDir "app\build\outputs\apk\$Variant",
-    Join-Path $androidDir "app\build\intermediates\apk\$Variant"
+    (Join-Path $androidDir "app\build\outputs\apk\$Variant"),
+    (Join-Path $androidDir "app\build\intermediates\apk\$Variant")
 ) | Where-Object { Test-Path $_ }
 
 $apk = Get-ChildItem -Path $apkSearchPaths -Filter *.apk -Recurse |
