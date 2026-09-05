@@ -26,6 +26,7 @@ from .enrich import (
     OffCache,
     collect_from_open_food_facts,
     load_manufacturer_claims,
+    load_rami_levy_claims,
     load_retailer_claims,
     merge_claim_sources,
 )
@@ -39,6 +40,7 @@ DEFAULT_OUTPUT = Path("data/snapshots/allergen-snapshot.sqlite")
 DEFAULT_CACHE = Path("data/cache/openfoodfacts.json")
 DEFAULT_MANUFACTURER_CLAIMS = Path("data/cache/manufacturer_claims.json")
 DEFAULT_RETAILER_CLAIMS = Path("data/cache/shufersal_allergens.json")
+DEFAULT_RAMI_LEVY_CLAIMS = Path("data/cache/rami_levy_allergens.json")
 
 
 def collect_shufersal_offers(
@@ -274,6 +276,15 @@ def _enrich(
         f"{len(relevant_retailer)} מהן על מוצרים שבקטלוג."
     )
 
+    rami = load_rami_levy_claims(arguments.rami_levy_claims, ingredient_map)
+    relevant_rami = {
+        barcode: claim_list for barcode, claim_list in rami.items() if barcode in products
+    }
+    print(
+        f"\nקביעות רמי לוי: {len(rami)} במטמון, "
+        f"{len(relevant_rami)} מהן על מוצרים שבקטלוג."
+    )
+
     manufacturer = load_manufacturer_claims(arguments.manufacturer_claims)
     relevant = {
         barcode: claim_list
@@ -284,7 +295,7 @@ def _enrich(
         f"\nקביעות יצרן: {len(manufacturer)} במטמון, "
         f"{len(relevant)} מהן על מוצרים שבקטלוג."
     )
-    return merge_claim_sources(claims, relevant_retailer, relevant)
+    return merge_claim_sources(claims, relevant_retailer, relevant_rami, relevant)
 
 
 def _barcodes_with_ingredients(retailer_claims: Path) -> set[str]:
@@ -364,6 +375,12 @@ def _parse_arguments(argv: list[str] | None) -> argparse.Namespace:
         type=Path,
         default=DEFAULT_RETAILER_CLAIMS,
         help="קובץ קביעות קמעונאי מ-fetch_retailer_allergens",
+    )
+    argument_parser.add_argument(
+        "--rami-levy-claims",
+        type=Path,
+        default=DEFAULT_RAMI_LEVY_CLAIMS,
+        help="קובץ קביעות רמי לוי מ-fetch_rami_levy_allergens",
     )
     argument_parser.add_argument(
         "--retailers",
