@@ -26,6 +26,11 @@ param(
     [ValidateSet('debug', 'release')]
     [string]$Variant = 'release',
 
+    # בונה APK אוניברסלי עם ארבע ארכיטקטורות מעבד וספריות לא דחוסות.
+    # ברירת המחדל היא בנייה מצומצמת ל-arm64 בלבד, ששוקלת פי חמישה
+    # פחות. ראו את ההסבר ליד $slimArguments למטה.
+    [switch]$Universal,
+
     [string]$JavaHome = 'C:\Program Files\Eclipse Adoptium\jdk-17.0.20.101-hotspot',
     [string]$AndroidSdk = 'C:\Android\Sdk',
     [string]$BuildTemp = 'C:\jtmp'
@@ -51,11 +56,36 @@ $env:TMP = $BuildTemp
 Remove-Item Env:\JAVA_TOOL_OPTIONS -ErrorAction SilentlyContinue
 
 $task = if ($Variant -eq 'release') { 'assembleRelease' } else { 'assembleDebug' }
-Write-Host "בונה $Variant. תיקיית עבודה זמנית: $BuildTemp" -ForegroundColor Cyan
+
+# הבנייה האוניברסלית שקלה 92.9MB, והמצומצמת 16.6MB. שלושת הדגלים
+# אחראים לפער, ולכל אחד יש מחיר:
+#
+#   android.injected.build.abi   אורז ארכיטקטורת מעבד אחת במקום ארבע.
+#     זה החיסכון הגדול. שימו לב ש-reactNativeArchitectures לבדו אינו
+#     מספיק: הוא חל על ספריות React Native בלבד, בעוד שספריות
+#     צד-שלישי נארזות בכל הארכיטקטורות בלי קשר אליו. libbarhopper של
+#     סורק הברקוד לבדה תרמה כך 17MB.
+#     המחיר: ה-APK אינו רץ על מכשירי 32 סיביות ולא על אמולטור x86.
+#
+#   expo.useLegacyPackaging      דוחס את הספריות הנייטיביות בתוך ה-APK.
+#     המחיר: התקנה מעט איטית יותר ותפיסת דיסק גדולה יותר במכשיר.
+#
+#   enableProguard / ShrinkResources  מכווצים קוד ומשאבים.
+$slimArguments = @(
+    '-Pandroid.injected.build.abi=arm64-v8a',
+    '-Pexpo.useLegacyPackaging=true',
+    '-Pandroid.enableProguardInReleaseBuilds=true',
+    '-Pandroid.enableShrinkResourcesInReleaseBuilds=true'
+)
+$gradleArguments = @($task, '--console=plain')
+if (-not $Universal -and $Variant -eq 'release') { $gradleArguments += $slimArguments }
+
+$shape = if ($Universal) { 'אוניברסלי' } else { 'arm64 בלבד' }
+Write-Host "בונה $Variant ($shape). תיקיית עבודה זמנית: $BuildTemp" -ForegroundColor Cyan
 
 Push-Location $androidDir
 try {
-    & .\gradlew.bat $task --console=plain
+    & .\gradlew.bat @gradleArguments
     if ($LASTEXITCODE -ne 0) { throw "הבנייה נכשלה (קוד $LASTEXITCODE)." }
 }
 finally {
