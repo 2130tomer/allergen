@@ -92,10 +92,28 @@ finally {
     Pop-Location
 }
 
-$apk = Get-ChildItem -Path (Join-Path $androidDir "app\build\outputs\apk\$Variant") -Filter *.apk -Recurse |
+# מחפשים גם ב-intermediates ולא רק ב-outputs, וזו אינה קפדנות יתר.
+# הדגל android.injected.build.abi גורם ל-AGP להפנות את הפלט (ראו את
+# המשימה createReleaseApkListingFileRedirect), וה-APK הסופי נוחת תחת
+# intermediates בעוד ש-outputs נשאר עם קובץ מריצה קודמת. חיפוש ב-
+# outputs בלבד החזיר APK ישן ודיווח עליו כאילו נבנה זה עתה.
+$apkSearchPaths = @(
+    Join-Path $androidDir "app\build\outputs\apk\$Variant",
+    Join-Path $androidDir "app\build\intermediates\apk\$Variant"
+) | Where-Object { Test-Path $_ }
+
+$apk = Get-ChildItem -Path $apkSearchPaths -Filter *.apk -Recurse |
     Sort-Object LastWriteTime -Descending | Select-Object -First 1
 
 if (-not $apk) { throw 'הבנייה הסתיימה אך לא נמצא קובץ APK.' }
+
+# APK שלא נגעו בו בבנייה הזו הוא כמעט תמיד תקלה שקטה: משימת האריזה
+# נחשבה up-to-date והנכסים שבתוכו ישנים. עדיף להיכשל מאשר למסור גרסה
+# שנראית חדשה ונתוניה ישנים.
+$ageMinutes = ((Get-Date) - $apk.LastWriteTime).TotalMinutes
+if ($ageMinutes -gt 10) {
+    throw ('ה-APK שנמצא ישן ({0:N0} דקות): {1}. הבנייה כנראה לא אריזה מחדש.' -f $ageMinutes, $apk.FullName)
+}
 
 Write-Host ''
 Write-Host ('APK מוכן: {0}' -f $apk.FullName) -ForegroundColor Green
