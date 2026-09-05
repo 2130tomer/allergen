@@ -24,7 +24,7 @@ build-backend = "setuptools.build_meta"
 include = ["allergen_pipeline*"]
 
 [tool.setuptools.package-data]
-allergen_pipeline = ["ingredients/data/*.json", "storage/*.sql"]
+allergen_pipeline = ["ingredients/data/*.json", "storage/*.sql", "sources/retailers/data/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

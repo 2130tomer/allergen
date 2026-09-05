@@ -23,7 +23,7 @@ export const ALLERGEN_LIST: readonly Allergen[] = [
   { id: "wheat", labelHe: "חיטה", parentId: "gluten" },
   { id: "barley", labelHe: "שעורה", parentId: "gluten" },
   { id: "rye", labelHe: "שיפון", parentId: "gluten" },
-  { id: "oats", labelHe: "שיבולת שועל", parentId: "gluten" },
+  { id: "oats", labelHe: "שיבולת שועל", parentId: null },
   { id: "spelt", labelHe: "כוסמין", parentId: "gluten" },
   { id: "milk", labelHe: "חלב", parentId: null },
   { id: "lactose", labelHe: "לקטוז", parentId: null, noteHe: "רגישות לסוכר החלב. אינו זהה לאלרגיה לחלבון חלב." },

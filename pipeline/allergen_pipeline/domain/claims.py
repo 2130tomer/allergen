@@ -114,7 +114,7 @@ class AllergenClaim:
     allergen_id: str
     level: Level
     source: Source
-    observed_on: date
+    observed_on: date | None
     source_ref: str | None = None
     # נכון כשהרמה נגזרה מפירוק רשימה שטוחה ולא נאמרה במפורש במקור.
     level_inferred: bool = False

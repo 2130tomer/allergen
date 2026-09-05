@@ -1,11 +1,4 @@
-/**
- * שתי רשימות הסינון, ומצב התצוגה של מוצר מולן.
- *
- * מראה של pipeline/allergen_pipeline/domain/filtering.py. הרשימות
- * עצמאיות במכוון ואין מתג שמחמיר על הכל. העצמאות מייצרת מצב שנראה
- * מוזר אך לגיטימי, שבו אלרגן מסומן ברשימת עלול להכיל בלבד; שם נוצרת
- * אזהרה מפורשת ולא שינוי שקט של הבחירה.
- */
+/** Exclusion policies shared with Python. May-contain exclusions also exclude contains. */
 
 import { expandSelection, labelOf } from './allergens';
 
@@ -59,12 +52,7 @@ export function selectedIds(selection: FilterSelection): Set<string> {
   return new Set([...selection.contains, ...selection.mayContain]);
 }
 
-/**
- * אלרגנים שסומנו ברשימת עלול להכיל אך לא ברשימת מכיל.
- *
- * הפער אמיתי: מי שסימן בוטנים רק בעלול להכיל עדיין יראה במבה. מציגים
- * לו את זה במקום לתקן בשקט את הבחירה.
- */
+/** Explain legacy may-only preferences, which now exclude both positive levels. */
 export function gapWarnings(selection: FilterSelection): string[] {
   const onlyMayContain = [...selection.mayContain].filter(
     (id) => !selection.contains.has(id),
@@ -73,19 +61,18 @@ export function gapWarnings(selection: FilterSelection): string[] {
     .sort()
     .map(
       (id) =>
-        `סימנת ${labelOf(id)} רק ברשימת עלול להכיל. מוצרים שמכילים ${labelOf(id)} עדיין יוצגו.`,
+        `סימנת ${labelOf(id)} רק ברשימת עלול להכיל. הסינון כולל גם מוצרים שמכילים ${labelOf(id)}.`,
     );
 }
 
 /** האם יש מידע כלשהו על האלרגן שנבחר, או על אחד מתת-סוגיו. */
 function selectionIsKnown(levels: AllergenLevels, allergenId: string): boolean {
   if (levelOf(levels, allergenId) !== 'unknown') return true;
-  for (const subtypeId of expandSelection([allergenId])) {
-    if (subtypeId !== allergenId && levelOf(levels, subtypeId) !== 'unknown') {
-      return true;
-    }
-  }
-  return false;
+  const children = [...expandSelection([allergenId])].filter((id) => id !== allergenId);
+  return children.length > 0 && (
+    children.some((id) => ['contains', 'may_contain'].includes(levelOf(levels, id))) ||
+    children.every((id) => levelOf(levels, id) === 'absent')
+  );
 }
 
 /** מכריע אם מוצר מוצג, מוסתר, או נופל לסעיף אין מידע. */
@@ -98,7 +85,7 @@ export function applyFilter(
   }
 
   const matched: string[] = [];
-  for (const id of [...expandSelection(selection.contains)].sort()) {
+  for (const id of [...expandSelection(selectedIds(selection))].sort()) {
     if (levelOf(levels, id) === 'contains') matched.push(id);
   }
   for (const id of [...expandSelection(selection.mayContain)].sort()) {
@@ -152,4 +139,18 @@ export function deserialize(stored: Partial<StoredSelection> | null): FilterSele
     contains: new Set(stored?.contains ?? []),
     mayContain: new Set(stored?.mayContain ?? []),
   };
+}
+
+export type FilterPolicy = 'none' | 'contains' | 'contains_and_may';
+export function policyOf(selection: FilterSelection, id: string): FilterPolicy {
+  return selection.mayContain.has(id) ? 'contains_and_may' : selection.contains.has(id) ? 'contains' : 'none';
+}
+export function withPolicy(selection: FilterSelection, id: string, policy: FilterPolicy): FilterSelection {
+  const contains = new Set(selection.contains);
+  const mayContain = new Set(selection.mayContain);
+  contains.delete(id);
+  mayContain.delete(id);
+  if (policy !== 'none') contains.add(id);
+  if (policy === 'contains_and_may') mayContain.add(id);
+  return { contains, mayContain };
 }
