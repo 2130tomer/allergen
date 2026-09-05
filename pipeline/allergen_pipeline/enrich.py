@@ -373,6 +373,53 @@ def load_retailer_claims(
     return by_barcode
 
 
+def load_rami_levy_claims(
+    path: Path, ingredient_map: IngredientAllergenMap
+) -> dict[str, list[AllergenClaim]]:
+    """קורא קביעות שנשמרו על ידי fetch_rami_levy_allergens.
+
+    הקמעונאי השני. הקביעות כאן כבר מפוענחות מקודים לרשימה הסגורה בזמן
+    הקצירה, ולכן אין כאן מיפוי מונחים; הרמה הגיעה מהשדה שבו הקוד הופיע
+    ולכן היא מפורשת ולא נגזרת, בדיוק כמו אצל שופרסל. ראו ADR-0006.
+    """
+    if not path.exists():
+        return {}
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return {}
+
+    from .ingredients.free_from import FreeFromDetector
+    from .sources.retailers import claims as retailer_claims
+    from .sources.retailers.rami_levy_online import PRODUCT_URL, RamiLevyProduct
+
+    free_from = FreeFromDetector.load()
+
+    by_barcode: dict[str, list[AllergenClaim]] = {}
+    for barcode, record in raw.items():
+        if not record:
+            continue
+        product = RamiLevyProduct(
+            barcode=record.get("barcode", barcode),
+            name=record.get("name"),
+            brand=record.get("brand"),
+            ingredients_text=record.get("ingredients_text"),
+            contains_ids=tuple(record.get("contains") or ()),
+            may_contain_ids=tuple(record.get("may_contain") or ()),
+            page_url=record.get("page_url") or PRODUCT_URL.format(barcode=barcode),
+            unknown_codes=tuple(record.get("unknown_codes") or ()),
+        )
+        observed_on = date.fromisoformat(
+            record.get("observed_on") or date.today().isoformat()
+        )
+        found = retailer_claims.rami_levy_to_claims(
+            product, ingredient_map, observed_on, free_from=free_from
+        )
+        if found:
+            by_barcode[barcode] = found
+    return by_barcode
+
+
 def merge_claim_sources(
     *sources: dict[str, list[AllergenClaim]],
 ) -> dict[str, list[AllergenClaim]]:

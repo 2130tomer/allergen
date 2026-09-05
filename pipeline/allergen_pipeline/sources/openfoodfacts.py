@@ -36,6 +36,10 @@ FIELDS = (
     "ingredients_text",
     "ingredients_text_he",
     "image_front_url",
+    # selected_images + images נדרשים כדי להעדיף תמונת יצרן על צילום
+    # קהילה. ראו pick_image.
+    "selected_images",
+    "images",
     "countries_tags",
 )
 
@@ -154,6 +158,58 @@ def map_tags(tags: list[str] | None) -> tuple[tuple[str, ...], tuple[str, ...]]:
     return tuple(mapped), tuple(unmapped)
 
 
+# סדר השפות לבחירת תמונת החזית. עברית קודמת, אחר כך אנגלית, ואז שאר
+# השפות שנצפו בפועל בתגיות המאגר.
+_IMAGE_LANG_ORDER = ("he", "en", "fr", "de", "ru", "es", "it")
+
+
+def _is_official_uploader(uploader: str) -> bool:
+    """חשבון יצרן ב-OFF. תמונה שכזו תואמת את האריזה שעל המדף."""
+    return uploader.startswith("org-") or uploader.endswith("-producer")
+
+
+def pick_image(product: dict) -> str | None:
+    """בוחר כתובת תמונת חזית, ומעדיף תמונה שהעלה היצרן על צילום קהילה.
+
+    OFF מפריד תמונות חזית לפי שפה תחת selected_images.front.display, ולכל
+    אחת מטא-נתונים ב-images עם מזהה (imgid) ושם המעלה (uploader). תמונה
+    שהעלה חשבון יצרן (org-* או סיומת -producer) עדיפה גם אם אינה בשפת
+    הממשק ואינה הראשונה, כי היא צילום רשמי של האריזה ולא צילום חובבני.
+
+    הרעיון יובא מגרסת הווב. כשאין selected_images נופלים חזרה ל-
+    image_front_url כפי שהיה קודם.
+    """
+    selected = product.get("selected_images") or {}
+    front = selected.get("front") or {}
+    display = front.get("display") or {}
+
+    candidates: list[tuple[str, str]] = []
+    for lang in _IMAGE_LANG_ORDER:
+        url = display.get(lang)
+        if url:
+            candidates.append((url, f"front_{lang}"))
+    for lang, url in display.items():
+        if lang not in _IMAGE_LANG_ORDER and url:
+            candidates.append((url, f"front_{lang}"))
+
+    if not candidates:
+        flat = product.get("image_front_url")
+        return flat if isinstance(flat, str) and flat else None
+
+    images = product.get("images") or {}
+    first_official: str | None = None
+    for url, key in candidates:
+        meta = images.get(key) or {}
+        imgid = meta.get("imgid")
+        uploader = ""
+        if imgid is not None:
+            uploader = str((images.get(str(imgid)) or {}).get("uploader") or "")
+        if _is_official_uploader(uploader):
+            first_official = first_official or url
+
+    return first_official or candidates[0][0]
+
+
 def parse_product(payload: dict) -> OffProduct | None:
     """הופך תשובת API אחת למוצר. מחזיר None כשהמוצר לא נמצא."""
     if payload.get("status") != 1:
@@ -173,7 +229,7 @@ def parse_product(payload: dict) -> OffProduct | None:
         ingredients_text=(
             product.get("ingredients_text_he") or product.get("ingredients_text")
         ),
-        image_url=product.get("image_front_url"),
+        image_url=pick_image(product),
         allergen_ids=allergen_ids,
         trace_ids=trace_ids,
         unmapped_tags=unmapped_allergens + unmapped_traces,
