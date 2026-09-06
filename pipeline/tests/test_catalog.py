@@ -83,6 +83,37 @@ class TestDepartments:
         ]:
             assert departments.is_non_food(name), name
 
+    def test_toiletries_and_housewares_from_the_catalog_are_not_food(self):
+        """פריטים שנצפו בקטלוג, חלקם מסווגים היום למחלקת מזון בטעות.
+
+        "ת.רחצה מלפפון" ישב ב"פירות וירקות" בגלל המלפפון, ו"קלמר גלידה"
+        ישב בקינוחים. המונחים האלה גם מסווגים את הלא-מסווגים וגם
+        מתקנים את השיוכים השגויים.
+        """
+        for name in [
+            "תחליב רחצה שמן ארגן 700",
+            "ת.רחצה מלפפון750מ לה מון",
+            "גליס שמן לשיער 75 מל",
+            "קלמר 2 תא גלידה ורוד",
+            "פורס ביצים פלסטיק",
+            "גל גילוח סירייס גיל",
+            "צבע לשיער לוריאל 5",
+        ]:
+            assert departments.is_non_food(name), name
+
+    def test_food_that_shares_a_word_with_those_terms_stays_food(self):
+        """המונחים שנפסלו בבדיקה הזו, ולמה.
+
+        "ספריי" נראה כמו מוצר ניקיון אך "אושן ספריי חמוציות" הוא משקה,
+        ו"כוס" מופיעה ב"נמס בכוס פטריות". שניהם לא נכנסו לרשימה.
+        """
+        for name in [
+            "אושן ספריי חמוציות דיאט",
+            "נמס בכוס פטריות 43ג",
+            "שמן זית כתית מעולה 750",
+        ]:
+            assert not departments.is_non_food(name), name
+
     def test_real_food_is_never_marked_as_non_food(self):
         """הכיוון המסוכן.
 
