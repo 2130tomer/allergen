@@ -113,4 +113,4 @@ def drop_claims_without_barcode(
 
 
 def latest_observation(claims: list[AllergenClaim]) -> date | None:
-    return max((claim.observed_on for claim in claims), default=None)
+    return max((claim.observed_on for claim in claims if claim.observed_on is not None), default=None)

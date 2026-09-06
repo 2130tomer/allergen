@@ -2,8 +2,8 @@
  "products": [
   {
    "barcode": "0305213079004",
-   "name": "תחליב גוף וזלין 600 מ\"ל",
-   "manufacturer": "יוניליוור גפרסון ארה\"ב",
+   "name": "וזלין תחליב גוף להזנ",
+   "manufacturer": "וזלין תחליב גוף להזנ",
    "departmentId": "non_food",
    "quantity": "600.00",
    "unit": "מיליליטר",
@@ -13,6 +13,21 @@
    "needsReview": false,
    "hasAllergenData": false,
    "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "0644209307494",
+   "name": "ת.הכנת עוגת זהב432ג דנקן",
+   "manufacturer": "קונגרה ברנדס",
+   "departmentId": "bakery_pastry",
+   "quantity": "432.00",
+   "unit": "גרם",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/064/420/930/7494/front_en.14.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
    "allergensObservedOn": null
   },
   {
@@ -27,14 +42,74 @@
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "0644209311316",
+   "name": "תערובת להכנת בראוניז520ג",
+   "manufacturer": "קונגרה ברנדס",
+   "departmentId": "unclassified",
+   "quantity": "520.00",
+   "unit": "גרם",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/064/420/931/1316/front_en.15.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "0722252387509",
+   "name": "חטיף שיבולת שועל שקד",
+   "manufacturer": "חטיף שיבולת שועל שקד",
+   "departmentId": "snacks_salty",
+   "quantity": "68.00",
+   "unit": "גרם",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/072/225/238/7509/front_fr.3.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "0722252387530",
+   "name": "חטיף שיבולת שועל ובו",
+   "manufacturer": "חטיף שיבולת שועל ובו",
+   "departmentId": "snacks_salty",
+   "quantity": "68.00",
+   "unit": "גרם",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/072/225/238/7530/front_en.74.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "0722252387578",
+   "name": "חטיף שיבולת שועל מקד",
+   "manufacturer": "חטיף שיבולת שועל מקד",
+   "departmentId": "snacks_salty",
+   "quantity": "68.00",
+   "unit": "גרם",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/072/225/238/7578/front_fr.3.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
   },
   {
    "barcode": "0728229123811",
-   "name": "ציפס ירקות ים תיכוני110",
-   "manufacturer": "היין סלסטיאל גרופ",
-   "departmentId": "beverages_alcohol",
+   "name": "טרה ירקות שורש בתיבו",
+   "manufacturer": "טארה",
+   "departmentId": "unclassified",
    "quantity": "110.00",
    "unit": "גרם",
    "imageUrl": "https://images.openfoodfacts.org/images/products/072/822/912/3811/front_de.32.400.jpg",
@@ -42,13 +117,28 @@
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "0851621000043",
+   "name": "בירת חיטה בהירה 5% ב",
+   "manufacturer": "בירת חיטה בהירה 5% ב",
+   "departmentId": "unclassified",
+   "quantity": "0.00",
+   "unit": "יחידות",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/085/162/100/0043/front_nl.5.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
   },
   {
    "barcode": "0856591000109",
-   "name": "עוגיות מזרחיות פריכות400",
-   "manufacturer": "מאפיית יוסף ושמחה עבאדי",
+   "name": "עוגיות מזרחיות פריך",
+   "manufacturer": "עבאדי",
    "departmentId": "snacks_cookies",
    "quantity": "400.00",
    "unit": "גרם",
@@ -57,13 +147,43 @@
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "0884912102102",
+   "name": "סלקט אוכמניות פוסט 3",
+   "manufacturer": "סלקט אוכמניות פוסט 3",
+   "departmentId": "produce",
+   "quantity": "382.00",
+   "unit": "גרם",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/210/2102/front_en.50.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "0884912113139",
+   "name": "ברן פלקס פוסט 453 גר",
+   "manufacturer": "פוסט",
+   "departmentId": "unclassified",
+   "quantity": "453.00",
+   "unit": "גרם",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/211/3139/front_en.5.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
   },
   {
    "barcode": "0884912126115",
-   "name": "דגני גרייט גריינס דטה453",
-   "manufacturer": "פוסט קונסיומר ברנדס",
+   "name": "גרייט גריינס דגני בו",
+   "manufacturer": "פוסט",
    "departmentId": "unclassified",
    "quantity": "453.00",
    "unit": "גרם",
@@ -72,14 +192,14 @@
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
   },
   {
    "barcode": "0884912129512",
-   "name": "דגני קוקו פבלס 311 גרם",
-   "manufacturer": "דגני קוקו פבלס 311 גרם",
-   "departmentId": "unclassified",
+   "name": "קוקו פבלס דגני בוקר",
+   "manufacturer": "קוקו פבלס דגני בוקר",
+   "departmentId": "pantry_cereal",
    "quantity": "311.00",
    "unit": "גרם",
    "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/212/9512/front_en.51.400.jpg",
@@ -87,12 +207,12 @@
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
   },
   {
    "barcode": "0884912129710",
-   "name": "פרוטי פבלס דגנים 311 גרם",
+   "name": "פוסט דגני פרוטי פבלס",
    "manufacturer": "פוסט",
    "departmentId": "unclassified",
    "quantity": "311.00",
@@ -102,68 +222,8 @@
    "isActive": true,
    "needsReview": false,
    "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "0884912359155",
-   "name": "האני באנצס רוסטד 340 גרם",
-   "manufacturer": "האני באנצס רוסטד 340 גרם",
-   "departmentId": "unclassified",
-   "quantity": "340.00",
-   "unit": "גרם",
-   "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/235/9155/front_en.56.400.jpg",
-   "imageSource": "Open Food Facts",
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "0884912359162",
-   "name": "הני בנצס אלמונד 340גר",
-   "manufacturer": "הני בנצס אלמונד 340גר",
-   "departmentId": "unclassified",
-   "quantity": "340.00",
-   "unit": "גרם",
-   "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/235/9162/front_en.64.400.jpg",
-   "imageSource": "Open Food Facts",
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "0884912359421",
-   "name": "האני באנצס פקאן מייפל340",
-   "manufacturer": "פוסט פודס",
-   "departmentId": "unclassified",
-   "quantity": "340.00",
-   "unit": "גרם",
-   "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/235/9421/front_en.3.400.jpg",
-   "imageSource": "Open Food Facts",
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "0884912359483",
-   "name": "האני בנצס+חתיכות תות312",
-   "manufacturer": "האני בנצס+חתיכות תות312",
-   "departmentId": "unclassified",
-   "quantity": "312.00",
-   "unit": "גרם",
-   "imageUrl": "https://images.openfoodfacts.org/images/products/088/491/235/9483/front_en.25.400.jpg",
-   "imageSource": "Open Food Facts",
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
   },
   {
    "barcode": "1230000292009",
@@ -182,9 +242,9 @@
   },
   {
    "barcode": "3014260262693",
-   "name": "מכשיר גילוח ונוס+2סכינים",
-   "manufacturer": "פרוקטר & גמבל",
-   "departmentId": "non_food",
+   "name": "מכשיר ונוס+2 סכינים",
+   "manufacturer": "פרוקטר אנד גמבל",
+   "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "יחידות",
    "imageUrl": null,
@@ -226,24 +286,9 @@
    "allergensObservedOn": null
   },
   {
-   "barcode": "3017800501627",
-   "name": "גרעיני תירס3*150ג דוסי",
-   "manufacturer": "גרעיני תירס3*150ג דוסי",
-   "departmentId": "snacks_nuts",
-   "quantity": "450.00",
-   "unit": "גרם",
-   "imageUrl": "https://images.openfoodfacts.org/images/products/301/780/050/1627/front_fr.81.400.jpg",
-   "imageSource": "Open Food Facts",
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
    "barcode": "3034250007813",
-   "name": "קלינקס טישו כיס 12*9יח",
-   "manufacturer": "קלינקס טישו כיס 12*9יח",
+   "name": "קלינקס טישו ממחטות כ",
+   "manufacturer": "קימברלי קלארק איטליה",
    "departmentId": "non_food",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -253,6 +298,21 @@
    "needsReview": false,
    "hasAllergenData": false,
    "ingredientsKnown": false,
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3046920016377",
+   "name": "לינדט אקסלנס 100% 50",
+   "manufacturer": "לינדט אקסלנס 100% 50",
+   "departmentId": "snacks_chocolate",
+   "quantity": "1.00",
+   "unit": "יחידות",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/304/692/001/6377/front_en.152.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
    "allergensObservedOn": null
   },
   {
@@ -268,12 +328,12 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920023047",
    "name": "לינדט אקסלנס פיסטוק 100",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -283,11 +343,11 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920027281",
-   "name": "לינד.אקסלנס קרמל סולט100",
+   "name": "לינדט אקסלנס קרמל מל",
    "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
@@ -298,12 +358,12 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920028004",
    "name": "שוק.מריר לינדט 70% 100ג",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -313,12 +373,12 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920028363",
    "name": "שוק.מריר לינדט 85% 100ג",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -328,12 +388,27 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
+  },
+  {
+   "barcode": "3046920028721",
+   "name": "לינדט אקסלנס 99% 50",
+   "manufacturer": "לינדט",
+   "departmentId": "snacks_chocolate",
+   "quantity": "50.00",
+   "unit": "גרם",
+   "imageUrl": "https://images.openfoodfacts.org/images/products/304/692/002/8721/front_en.295.400.jpg",
+   "imageSource": "Open Food Facts",
+   "isActive": true,
+   "needsReview": false,
+   "hasAllergenData": true,
+   "ingredientsKnown": true,
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920028752",
-   "name": "שוק.מריר לינדט מנטה 100ג",
-   "manufacturer": "לינדט ושפרונגלי",
+   "name": "לינדט אקסלנס שוקולד",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -343,12 +418,12 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920029674",
    "name": "שוקולד מריר לינדט מלח 10",
-   "manufacturer": "לינדט ושפרונגלי",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -358,12 +433,12 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920029759",
    "name": "שוק.מריר לינדט 90% 100ג",
-   "manufacturer": "לינדט ושפרונגלי קילשברג",
+   "manufacturer": "לינדט",
    "departmentId": "snacks_chocolate",
    "quantity": "100.00",
    "unit": "גרם",
@@ -373,7 +448,7 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   },
   {
    "barcode": "3046920110341",
@@ -388,7 +463,7 @@
    "needsReview": false,
    "hasAllergenData": true,
    "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   },
   {
    "barcode": "3120581456267",
@@ -421,39 +496,9 @@
    "allergensObservedOn": null
   },
   {
-   "barcode": "3387390320244",
-   "name": "פיטנס דגני בוקר פירות375",
-   "manufacturer": "סי. פי. צרפת",
-   "departmentId": "pantry_cereal",
-   "quantity": "375.00",
-   "unit": "גרם",
-   "imageUrl": "https://www.osem-nestle.co.il/sites/site.prod.osem-nestle.co.il/files/product_images_new/12412830_3387390320244_Enlarge.jpg?v=1788548637",
-   "imageSource": "אתר היצרן",
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "3387390525960",
-   "name": "קראנץ' דגני בוקר 500 גרם",
-   "manufacturer": "סי. פי. צרפת",
-   "departmentId": "pantry_cereal",
-   "quantity": "500.00",
-   "unit": "גרם",
-   "imageUrl": "https://www.osem-nestle.co.il/sites/site.prod.osem-nestle.co.il/files/product_images_new/12412655_3387390525960_Enlarge.jpg?v=1788548734",
-   "imageSource": "אתר היצרן",
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
    "barcode": "3574660058857",
-   "name": "גונסון בייבי שמן 500 מל",
-   "manufacturer": "CILAG GMBH INTERNATIONAL",
+   "name": "גונסון בייבי שמן 500",
+   "manufacturer": "גונסון בייבי שמן 500",
    "departmentId": "oils",
    "quantity": "500.00",
    "unit": "מיליליטר",
@@ -467,8 +512,8 @@
   },
   {
    "barcode": "3574660089547",
-   "name": "טמפוני או בה נורמל 32 יח",
-   "manufacturer": "JOHNSON&JOHNSON",
+   "name": "או.בה קלאסי נורמל 32",
+   "manufacturer": "או בה",
    "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -497,8 +542,8 @@
   },
   {
    "barcode": "3574660333466",
-   "name": "32טמפ. או-בה פרוקומפ.מינ",
-   "manufacturer": "JOHNSON&JOHNSON",
+   "name": "אובה פרוקומפורט מיני",
+   "manufacturer": "או בה",
    "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -542,8 +587,8 @@
   },
   {
    "barcode": "3574661003924",
-   "name": "ליסטרין טוטל קר500מל",
-   "manufacturer": "JOHNSON&JOHNSON",
+   "name": "מי פה ליסטרין 500 מ\"",
+   "manufacturer": "גונסון אנד גונסון",
    "departmentId": "non_food",
    "quantity": "500.00",
    "unit": "מיליליטר",
@@ -647,8 +692,8 @@
   },
   {
    "barcode": "3574661552576",
-   "name": "קרפרי מגן רגיל טנגו 56יח",
-   "manufacturer": "JOHNSON&JOHNSON",
+   "name": "קרפרי מגן תחתון כותו",
+   "manufacturer": "Johnson Toilet-IT",
    "departmentId": "unclassified",
    "quantity": "1.00",
    "unit": "יחידות",
@@ -692,8 +737,8 @@
   },
   {
    "barcode": "3574669907729",
-   "name": "גונסון שמפו גולד 750 מל",
-   "manufacturer": "CILAG GMBH INTERNATIONAL",
+   "name": "גונסון בייבי שמפו גו",
+   "manufacturer": "גונסון",
    "departmentId": "non_food",
    "quantity": "750.00",
    "unit": "מיליליטר",
@@ -707,8 +752,8 @@
   },
   {
    "barcode": "3574669908948",
-   "name": "גונסון אל סבון עדין750מ",
-   "manufacturer": "CILAG GMBH INTERNATIONAL",
+   "name": "גונסון בייבי אל סבון",
+   "manufacturer": "גונסון בייבי אל סבון",
    "departmentId": "non_food",
    "quantity": "750.00",
    "unit": "מיליליטר",
@@ -721,24 +766,9 @@
    "allergensObservedOn": null
   },
   {
-   "barcode": "3600522632436",
-   "name": "ק.לילה55 אייג ספשיאליסט",
-   "manufacturer": "קרלסרו, גרמניה",
-   "departmentId": "unclassified",
-   "quantity": "50.00",
-   "unit": "מיליליטר",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": false,
-   "ingredientsKnown": true,
-   "allergensObservedOn": null
-  },
-  {
    "barcode": "3600524163075",
-   "name": "שמפו הידרה היאלורוני500מ",
-   "manufacturer": "לוריאל-אלביב",
+   "name": "שמפו אלביב Hydra Hya",
+   "manufacturer": "RAMBOUILLET",
    "departmentId": "non_food",
    "quantity": "500.00",
    "unit": "מיליליטר",
@@ -751,460 +781,85 @@
    "allergensObservedOn": null
   },
   {
-   "barcode": "4000417013002",
-   "name": "שוק.ריטר לבן אגוז שלם100",
-   "manufacturer": "אלפרד ריטר",
-   "departmentId": "unclassified",
-   "quantity": "100.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "4000417019004",
-   "name": "שוק.ריטר חלב אגוז שלם100",
-   "manufacturer": "אלפרד ריטר",
-   "departmentId": "dairy_milk",
-   "quantity": "100.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290011570644",
-   "name": "קמח לחם ללא גלוטן 500 גר",
-   "manufacturer": "אשבל מזון פונקציונלי בע\\",
-   "departmentId": "bakery_bread",
-   "quantity": "500.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290011876722",
-   "name": "שניצל לל\"ג 600ג מאמא עוף",
-   "manufacturer": "תנובה גליל שותפות מוגבלת",
-   "departmentId": "meat_fresh",
-   "quantity": "600.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290011876739",
-   "name": "אצבע שניצל ללג600מאמאעוף",
-   "manufacturer": "תנובה גליל שותפות מוגבלת",
-   "departmentId": "meat_fresh",
-   "quantity": "600.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290012208768",
-   "name": "וופל בלגי ללא גלוטן 250ג",
-   "manufacturer": "מאפה פסח",
-   "departmentId": "snacks_cookies",
-   "quantity": "250.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290013121028",
-   "name": "לחם לבן ללא גלוטן 500גרם",
-   "manufacturer": "לחם לבן ללא גלוטן 500גרם",
-   "departmentId": "bakery_bread",
-   "quantity": "500.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290013121035",
-   "name": "לחם פשתן ללא גלוטן 500גר",
-   "manufacturer": "לחם פשתן ללא גלוטן 500גר",
-   "departmentId": "bakery_bread",
-   "quantity": "500.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290013121127",
-   "name": "לחמניות מיני לא גלוטן420",
-   "manufacturer": "לחמניות מיני לא גלוטן420",
-   "departmentId": "bakery_rolls",
-   "quantity": "460.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290013121752",
-   "name": "לחם לבן ביתי ללא גלוטן 7",
-   "manufacturer": "לחם לבן ביתי ללא גלוטן 7",
-   "departmentId": "bakery_bread",
-   "quantity": "700.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290013121776",
-   "name": "לחם כפרי ללת\"ס700 גרם",
-   "manufacturer": "לחם כפרי ללת\"ס700 גרם",
-   "departmentId": "bakery_bread",
-   "quantity": "700.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290013645050",
-   "name": "פירורי לחם לל\"ג300 שרהלה",
-   "manufacturer": "פירורי לחם לל\"ג300 שרהלה",
-   "departmentId": "bakery_bread",
-   "quantity": "300.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290014692305",
-   "name": "גבינת קממבר 125ג אירו",
-   "manufacturer": "גבינת קממבר 125ג אירו",
-   "departmentId": "dairy_cheese",
-   "quantity": "125.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290014785991",
-   "name": "רוטב סויה ללא גלוטן500מל",
-   "manufacturer": "GUANGZHOU LIANYI",
-   "departmentId": "condiments_sauces",
+   "barcode": "3600524163082",
+   "name": "אלביב מרכך משקם 500 מל",
+   "manufacturer": "לוריאל-אלביב",
+   "departmentId": "non_food",
    "quantity": "500.00",
    "unit": "מיליליטר",
    "imageUrl": null,
    "imageSource": null,
    "isActive": true,
    "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290015161831",
-   "name": "פת פריכה אמרנט ל.ג100ג",
-   "manufacturer": "אקסטרודו בציצה",
-   "departmentId": "unclassified",
-   "quantity": "100.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
+   "hasAllergenData": false,
    "ingredientsKnown": false,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290015599023",
-   "name": "צהובה טבעונית קלאסי200ג",
-   "manufacturer": "צהובה טבעונית קלאסי200ג",
-   "departmentId": "dairy_cheese",
-   "quantity": "200.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290015599054",
-   "name": "צהובה טבעונית צדר 200גר",
-   "manufacturer": "צהובה טבעונית צדר 200גר",
-   "departmentId": "dairy_cheese",
-   "quantity": "200.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290015599061",
-   "name": "צהובה טבעונית מוצרלה200ג",
-   "manufacturer": "אריויה",
-   "departmentId": "dairy_cheese",
-   "quantity": "200.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290015599078",
-   "name": "צהובה טבעו.עשבי תיבול200",
-   "manufacturer": "צהובה טבעו.עשבי תיבול200",
-   "departmentId": "dairy_cheese",
-   "quantity": "200.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290015879705",
-   "name": "תערובתאיטלקית לאפיה לל\"ג",
-   "manufacturer": "כללי",
-   "departmentId": "unclassified",
-   "quantity": "1.00",
-   "unit": "קילוגרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290015879729",
-   "name": "תערובת לאפיה ללא גלוטן.",
-   "manufacturer": "כללי",
-   "departmentId": "health_free_from",
-   "quantity": "500.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290016505016",
-   "name": "שוקולד פנדה קלאסי 100 גר",
-   "manufacturer": "פנדה מוצרים טבעונים בע\"מ",
-   "departmentId": "snacks_chocolate",
-   "quantity": "100.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290016505047",
-   "name": "ממתק פנדה קרמל 100 גרם",
-   "manufacturer": "פנדה מוצרים טבעונים בע\"מ",
-   "departmentId": "snacks_candy",
-   "quantity": "100.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290016505061",
-   "name": "שוקולד לבן עוגיות100פנדה",
-   "manufacturer": "פנדה מוצרים טבעונים בע\"מ",
-   "departmentId": "snacks_chocolate",
-   "quantity": "100.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290016505177",
-   "name": "פנדה קרם אגוזים 100 גרם",
-   "manufacturer": "פנדה מוצרים טבעונים בע\"מ",
-   "departmentId": "snacks_nuts",
-   "quantity": "100.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290016505450",
-   "name": "קאפס חמאת בוטנים126 פנדה",
-   "manufacturer": "פנדה מוצרים טבעונים בע\"מ",
-   "departmentId": "snacks_nuts",
-   "quantity": "126.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290016505467",
-   "name": "קאפס קרם אגוזים126ג פנדה",
-   "manufacturer": "פנדה מוצרים טבעונים בע\"מ",
-   "departmentId": "snacks_nuts",
-   "quantity": "126.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290017040318",
-   "name": "פיצה מרגריטה לל\"ג330גר",
-   "manufacturer": "PAZZAMI\\n",
-   "departmentId": "unclassified",
-   "quantity": "330.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290017040554",
-   "name": "מאפה דונאטס תות  111 גרם",
-   "manufacturer": "מאפה דונאטס תות  111 גרם",
-   "departmentId": "bakery_pastry",
-   "quantity": "111.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
-  },
-  {
-   "barcode": "7290017040578",
-   "name": "מאפה דונאטס שוקולד 111 ג",
-   "manufacturer": "מאפה דונאטס שוקולד 111 ג",
-   "departmentId": "snacks_chocolate",
-   "quantity": "111.00",
-   "unit": "גרם",
-   "imageUrl": null,
-   "imageSource": null,
-   "isActive": true,
-   "needsReview": false,
-   "hasAllergenData": true,
-   "ingredientsKnown": true,
-   "allergensObservedOn": "2026-09-05"
+   "allergensObservedOn": null
   }
  ],
  "allergens": {
+  "0644209307494": {
+   "levels": {
+    "gluten": "contains"
+   },
+   "sources": [
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
   "0644209307579": {
    "levels": {
     "gluten": "contains"
+   },
+   "sources": [
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
+  "0644209311316": {
+   "levels": {
+    "gluten": "contains"
+   },
+   "sources": [
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
+  "0722252387509": {
+   "levels": {
+    "almond": "contains",
+    "gluten": "contains",
+    "milk": "may_contain",
+    "sesame": "may_contain",
+    "soy": "contains",
+    "tree_nuts": "contains"
+   },
+   "sources": [
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
+  "0722252387530": {
+   "levels": {
+    "gluten": "contains",
+    "milk": "may_contain",
+    "peanuts": "contains",
+    "sesame": "may_contain",
+    "soy": "contains",
+    "tree_nuts": "may_contain"
+   },
+   "sources": [
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
+  "0722252387578": {
+   "levels": {
+    "gluten": "contains",
+    "milk": "may_contain",
+    "peanuts": "contains",
+    "sesame": "may_contain",
+    "soy": "contains",
+    "tree_nuts": "contains"
    },
    "sources": [
     "open_food_facts"
@@ -1220,13 +875,43 @@
    ],
    "inferred": []
   },
+  "0851621000043": {
+   "levels": {
+    "gluten": "contains",
+    "sulphites": "contains"
+   },
+   "sources": [
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
   "0856591000109": {
    "levels": {
     "eggs": "may_contain",
     "gluten": "contains",
-    "sesame": "may_contain",
-    "soy": "may_contain",
+    "sesame": "contains",
+    "soy": "contains",
     "wheat": "contains"
+   },
+   "sources": [
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
+  "0884912102102": {
+   "levels": {
+    "gluten": "contains",
+    "milk": "contains",
+    "tree_nuts": "contains"
+   },
+   "sources": [
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
+  "0884912113139": {
+   "levels": {
+    "gluten": "contains"
    },
    "sources": [
     "open_food_facts"
@@ -1262,54 +947,14 @@
    ],
    "inferred": []
   },
-  "0884912359155": {
+  "3046920016377": {
    "levels": {
-    "gluten": "contains"
-   },
-   "sources": [
-    "open_food_facts"
-   ],
-   "inferred": []
-  },
-  "0884912359162": {
-   "levels": {
-    "gluten": "contains",
-    "milk": "contains",
+    "milk": "may_contain",
     "soy": "contains",
-    "tree_nuts": "contains"
+    "tree_nuts": "may_contain"
    },
    "sources": [
     "open_food_facts"
-   ],
-   "inferred": []
-  },
-  "0884912359421": {
-   "levels": {
-    "gluten": "contains",
-    "soy": "contains",
-    "tree_nuts": "contains"
-   },
-   "sources": [
-    "open_food_facts"
-   ],
-   "inferred": []
-  },
-  "0884912359483": {
-   "levels": {
-    "gluten": "contains",
-    "soy": "contains"
-   },
-   "sources": [
-    "open_food_facts"
-   ],
-   "inferred": []
-  },
-  "3017800501627": {
-   "levels": {
-    "corn": "contains"
-   },
-   "sources": [
-    "retailer"
    ],
    "inferred": []
   },
@@ -1342,13 +987,13 @@
     "cashew": "may_contain",
     "gluten": "may_contain",
     "hazelnut": "may_contain",
-    "lactose": "may_contain",
+    "lactose": "contains",
     "macadamia": "may_contain",
-    "milk": "may_contain",
+    "milk": "contains",
     "pecan": "may_contain",
     "pistachio": "contains",
     "sesame": "may_contain",
-    "soy": "may_contain",
+    "soy": "contains",
     "tree_nuts": "contains",
     "wheat": "may_contain"
    },
@@ -1413,6 +1058,18 @@
    },
    "sources": [
     "retailer",
+    "open_food_facts"
+   ],
+   "inferred": []
+  },
+  "3046920028721": {
+   "levels": {
+    "milk": "contains",
+    "sesame": "may_contain",
+    "soy": "may_contain",
+    "tree_nuts": "may_contain"
+   },
+   "sources": [
     "open_food_facts"
    ],
    "inferred": []
@@ -1503,512 +1160,6 @@
    "sources": [
     "retailer",
     "open_food_facts"
-   ],
-   "inferred": []
-  },
-  "3387390320244": {
-   "levels": {
-    "almond": "may_contain",
-    "barley": "contains",
-    "coconut": "contains",
-    "gluten": "contains",
-    "lactose": "may_contain",
-    "milk": "may_contain",
-    "sulphites": "contains",
-    "tree_nuts": "may_contain",
-    "wheat": "contains"
-   },
-   "sources": [
-    "retailer",
-    "manufacturer"
-   ],
-   "inferred": []
-  },
-  "3387390525960": {
-   "levels": {
-    "almond": "may_contain",
-    "corn": "contains",
-    "gluten": "contains",
-    "lactose": "may_contain",
-    "milk": "may_contain",
-    "peanuts": "may_contain",
-    "soy": "contains",
-    "tree_nuts": "may_contain",
-    "wheat": "contains"
-   },
-   "sources": [
-    "retailer",
-    "manufacturer"
-   ],
-   "inferred": []
-  },
-  "4000417013002": {
-   "levels": {
-    "almond": "may_contain",
-    "barley": "contains",
-    "brazil_nut": "may_contain",
-    "cashew": "may_contain",
-    "eggs": "may_contain",
-    "gluten": "contains",
-    "hazelnut": "contains",
-    "lactose": "contains",
-    "macadamia": "may_contain",
-    "milk": "contains",
-    "peanuts": "may_contain",
-    "pecan": "may_contain",
-    "pistachio": "may_contain",
-    "soy": "contains",
-    "tree_nuts": "contains",
-    "walnut": "may_contain"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "4000417019004": {
-   "levels": {
-    "almond": "may_contain",
-    "barley": "may_contain",
-    "brazil_nut": "may_contain",
-    "cashew": "may_contain",
-    "eggs": "may_contain",
-    "gluten": "may_contain",
-    "hazelnut": "contains",
-    "lactose": "contains",
-    "macadamia": "may_contain",
-    "milk": "contains",
-    "oats": "may_contain",
-    "peanuts": "may_contain",
-    "pecan": "may_contain",
-    "pistachio": "may_contain",
-    "rye": "may_contain",
-    "soy": "contains",
-    "tree_nuts": "contains",
-    "walnut": "may_contain",
-    "wheat": "may_contain"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290011570644": {
-   "levels": {
-    "gluten": "absent",
-    "soy": "may_contain",
-    "yeast": "contains"
-   },
-   "sources": [
-    "declared_free_from",
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290011876722": {
-   "levels": {
-    "corn": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "soy": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290011876739": {
-   "levels": {
-    "barley": "may_contain",
-    "celery": "may_contain",
-    "corn": "contains",
-    "gluten": "may_contain",
-    "mustard": "may_contain",
-    "sesame": "may_contain",
-    "soy": "may_contain",
-    "wheat": "may_contain"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290012208768": {
-   "levels": {
-    "corn": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "legumes": "contains",
-    "pea": "contains",
-    "sesame": "may_contain",
-    "soy": "may_contain"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290013121028": {
-   "levels": {
-    "coconut": "may_contain",
-    "corn": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "sesame": "may_contain",
-    "soy": "contains",
-    "tree_nuts": "may_contain",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290013121035": {
-   "levels": {
-    "coconut": "may_contain",
-    "corn": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "sesame": "may_contain",
-    "soy": "contains",
-    "tree_nuts": "may_contain",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290013121127": {
-   "levels": {
-    "eggs": "contains",
-    "gluten": "absent",
-    "sesame": "contains",
-    "soy": "contains",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290013121752": {
-   "levels": {
-    "corn": "contains",
-    "gluten": "contains",
-    "soy": "contains",
-    "tree_nuts": "may_contain",
-    "walnut": "may_contain",
-    "wheat": "contains",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290013121776": {
-   "levels": {
-    "corn": "contains",
-    "gluten": "absent",
-    "sesame": "may_contain",
-    "soy": "contains",
-    "tree_nuts": "may_contain",
-    "walnut": "may_contain"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290013645050": {
-   "levels": {
-    "coconut": "may_contain",
-    "corn": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "sesame": "may_contain",
-    "soy": "may_contain",
-    "tree_nuts": "may_contain",
-    "walnut": "may_contain",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290014692305": {
-   "levels": {
-    "lactose": "contains",
-    "milk": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290014785991": {
-   "levels": {
-    "corn": "contains",
-    "gluten": "absent",
-    "soy": "contains",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290015161831": {
-   "levels": {
-    "gluten": "absent"
-   },
-   "sources": [
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290015599023": {
-   "levels": {
-    "coconut": "contains",
-    "corn": "contains",
-    "gluten": "contains",
-    "lactose": "contains",
-    "milk": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290015599054": {
-   "levels": {
-    "coconut": "contains",
-    "corn": "contains",
-    "gluten": "contains",
-    "lactose": "contains",
-    "milk": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290015599061": {
-   "levels": {
-    "coconut": "contains",
-    "corn": "contains",
-    "gluten": "contains",
-    "lactose": "contains",
-    "milk": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290015599078": {
-   "levels": {
-    "coconut": "contains",
-    "corn": "contains",
-    "gluten": "contains",
-    "lactose": "contains",
-    "milk": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290015879705": {
-   "levels": {
-    "buckwheat": "contains",
-    "corn": "contains",
-    "gluten": "absent",
-    "mustard": "may_contain",
-    "sesame": "may_contain",
-    "soy": "may_contain"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290015879729": {
-   "levels": {
-    "gluten": "absent",
-    "mustard": "may_contain",
-    "sesame": "may_contain",
-    "soy": "may_contain"
-   },
-   "sources": [
-    "declared_free_from",
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290016505016": {
-   "levels": {
-    "coconut": "contains",
-    "gluten": "may_contain",
-    "peanuts": "may_contain",
-    "sesame": "may_contain",
-    "soy": "may_contain",
-    "tree_nuts": "may_contain"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290016505047": {
-   "levels": {
-    "coconut": "contains",
-    "gluten": "may_contain",
-    "peanuts": "may_contain",
-    "sesame": "may_contain",
-    "soy": "may_contain",
-    "tree_nuts": "may_contain"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290016505061": {
-   "levels": {
-    "coconut": "contains",
-    "corn": "contains",
-    "gluten": "contains",
-    "peanuts": "may_contain",
-    "sesame": "may_contain",
-    "soy": "contains",
-    "tree_nuts": "may_contain",
-    "wheat": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290016505177": {
-   "levels": {
-    "almond": "contains",
-    "cashew": "contains",
-    "coconut": "contains",
-    "gluten": "may_contain",
-    "hazelnut": "contains",
-    "peanuts": "may_contain",
-    "sesame": "may_contain",
-    "soy": "may_contain",
-    "tree_nuts": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290016505450": {
-   "levels": {
-    "coconut": "contains",
-    "gluten": "may_contain",
-    "peanuts": "contains",
-    "sesame": "may_contain",
-    "soy": "may_contain",
-    "tree_nuts": "may_contain"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290016505467": {
-   "levels": {
-    "almond": "contains",
-    "brazil_nut": "may_contain",
-    "cashew": "contains",
-    "coconut": "contains",
-    "gluten": "may_contain",
-    "hazelnut": "contains",
-    "macadamia": "may_contain",
-    "peanuts": "may_contain",
-    "pecan": "may_contain",
-    "pistachio": "may_contain",
-    "sesame": "may_contain",
-    "soy": "may_contain",
-    "tree_nuts": "contains",
-    "walnut": "may_contain"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290017040318": {
-   "levels": {
-    "buckwheat": "contains",
-    "gluten": "contains",
-    "lactose": "contains",
-    "legumes": "contains",
-    "milk": "contains",
-    "pea": "contains"
-   },
-   "sources": [
-    "retailer"
-   ],
-   "inferred": []
-  },
-  "7290017040554": {
-   "levels": {
-    "almond": "may_contain",
-    "coconut": "contains",
-    "corn": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "hazelnut": "contains",
-    "lactose": "contains",
-    "milk": "contains",
-    "pistachio": "may_contain",
-    "soy": "contains",
-    "sunflower": "contains",
-    "tree_nuts": "contains",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
-   ],
-   "inferred": []
-  },
-  "7290017040578": {
-   "levels": {
-    "almond": "may_contain",
-    "coconut": "contains",
-    "eggs": "contains",
-    "gluten": "absent",
-    "hazelnut": "contains",
-    "lactose": "contains",
-    "milk": "contains",
-    "pistachio": "may_contain",
-    "soy": "contains",
-    "sunflower": "contains",
-    "tree_nuts": "contains",
-    "yeast": "contains"
-   },
-   "sources": [
-    "retailer",
-    "declared_free_from"
    ],
    "inferred": []
   }
@@ -2275,90 +1426,5 @@
    "parentId": null
   }
  ],
- "conflicts": {
-  "7290011876739": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר עלול להכיל. המערכת מחמירה ומציגה עלול להכיל."
-   }
-  ],
-  "7290013121752": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר מכיל. המערכת מחמירה ומציגה מכיל."
-   }
-  ],
-  "7290014692305": [
-   {
-    "allergenId": "lactose",
-    "message": "סתירה בין מקורות לגבי לקטוז: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר מכיל. המערכת מחמירה ומציגה מכיל."
-   }
-  ],
-  "7290015599023": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר מכיל. המערכת מחמירה ומציגה מכיל."
-   }
-  ],
-  "7290015599054": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר מכיל. המערכת מחמירה ומציגה מכיל."
-   }
-  ],
-  "7290015599061": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר מכיל. המערכת מחמירה ומציגה מכיל."
-   }
-  ],
-  "7290015599078": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר מכיל. המערכת מחמירה ומציגה מכיל."
-   }
-  ],
-  "7290016505016": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר עלול להכיל. המערכת מחמירה ומציגה עלול להכיל."
-   }
-  ],
-  "7290016505047": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר עלול להכיל. המערכת מחמירה ומציגה עלול להכיל."
-   }
-  ],
-  "7290016505061": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר מכיל. המערכת מחמירה ומציגה מכיל."
-   }
-  ],
-  "7290016505177": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר עלול להכיל. המערכת מחמירה ומציגה עלול להכיל."
-   }
-  ],
-  "7290016505450": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר עלול להכיל. המערכת מחמירה ומציגה עלול להכיל."
-   }
-  ],
-  "7290016505467": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר עלול להכיל. המערכת מחמירה ומציגה עלול להכיל."
-   }
-  ],
-  "7290017040318": [
-   {
-    "allergenId": "gluten",
-    "message": "סתירה בין מקורות לגבי גלוטן: הצהרת \"ללא\" על האריזה מצהיר שאינו קיים, אתר הרשת מצהיר מכיל. המערכת מחמירה ומציגה מכיל."
-   }
-  ]
- }
+ "conflicts": {}
 }

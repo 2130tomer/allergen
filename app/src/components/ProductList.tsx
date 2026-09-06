@@ -27,7 +27,7 @@ import {
   UNKNOWN_SECTION_SUBTITLE,
   UNKNOWN_SECTION_TITLE,
 } from '../legal/copy';
-import { color, space, TOUCH_TARGET, typeScale } from '../theme';
+import { cardShadow, color, radius, space, TOUCH_TARGET, typeScale } from '../theme';
 
 interface Props {
   products: ProductSummary[];
@@ -208,22 +208,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: space.md,
     minHeight: TOUCH_TARGET + 8,
-    paddingHorizontal: space.lg,
+    paddingHorizontal: space.md,
     paddingVertical: space.md,
     backgroundColor: color.surface,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderBottomColor: color.rule,
+    borderRadius: radius.card,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: color.rule,
+    marginHorizontal: space.md,
+    marginBottom: space.sm,
+    ...cardShadow,
   },
   rowPressed: { backgroundColor: color.actionSoft },
   rowText: { flex: 1 },
   thumb: {
-    width: 52,
-    height: 52,
+    width: 56,
+    height: 56,
+    borderRadius: radius.control,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: color.rule,
     backgroundColor: color.ground,
     alignItems: 'center',
     justifyContent: 'center',
+    overflow: 'hidden',
   },
   thumbImage: { width: '100%', height: '100%' },
   thumbEmpty: {

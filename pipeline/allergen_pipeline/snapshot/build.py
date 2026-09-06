@@ -19,7 +19,7 @@ from ..catalog.product import Product
 from ..domain import allergens as allergen_catalog
 from ..domain.resolution import ResolvedAllergens
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 _SCHEMA = """
 PRAGMA journal_mode = OFF;

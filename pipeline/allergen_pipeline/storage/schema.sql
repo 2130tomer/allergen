@@ -79,12 +79,15 @@ CREATE TABLE IF NOT EXISTS allergen_claims (
     level           TEXT NOT NULL CHECK (level IN ('contains', 'may_contain', 'absent')),
     source          TEXT NOT NULL,
     source_ref      TEXT,
-    observed_on     DATE NOT NULL,
+    observed_on     DATE,
     -- נכון כשהרמה נגזרה מפירוק רשימה שטוחה ולא נאמרה במפורש במקור.
     level_inferred  BOOLEAN NOT NULL DEFAULT FALSE,
     retired_at      TIMESTAMPTZ,
     UNIQUE (barcode, allergen_id, source, observed_on)
 );
+
+-- Legacy observations without a recorded collection date remain undated.
+ALTER TABLE allergen_claims ALTER COLUMN observed_on DROP NOT NULL;
 
 -- רק מקור יצרן רשאי לקבוע שאלרגן נעדר. ראו ADR-0002.
 ALTER TABLE allergen_claims

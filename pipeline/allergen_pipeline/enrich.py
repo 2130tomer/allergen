@@ -24,6 +24,7 @@ from pathlib import Path
 
 import httpx
 
+from .cache import is_fresh, observation_date, observed_record, write_json
 from .domain.claims import AllergenClaim, Level, Source
 from .ingredients.mapping import IngredientAllergenMap
 from .sources import openfoodfacts as off
@@ -43,7 +44,7 @@ from .sources import openfoodfacts as off
 ההעשרה אף פעם אינה תנאי לבניית הקטלוג. מוצר בלי מידע נכנס לאפליקציה
 עם "אין מידע", וזה מצב תקין. ראו ADR-0001.
 """
-REQUESTS_PER_MINUTE = 30
+REQUESTS_PER_MINUTE = 12
 WORKERS = 2
 MAX_RETRIES = 3
 RETRY_BACKOFF_SECONDS = 10.0
@@ -107,21 +108,18 @@ class OffCache:
                 self._entries = {}
 
     def known(self, barcode: str) -> bool:
-        return barcode in self._entries
+        return is_fresh(self._entries.get(barcode))
 
     def get(self, barcode: str) -> dict | None:
         entry = self._entries.get(barcode)
-        return entry or None
+        return entry if entry and not entry.get("_not_found") else None
 
     def remember(self, barcode: str, payload: dict | None) -> None:
         # מוצר שלא נמצא נשמר כאובייקט ריק, כדי שלא נחזור לשאול עליו.
-        self._entries[barcode] = payload or {}
+        self._entries[barcode] = observed_record(payload, self.get(barcode))
 
     def save(self) -> None:
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.path.write_text(
-            json.dumps(self._entries, ensure_ascii=False), encoding="utf-8"
-        )
+        write_json(self.path, self._entries)
 
     def __len__(self) -> int:
         return len(self._entries)
@@ -158,7 +156,7 @@ def _from_payload(payload: dict) -> off.OffProduct | None:
 def collect_from_open_food_facts(
     barcodes: list[str],
     cache: OffCache,
-    observed_on: date,
+    observed_on: date | None,
     ingredient_map: IngredientAllergenMap,
     progress_every: int = 20,
     verbose: bool = True,
@@ -194,8 +192,9 @@ def collect_from_open_food_facts(
         for tag in product.unmapped_tags:
             stats.unmapped_tags[tag] = stats.unmapped_tags.get(tag, 0) + 1
 
-        claims = off.to_claims(product, observed_on)
-        hidden = _hidden_from_ingredients(product, claims, ingredient_map, observed_on)
+        source_date = observation_date((cache.get(barcode) or {}).get("observed_on"))
+        claims = off.to_claims(product, source_date)
+        hidden = _hidden_from_ingredients(product, claims, ingredient_map, source_date)
         if hidden:
             stats.hidden_allergens_found += len(hidden)
         claims.extend(hidden)
@@ -241,6 +240,10 @@ def _fetch_missing(
                     product = future.result()
                 except Exception:  # noqa: BLE001 - נספר ולא נשמר כאילו אין אלרגנים
                     stats.failures += 1
+                    if _should_abort(completed, stats.failures):
+                        for pending in futures:
+                            pending.cancel()
+                        break
                     continue
                 cache.remember(barcode, _as_payload(product) if product else None)
 
@@ -297,11 +300,62 @@ def _fetch_with_retry(
     raise last_error if last_error else RuntimeError(barcode)
 
 
-def load_manufacturer_claims(path: Path) -> dict[str, list[AllergenClaim]]:
+def _site_group(page_url: str | None):
+    """הקבוצה התאגידית שהאתר הזה שייך לה, או None כשאינו במרשם."""
+    from urllib.parse import urlsplit
+
+    from .catalog import manufacturers
+
+    if not page_url:
+        return None
+    host = urlsplit(page_url).netloc.lower().removeprefix("www.")
+    if not host:
+        return None
+    for group in manufacturers.GROUPS:
+        if not group.website:
+            continue
+        known = urlsplit(group.website).netloc.lower().removeprefix("www.")
+        if known and known == host:
+            return group
+    return None
+
+
+def _declaration_is_by_the_products_manufacturer(
+    page_url: str | None, catalog_manufacturer: str | None
+) -> bool:
+    """האם ההצהרה הגיעה מאתר היצרן של המוצר הזה.
+
+    שתי הזהויות נבדקות ולא אחת. לא די בכך שהטקסט הגיע מאתר יצרן כלשהו:
+    דף של אסם אינו מעיד על מוצר של תנובה, וזה בדיוק מה שקורה כשברקוד
+    ממוחזר או משויך בטעות. היעדר זיהוי משני הצדדים נחשב כישלון, כי
+    היעדר ידיעה אינו ראיה.
+    """
+    from .catalog import manufacturers
+
+    site = _site_group(page_url)
+    if site is None:
+        return False
+    owner = manufacturers.group_of(catalog_manufacturer)
+    return owner is not None and owner.id == site.id
+
+
+def load_manufacturer_claims(
+    path: Path,
+    manufacturer_by_barcode: dict[str, str | None] | None = None,
+) -> dict[str, list[AllergenClaim]]:
     """קורא קביעות יצרן שנשמרו על ידי fetch_manufacturers.
 
     הקביעות נטענות מקובץ ולא נמשכות ברשת בכל בנייה, כי אתרי היצרנים
     איטיים ואין סיבה להטריד אותם בכל ריצה.
+
+    כאן גם המקום היחיד שבו נולדת קביעת היעדר, כלומר הסימון הירוק.
+    ADR-0008 חוסם טקסט קמעונאי כראיית אריזה, ובצדק: שם מוצר בקובץ
+    שקיפות הוא מחרוזת קופה קטועה. דף היצרן הוא הצהרת היצרן עצמו על
+    המוצר שלו, וזו הראיה היחידה ש-ADR-0007 מתיר לצבוע בה ירוק.
+
+    התנאי מחמיר בכוונה ודורש את שתי הזהויות: שהדף שייך ליצרן שבמרשם,
+    ושהיצרן שרשום על המוצר בקטלוג הוא אותו יצרן. בלי הקטלוג אין את מי
+    לאמת, ואז אין ירוק כלל.
     """
     if not path.exists():
         return {}
@@ -310,20 +364,58 @@ def load_manufacturer_claims(path: Path) -> dict[str, list[AllergenClaim]]:
     except (OSError, json.JSONDecodeError):
         return {}
 
+    from .ingredients.free_from import FreeFromDetector
+
+    detector = FreeFromDetector.load()
+    known = manufacturer_by_barcode or {}
+
     claims_by_barcode: dict[str, list[AllergenClaim]] = {}
     for barcode, record in raw.items():
         observed_on = date.fromisoformat(record["observed_on"])
-        claims_by_barcode[barcode] = [
+        page_url = record.get("page_url")
+        claims = [
             AllergenClaim(
                 allergen_id=entry["allergen_id"],
                 level=Level(entry["level"]),
                 source=Source.MANUFACTURER,
                 observed_on=observed_on,
-                source_ref=record.get("page_url"),
+                source_ref=page_url,
                 level_inferred=bool(entry.get("level_inferred")),
             )
             for entry in record.get("claims", [])
         ]
+
+        declared, reduced = detector.detect(
+            record.get("name"), record.get("ingredients_text")
+        )
+        # הפחתה היא נוכחות, ולכן היא נרשמת בלי קשר לאימות הזהות.
+        claims.extend(
+            AllergenClaim(
+                allergen_id=claim.allergen_id,
+                level=Level.CONTAINS,
+                source=Source.MANUFACTURER,
+                observed_on=observed_on,
+                source_ref=page_url,
+            )
+            for claim in reduced
+        )
+        if declared and _declaration_is_by_the_products_manufacturer(
+            page_url, known.get(barcode)
+        ):
+            reduced_ids = {claim.allergen_id for claim in reduced}
+            claims.extend(
+                AllergenClaim(
+                    allergen_id=claim.allergen_id,
+                    level=Level.ABSENT,
+                    source=Source.DECLARED_FREE_FROM,
+                    observed_on=observed_on,
+                    source_ref=page_url,
+                )
+                for claim in declared
+                if claim.allergen_id not in reduced_ids
+            )
+
+        claims_by_barcode[barcode] = claims
     return claims_by_barcode
 
 
@@ -350,7 +442,7 @@ def load_retailer_claims(
 
     by_barcode: dict[str, list[AllergenClaim]] = {}
     for barcode, record in raw.items():
-        if not record:
+        if not record or record.get("_not_found"):
             continue
         product = ShufersalProduct(
             barcode=record.get("barcode", barcode),
@@ -362,9 +454,7 @@ def load_retailer_claims(
             contains_terms=tuple(record.get("contains_terms") or ()),
             may_contain_terms=tuple(record.get("may_contain_terms") or ()),
         )
-        observed_on = date.fromisoformat(
-            record.get("observed_on") or date.today().isoformat()
-        )
+        observed_on = observation_date(record.get("observed_on"))
         found = retailer_claims.to_claims(
             product, ingredient_map, observed_on, free_from=free_from
         )
@@ -397,7 +487,7 @@ def load_rami_levy_claims(
 
     by_barcode: dict[str, list[AllergenClaim]] = {}
     for barcode, record in raw.items():
-        if not record:
+        if not record or record.get("_not_found"):
             continue
         product = RamiLevyProduct(
             barcode=record.get("barcode", barcode),
@@ -409,15 +499,57 @@ def load_rami_levy_claims(
             page_url=record.get("page_url") or PRODUCT_URL.format(barcode=barcode),
             unknown_codes=tuple(record.get("unknown_codes") or ()),
         )
-        observed_on = date.fromisoformat(
-            record.get("observed_on") or date.today().isoformat()
-        )
+        observed_on = observation_date(record.get("observed_on"))
         found = retailer_claims.rami_levy_to_claims(
             product, ingredient_map, observed_on, free_from=free_from
         )
         if found:
             by_barcode[barcode] = found
     return by_barcode
+
+
+def free_from_claims_from_names(
+    names_by_barcode: dict[str, str | None],
+    observed_on: date,
+) -> dict[str, list[AllergenClaim]]:
+    """הצהרות הפחתה שמופיעות בשם המוצר. היעדר אינו נגזר מכאן.
+
+    הגרסה הראשונה של הפונקציה הזו ייצרה גם קביעות היעדר, בנימוק ששם
+    המוצר בקובץ השקיפות הוא השם שהיצרן מפרסם. הנימוק לא החזיק: השמות
+    האלה הם מחרוזות קופה, קטועות ומקוצרות, כמו "עוג.ללא גלוטן שוקו150ג"
+    ו"סולת תמי ללא גלוטן 3". סימון ירוק אומר למשתמש שהיצרן הצהיר על
+    האריזה, ומחרוזת קופה אינה האריזה.
+
+    ADR-0008 מכריע זאת במפורש: טקסט שנגרד משם קמעונאי או משדה רכיבים
+    אינו ראיית אריזה מאומתת ואינו יכול לייצר ABSENT. הצהרת הפחתה נשארת,
+    כי היא הכיוון המחמיר: מוצר "דל לקטוז" מכיל לקטוז.
+
+    הנראות של מוצרי המדף הייעודי לאלרגיים נפתרת בסיווג ולא כאן. מוצר
+    ששמו אומר "ללא גלוטן" מגיע למחלקת "ללא גלוטן וטבעוני" וניתן לעיון,
+    בלי שנסמן אותו כבטוח.
+    """
+    from .ingredients.free_from import FreeFromDetector
+
+    detector = FreeFromDetector.load()
+    claims: dict[str, list[AllergenClaim]] = {}
+
+    for barcode, name in names_by_barcode.items():
+        if not name:
+            continue
+        _, reduced = detector.detect(name)
+        found = [
+            AllergenClaim(
+                allergen_id=claim.allergen_id,
+                level=Level.CONTAINS,
+                source=Source.RETAILER,
+                observed_on=observed_on,
+                source_ref="שם המוצר",
+            )
+            for claim in reduced
+        ]
+        if found:
+            claims[barcode] = found
+    return claims
 
 
 def merge_claim_sources(
@@ -439,7 +571,7 @@ def _hidden_from_ingredients(
     product: off.OffProduct,
     existing: list[AllergenClaim],
     ingredient_map: IngredientAllergenMap,
-    observed_on: date,
+    observed_on: date | None,
 ) -> list[AllergenClaim]:
     """אלרגנים שברשימת הרכיבים ולא בהצהרת התגיות.
 
@@ -448,7 +580,7 @@ def _hidden_from_ingredients(
     """
     if not product.ingredients_text:
         return []
-    declared = {claim.allergen_id for claim in existing}
+    declared = {claim.allergen_id for claim in existing if claim.level is Level.CONTAINS}
     from_ingredients = ingredient_map.allergen_ids(product.ingredients_text)
     return [
         AllergenClaim(

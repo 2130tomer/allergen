@@ -106,7 +106,7 @@ def _pick_level(positives: list[AllergenClaim]) -> AllergenClaim:
             0 if claim.level_inferred else 1,
             confidence_tier(claim.source),
             1 if claim.level is Level.CONTAINS else 0,
-            claim.observed_on,
+            claim.observed_on or date.min,
         ),
     )
 
@@ -119,11 +119,11 @@ def _resolve_one(allergen_id: str, acc: _Accumulator) -> ResolvedAllergen | None
             allergen_id=allergen_id,
             level=deciding.level,
             sources=contributing,
-            observed_on=max(c.observed_on for c in acc.positives),
+            observed_on=deciding.observed_on,
             level_inferred=deciding.level_inferred,
         )
     if acc.absences:
-        latest = max(acc.absences, key=lambda c: c.observed_on)
+        latest = max(acc.absences, key=lambda c: c.observed_on or date.min)
         return ResolvedAllergen(
             allergen_id=allergen_id,
             level=Level.ABSENT,

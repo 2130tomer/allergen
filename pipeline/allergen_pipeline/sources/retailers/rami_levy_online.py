@@ -83,7 +83,11 @@ def parse_product(payload: dict, requested_barcode: str) -> RamiLevyProduct | No
     שנתבקשה נדחית, כי הצגת אלרגנים של מוצר שכן היא בדיוק הטעות שאין
     לה תיקון.
     """
-    items = (payload or {}).get("data") or []
+    if not isinstance(payload, dict) or not isinstance(payload.get("data"), list):
+        raise ValueError("Invalid Rami Levy catalog response: expected a data list")
+    items = payload["data"]
+    if any(not isinstance(item, dict) or "barcode" not in item for item in items):
+        raise ValueError("Invalid Rami Levy product record")
     if not items:
         return None
 
@@ -97,6 +101,11 @@ def parse_product(payload: dict, requested_barcode: str) -> RamiLevyProduct | No
         return None
 
     gs = item.get("gs") or {}
+    if not isinstance(gs, dict):
+        raise ValueError("Invalid Rami Levy ingredient data")
+    for field in (CONTAINS_FIELD, MAY_CONTAIN_FIELD):
+        if gs.get(field) is not None and not isinstance(gs[field], list):
+            raise ValueError(f"Invalid allergen code list: {field}")
     code_map = _CODE_MAP_SINGLETON()
     contains, unknown_contains = code_map.resolve(gs.get(CONTAINS_FIELD))
     may_contain, unknown_may = code_map.resolve(gs.get(MAY_CONTAIN_FIELD))

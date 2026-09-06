@@ -48,7 +48,7 @@ _ALLERGEN_LIST: tuple[Allergen, ...] = (
     Allergen("wheat", "חיטה", GLUTEN_ID),
     Allergen("barley", "שעורה", GLUTEN_ID),
     Allergen("rye", "שיפון", GLUTEN_ID),
-    Allergen("oats", "שיבולת שועל", GLUTEN_ID),
+    Allergen("oats", "שיבולת שועל"),
     Allergen("spelt", "כוסמין", GLUTEN_ID),
     Allergen("milk", "חלב"),
     Allergen(

@@ -245,9 +245,9 @@ class TestFiltering:
         selection = FilterSelection(contains_exclusions=frozenset({"soy"}))
         assert selection.apply(self.bamba()).is_visible
 
-    def test_may_contain_only_selection_still_shows_products_that_contain(self):
+    def test_may_contain_selection_also_hides_products_that_contain(self):
         selection = FilterSelection(may_contain_exclusions=frozenset({"peanuts"}))
-        assert selection.apply(self.bamba()).is_visible
+        assert selection.apply(self.bamba()).visibility is Visibility.HIDDEN
 
     def test_that_gap_produces_an_explicit_warning(self):
         selection = FilterSelection(may_contain_exclusions=frozenset({"peanuts"}))
@@ -279,12 +279,12 @@ class TestFiltering:
         outcome = selection.apply(resolve([claim("cashew", Level.CONTAINS)]))
         assert outcome.visibility is Visibility.HIDDEN
 
-    def test_selection_is_known_via_a_subtype(self):
+    def test_absent_subtype_does_not_establish_group_absence(self):
         selection = FilterSelection(
             contains_exclusions=frozenset({allergens.TREE_NUTS_ID})
         )
         outcome = selection.apply(resolve([claim("cashew", Level.ABSENT)]))
-        assert outcome.is_visible
+        assert outcome.visibility is Visibility.UNKNOWN
 
     def test_partition_separates_the_three_groups(self):
         selection = FilterSelection(contains_exclusions=frozenset({"peanuts"}))

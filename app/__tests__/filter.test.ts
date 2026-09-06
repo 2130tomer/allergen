@@ -67,7 +67,7 @@ describe('גרירת בטיחות בין קבוצות', () => {
 
   it('בחירת גלוטן גוררת את כל תת-סוגי הדגן', () => {
     const expanded = expandSelection(['gluten']);
-    for (const id of ['wheat', 'barley', 'rye', 'oats', 'spelt']) {
+    for (const id of ['wheat', 'barley', 'rye', 'spelt']) {
       expect(expanded.has(id)).toBe(true);
     }
   });
@@ -93,8 +93,8 @@ describe('סינון', () => {
     expect(applyFilter(selection(['soy']), bamba).visibility).toBe('visible');
   });
 
-  it('סימון בעלול להכיל בלבד עדיין מציג מוצר שמכיל', () => {
-    expect(applyFilter(selection([], ['peanuts']), bamba).visibility).toBe('visible');
+  it('סינון עלול להכיל מסתיר גם מכיל', () => {
+    expect(applyFilter(selection([], ['peanuts']), bamba).visibility).toBe('hidden');
   });
 
   it('הפער הזה מייצר אזהרה מפורשת', () => {
@@ -124,9 +124,9 @@ describe('סינון', () => {
     expect(outcome.visibility).toBe('hidden');
   });
 
-  it('מידע על תת-סוג נחשב מידע על הקבוצה', () => {
+  it('היעדר תת-סוג אינו היעדר הקבוצה', () => {
     const outcome = applyFilter(selection([TREE_NUTS_ID]), { cashew: 'absent' });
-    expect(outcome.visibility).toBe('visible');
+    expect(outcome.visibility).toBe('unknown');
   });
 });
 

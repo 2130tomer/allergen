@@ -17,6 +17,7 @@ import json
 import gzip
 import sys
 from collections import defaultdict
+from dataclasses import replace
 from datetime import date, datetime
 from pathlib import Path
 
@@ -25,6 +26,7 @@ from .domain.claims import AllergenClaim
 from .enrich import (
     OffCache,
     collect_from_open_food_facts,
+    free_from_claims_from_names,
     load_manufacturer_claims,
     load_rami_levy_claims,
     load_retailer_claims,
@@ -218,7 +220,19 @@ def main(argv: list[str] | None = None) -> int:
 
     # מוצר שיש לו רשימת רכיבים אך לא נמצא בה אלרגן אינו "אין מידע".
     # ההבחנה נשמרת במסד כדי שהממשק יוכל לנסח אותה נכון.
-    known_ingredients = _barcodes_with_ingredients(arguments.retailer_claims)
+    known_ingredients = set().union(*(
+        _barcodes_with_ingredients(path)
+        for path in (arguments.retailer_claims, arguments.rami_levy_claims, arguments.cache,
+                     arguments.manufacturer_claims)
+    ))
+
+    # Preserve and flag earlier observations when a refreshed source went silent.
+    for cache_path in (arguments.cache, arguments.rami_levy_claims):
+        if cache_path.exists():
+            records = json.loads(cache_path.read_text(encoding="utf-8"))
+            for barcode, record in records.items():
+                if record and record.get("_stale") and barcode in products:
+                    products[barcode] = replace(products[barcode], needs_review=True)
 
     output = arguments.output
     result = snapshot_builder.build(
@@ -285,7 +299,12 @@ def _enrich(
         f"{len(relevant_rami)} מהן על מוצרים שבקטלוג."
     )
 
-    manufacturer = load_manufacturer_claims(arguments.manufacturer_claims)
+    # שמות היצרנים מהקטלוג מועברים כדי שהצהרת "ללא" תיבדק מול היצרן
+    # שרשום על המוצר. בלעדיהם אין את מי לאמת ולא נוצר סימון ירוק.
+    manufacturer = load_manufacturer_claims(
+        arguments.manufacturer_claims,
+        {barcode: product.manufacturer for barcode, product in products.items()},
+    )
     relevant = {
         barcode: claim_list
         for barcode, claim_list in manufacturer.items()
@@ -295,7 +314,25 @@ def _enrich(
         f"\nקביעות יצרן: {len(manufacturer)} במטמון, "
         f"{len(relevant)} מהן על מוצרים שבקטלוג."
     )
-    return merge_claim_sources(claims, relevant_retailer, relevant_rami, relevant)
+
+    # רץ על כל הקטלוג ולא רק על מה שנמשך ממקור אלרגנים, כי מוצר שכל
+    # מה שידוע עליו הוא שמו הוא בדיוק המקרה שבו "ללא גלוטן" שבשם הוא
+    # כל המידע הקיים.
+    # גם השמות החלופיים, ולא רק הקנוני: אותו מוצר נקרא ברשת אחת
+    # "לחם ללא גלוטן" ובאחרת "לחם", והשם שנבחר כקנוני הוא עניין של
+    # סדר ולא של תוכן.
+    declared = free_from_claims_from_names(
+        {
+            barcode: " ".join((product.canonical_name, *product.aliases))
+            for barcode, product in products.items()
+        },
+        date.today(),
+    )
+    print(f"\nהצהרות ללא שזוהו משם המוצר: {len(declared)} מוצרים.")
+
+    return merge_claim_sources(
+        claims, relevant_retailer, relevant_rami, relevant, declared
+    )
 
 
 def _barcodes_with_ingredients(retailer_claims: Path) -> set[str]:
