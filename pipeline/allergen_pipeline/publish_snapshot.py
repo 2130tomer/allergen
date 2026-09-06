@@ -77,11 +77,18 @@ def main(argv: list[str] | None = None) -> int:
             return 2
         if arguments.target.exists():
             # The previous schema may be older: compare its counts directly.
-            with sqlite3.connect(arguments.target) as previous:
+            # sqlite3.connect כ-context manager מנהל טרנזקציה ואינו סוגר
+            # את החיבור. החיבור שנשאר פתוח נועל את קובץ היעד, ובחלונות
+            # os.replace על קובץ נעול נכשל ב-PermissionError. בלינוקס זה
+            # עובר, ולכן הבאג מתגלה רק כאן.
+            previous = sqlite3.connect(arguments.target)
+            try:
                 old_products = previous.execute("SELECT COUNT(*) FROM products").fetchone()[0]
                 old_data = previous.execute(
                     "SELECT COUNT(*) FROM products WHERE has_allergen_data = 1"
                 ).fetchone()[0]
+            finally:
+                previous.close()
             if products < old_products * 0.8 or with_data < old_data * 0.8:
                 print("Refusing a drop above 20% in products or allergen coverage", file=sys.stderr)
                 return 2
