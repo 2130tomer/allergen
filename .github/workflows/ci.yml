@@ -18,7 +18,9 @@ jobs:
       - run: python -m pip install -e './pipeline[dev]' build
       - run: python -m pytest -q
         working-directory: pipeline
-      - run: python -m build --wheel pipeline
+      # --outdir מפורש. בלעדיו build כותב אל pipeline/dist, בעוד שהשלב
+      # הבא מחפש ב-dist שבשורש, וההתקנה נכשלת ב"אינו שם קובץ wheel תקין".
+      - run: python -m build --wheel pipeline --outdir dist
       - name: Check installed wheel data files
         run: |
           python -m venv /tmp/allergen-wheel
