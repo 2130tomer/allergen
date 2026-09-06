@@ -29,7 +29,12 @@ interface AllergenRecord {
 }
 
 const PRODUCTS = preview.products as unknown as ProductSummary[];
-const ALLERGENS = preview.allergens as unknown as Record<string, AllergenRecord>;
+const ALLERGENS = Object.fromEntries(Object.entries(preview.allergens).map(([barcode, raw]) => {
+  const entry = raw as unknown as AllergenRecord;
+  const levels = Object.fromEntries(Object.entries(entry.levels).filter(([, level]) =>
+    level !== 'absent' || !entry.sources.includes('declared_free_from')));
+  return [barcode, { ...entry, levels }];
+})) as Record<string, AllergenRecord>;
 const DEPARTMENTS = preview.departments as unknown as Department[];
 const CONFLICTS = (preview as { conflicts?: Record<string, { message: string }[]> })
   .conflicts ?? {};

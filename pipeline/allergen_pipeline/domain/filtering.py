@@ -1,10 +1,4 @@
-"""סינון מוצרים לפי שתי רשימות אלרגנים נפרדות ובלתי תלויות.
-
-הרשימות עצמאיות במכוון: המשתמש בוחר בנפרד אילו אלרגנים להסתיר ברמת
-מכיל ואילו ברמת עלול להכיל, בלי מתג גלובלי שמחמיר על הכל. העצמאות
-מאפשרת מצב שנראה מוזר אך לגיטימי, שבו אלרגן מסומן ברשימת עלול להכיל
-בלבד; במקרה כזה נוצרת אזהרה מפורשת ולא שינוי שקט של הבחירה.
-"""
+"""Exclusion policies. May-contain exclusions also exclude explicit presence."""
 
 from __future__ import annotations
 
@@ -35,7 +29,7 @@ class SelectionWarning:
         label = allergens.get(self.allergen_id).label_he
         return (
             f"סימנת {label} רק ברשימת עלול להכיל. "
-            f"מוצרים שמכילים {label} עדיין יוצגו."
+            f"הסינון כולל גם מוצרים שמכילים {label}."
         )
 
 
@@ -76,7 +70,7 @@ class FilterSelection:
         )
 
     def _expanded_contains(self) -> set[str]:
-        return allergens.expand_selection(set(self.contains_exclusions))
+        return allergens.expand_selection(set(self.contains_exclusions | self.may_contain_exclusions))
 
     def _expanded_may_contain(self) -> set[str]:
         return allergens.expand_selection(set(self.may_contain_exclusions))
@@ -114,9 +108,10 @@ def _selection_is_known(resolved: ResolvedAllergens, allergen_id: str) -> bool:
     """האם יש לנו מידע כלשהו על האלרגן שנבחר, או על אחד מתת-סוגיו."""
     if resolved.level_of(allergen_id) is not Level.UNKNOWN:
         return True
-    return any(
-        resolved.level_of(subtype_id) is not Level.UNKNOWN
-        for subtype_id in allergens.subtypes_of(allergen_id)
+    children = allergens.expand_selection({allergen_id}) - {allergen_id}
+    return bool(children) and (
+        any(resolved.level_of(child).is_positive for child in children)
+        or all(resolved.level_of(child) is Level.ABSENT for child in children)
     )
 
 

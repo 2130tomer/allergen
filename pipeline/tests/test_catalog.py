@@ -110,6 +110,18 @@ class TestDepartments:
         ]:
             assert not departments.is_non_food(name), name
 
+    def test_free_from_shelf_beats_the_food_type(self):
+        """מי שמסנן גלוטן מחפש את המדף הייעודי, לא את מדף הלחם.
+
+        הכלל היה אחרון ולכן "לחם ללא גלוטן" נתפס ככלל הלחם. זו נראות
+        בלבד: הסיווג אינו מסמן דבר בירוק ואינו מייצר קביעת היעדר.
+        """
+        assert departments.classify("לחם לבן ללא גלוטן 500 גר") == "health_free_from"
+        assert departments.classify("בצק לפיצה ללא גלוטן230ג") == "health_free_from"
+        assert departments.classify("חלב נטול לקטוז 1 ליטר") == "health_free_from"
+        # מוצר רגיל מאותה משפחה נשאר במחלקת המזון שלו.
+        assert departments.classify("לחם אחיד פרוס") == "bakery_bread"
+
     def test_hebrew_abbreviations_from_real_data_classify(self):
         # קיצורים עם נקודה, כפי שהם מופיעים בקבצים של שופרסל.
         assert departments.classify("שוק.מריר לינדט 70% 100ג") == "snacks_chocolate"

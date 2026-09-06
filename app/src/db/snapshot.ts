@@ -10,7 +10,7 @@ import * as FileSystem from 'expo-file-system';
 import * as SQLite from 'expo-sqlite';
 
 export const SNAPSHOT_FILE = 'allergen-snapshot.sqlite';
-export const SUPPORTED_SCHEMA_VERSION = 1;
+export const SUPPORTED_SCHEMA_VERSION = 2;
 
 /** מעל הגיל הזה מוצגת למשתמש הודעה שהנתונים אינם מעודכנים. */
 export const STALE_AFTER_DAYS = 14;
@@ -42,8 +42,8 @@ export async function closeSnapshot(): Promise<void> {
   database = null;
 }
 
-export async function readMeta(): Promise<SnapshotMeta> {
-  const connection = await openSnapshot();
+export async function readMeta(connection?: SQLite.SQLiteDatabase): Promise<SnapshotMeta> {
+  connection = connection ?? await openSnapshot();
   const rows = await connection.getAllAsync<{ key: string; value: string }>(
     'SELECT key, value FROM meta',
   );

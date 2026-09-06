@@ -24,6 +24,7 @@ from pathlib import Path
 
 import httpx
 
+from .cache import is_fresh, observed_record, write_json
 from .sources.retailers import rami_levy_online as rami
 
 DEFAULT_SNAPSHOT = Path("data/snapshots/allergen-snapshot.sqlite")
@@ -81,8 +82,7 @@ def _load_cache(path: Path) -> dict[str, dict]:
 
 
 def _save_cache(path: Path, entries: dict[str, dict]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(entries, ensure_ascii=False), encoding="utf-8")
+    write_json(path, entries)
 
 
 def _fetch_one(client: httpx.Client, barcode: str) -> rami.RamiLevyProduct | None:
@@ -101,9 +101,11 @@ def _fetch_one(client: httpx.Client, barcode: str) -> rami.RamiLevyProduct | Non
 
 def main(argv: list[str] | None = None) -> int:
     arguments = _parse_arguments(argv)
-    barcodes = load_barcodes(arguments.snapshot, arguments.limit, not arguments.all)
+    barcodes = load_barcodes(arguments.snapshot, None, not arguments.all)
     cache = _load_cache(arguments.cache)
-    pending = [b for b in barcodes if b not in cache]
+    pending = [b for b in barcodes if arguments.refresh or not is_fresh(cache.get(b))]
+    if arguments.limit is not None:
+        pending = pending[:arguments.limit]
 
     stats = FetchStats(requested=len(pending))
     print(f"{len(barcodes)} מועמדים, {len(pending)} טרם נמשכו.")
@@ -111,7 +113,7 @@ def main(argv: list[str] | None = None) -> int:
         print("אין מה למשוך.")
         return 0
 
-    delay = 60.0 / REQUESTS_PER_MINUTE
+    delay = 60.0 / arguments.requests_per_minute
     headers = {
         "User-Agent": "allergen-il/0.1 (allergen catalog for Israel)",
         "Accept": "application/json",
@@ -133,7 +135,7 @@ def main(argv: list[str] | None = None) -> int:
 
             if product is None:
                 stats.not_found += 1
-                cache[barcode] = {}
+                cache[barcode] = observed_record(None, cache.get(barcode))
             else:
                 stats.fetched += 1
                 if product.has_allergen_fields:
@@ -141,7 +143,7 @@ def main(argv: list[str] | None = None) -> int:
                 if product.ingredients_text:
                     stats.with_ingredients += 1
                 stats.unknown_codes += len(product.unknown_codes)
-                cache[barcode] = {
+                cache[barcode] = observed_record({
                     "barcode": product.barcode,
                     "name": product.name,
                     "brand": product.brand,
@@ -149,7 +151,8 @@ def main(argv: list[str] | None = None) -> int:
                     "may_contain": list(product.may_contain_ids),
                     "ingredients_text": product.ingredients_text,
                     "unknown_codes": list(product.unknown_codes),
-                }
+                    "page_url": product.page_url,
+                }, cache.get(barcode))
 
             if completed % 50 == 0:
                 _save_cache(arguments.cache, cache)
@@ -171,7 +174,7 @@ def main(argv: list[str] | None = None) -> int:
         f"  עם רשימת רכיבים: {stats.with_ingredients}\n"
         f"  קודים לא מזוהים: {stats.unknown_codes}"
     )
-    return 0
+    return 1 if stats.failures else 0
 
 
 def _should_abort(completed: int, failures: int) -> bool:
@@ -190,7 +193,14 @@ def _parse_arguments(argv: list[str] | None) -> argparse.Namespace:
         action="store_true",
         help="לא רק מוצרים חסרי מידע, אלא כל הקטלוג.",
     )
-    return parser.parse_args(argv)
+    parser.add_argument("--refresh", action="store_true", help="Refresh cached observations")
+    parser.add_argument("--requests-per-minute", type=int, default=REQUESTS_PER_MINUTE)
+    args = parser.parse_args(argv)
+    if args.limit is not None and args.limit < 1:
+        parser.error("--limit must be positive")
+    if args.requests_per_minute < 1:
+        parser.error("--requests-per-minute must be positive")
+    return args
 
 
 if __name__ == "__main__":

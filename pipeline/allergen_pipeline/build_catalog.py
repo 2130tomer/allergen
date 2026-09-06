@@ -17,6 +17,7 @@ import json
 import gzip
 import sys
 from collections import defaultdict
+from dataclasses import replace
 from datetime import date, datetime
 from pathlib import Path
 
@@ -219,7 +220,19 @@ def main(argv: list[str] | None = None) -> int:
 
     # מוצר שיש לו רשימת רכיבים אך לא נמצא בה אלרגן אינו "אין מידע".
     # ההבחנה נשמרת במסד כדי שהממשק יוכל לנסח אותה נכון.
-    known_ingredients = _barcodes_with_ingredients(arguments.retailer_claims)
+    known_ingredients = set().union(*(
+        _barcodes_with_ingredients(path)
+        for path in (arguments.retailer_claims, arguments.rami_levy_claims, arguments.cache,
+                     arguments.manufacturer_claims)
+    ))
+
+    # Preserve and flag earlier observations when a refreshed source went silent.
+    for cache_path in (arguments.cache, arguments.rami_levy_claims):
+        if cache_path.exists():
+            records = json.loads(cache_path.read_text(encoding="utf-8"))
+            for barcode, record in records.items():
+                if record and record.get("_stale") and barcode in products:
+                    products[barcode] = replace(products[barcode], needs_review=True)
 
     output = arguments.output
     result = snapshot_builder.build(

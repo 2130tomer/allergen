@@ -19,7 +19,7 @@ from .shufersal_online import ShufersalProduct
 def to_claims(
     product: ShufersalProduct,
     ingredient_map: IngredientAllergenMap,
-    observed_on: date,
+    observed_on: date | None,
     free_from: FreeFromDetector | None = None,
 ) -> list[AllergenClaim]:
     """קביעות מפורשות משני השדות, ועוד אלרגנים נסתרים מהרכיבים."""
@@ -47,7 +47,7 @@ def to_claims(
         for allergen_id in sorted(may_contain)
     )
     claims.extend(
-        _hidden_from_ingredients(product, contains | may_contain, ingredient_map, observed_on)
+        _hidden_from_ingredients(product, contains, ingredient_map, observed_on)
     )
     if free_from is not None:
         claims.extend(_declared_claims(product, free_from, observed_on))
@@ -57,7 +57,7 @@ def to_claims(
 def rami_levy_to_claims(
     product: RamiLevyProduct,
     ingredient_map: IngredientAllergenMap,
-    observed_on: date,
+    observed_on: date | None,
     free_from: FreeFromDetector | None = None,
 ) -> list[AllergenClaim]:
     """קביעות ממוצר של רמי לוי.
@@ -104,26 +104,17 @@ def rami_levy_to_claims(
                 observed_on=observed_on,
                 source_ref=f"{product.page_url}#ingredients",
             )
-            for allergen_id in sorted(from_ingredients - contains - may_contain)
+            for allergen_id in sorted(from_ingredients - contains)
         )
 
     if free_from is not None:
-        declared, reduced = free_from.detect(product.name, product.ingredients_text)
-        claims.extend(
-            AllergenClaim(
-                allergen_id=claim.allergen_id,
-                level=Level.ABSENT,
-                source=Source.DECLARED_FREE_FROM,
-                observed_on=observed_on,
-                source_ref=product.page_url,
-            )
-            for claim in declared
-        )
+        _, reduced = free_from.detect(product.name, product.ingredients_text)
+        # Retailer text is unverified; it cannot produce an absence claim.
         claims.extend(
             AllergenClaim(
                 allergen_id=claim.allergen_id,
                 level=Level.CONTAINS,
-                source=Source.DECLARED_FREE_FROM,
+                source=Source.RETAILER,
                 observed_on=observed_on,
                 source_ref=product.page_url,
             )
@@ -135,7 +126,7 @@ def rami_levy_to_claims(
 def _declared_claims(
     product: ShufersalProduct,
     free_from: FreeFromDetector,
-    observed_on: date,
+    observed_on: date | None,
 ) -> list[AllergenClaim]:
     """הצהרות "ללא" ו"דל" שמופיעות על האריזה.
 
@@ -146,22 +137,14 @@ def _declared_claims(
 
     הצהרת הפחתה נרשמת כנוכחות. מוצר דל לקטוז מכיל לקטוז.
     """
-    declared, reduced = free_from.detect(product.name, product.ingredients_text)
-    claims = [
-        AllergenClaim(
-            allergen_id=claim.allergen_id,
-            level=Level.ABSENT,
-            source=Source.DECLARED_FREE_FROM,
-            observed_on=observed_on,
-            source_ref=product.page_url,
-        )
-        for claim in declared
-    ]
+    _, reduced = free_from.detect(product.name, product.ingredients_text)
+    # Only verified manufacturer evidence may establish absence.
+    claims: list[AllergenClaim] = []
     claims.extend(
         AllergenClaim(
             allergen_id=claim.allergen_id,
             level=Level.CONTAINS,
-            source=Source.DECLARED_FREE_FROM,
+            source=Source.RETAILER,
             observed_on=observed_on,
             source_ref=product.page_url,
         )
@@ -184,7 +167,7 @@ def _hidden_from_ingredients(
     product: ShufersalProduct,
     declared: set[str],
     ingredient_map: IngredientAllergenMap,
-    observed_on: date,
+    observed_on: date | None,
 ) -> list[AllergenClaim]:
     """אלרגן שברשימת הרכיבים ולא בשני שדות ההצהרה.
 

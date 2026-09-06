@@ -1,0 +1,35 @@
+name: Validate catalog and app
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: python -m pip install -e './pipeline[dev]' build
+      - run: python -m pytest -q
+        working-directory: pipeline
+      - run: python -m build --wheel pipeline
+      - name: Check installed wheel data files
+        run: |
+          python -m venv /tmp/allergen-wheel
+          /tmp/allergen-wheel/bin/pip install --no-deps dist/*.whl
+          cd /tmp
+          /tmp/allergen-wheel/bin/python -c 'from allergen_pipeline.sources.retailers.rami_levy_online import RamiLevyCodeMap; RamiLevyCodeMap.load()'
+      - run: npm ci --no-audit --no-fund
+        working-directory: app
+      - run: npm run typecheck
+        working-directory: app
+      - run: npm test -- --runInBand
+        working-directory: app
+      - run: npx expo export --platform web
+        working-directory: app

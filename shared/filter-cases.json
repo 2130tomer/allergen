@@ -1,0 +1,106 @@
+[
+  {
+    "name": "absent cashew does not establish nut absence",
+    "contains": [
+      "tree_nuts"
+    ],
+    "may": [],
+    "levels": {
+      "cashew": "absent"
+    },
+    "visibility": "unknown"
+  },
+  {
+    "name": "may policy also hides contains",
+    "contains": [],
+    "may": [
+      "peanuts"
+    ],
+    "levels": {
+      "peanuts": "contains"
+    },
+    "visibility": "hidden"
+  },
+  {
+    "name": "contains policy allows known may",
+    "contains": [
+      "soy"
+    ],
+    "may": [],
+    "levels": {
+      "soy": "may_contain"
+    },
+    "visibility": "visible"
+  },
+  {
+    "name": "explicit group absence",
+    "contains": [
+      "tree_nuts"
+    ],
+    "may": [],
+    "levels": {
+      "tree_nuts": "absent"
+    },
+    "visibility": "visible"
+  },
+  {
+    "name": "unknown product remains unknown",
+    "contains": [
+      "milk"
+    ],
+    "may": [],
+    "levels": {},
+    "visibility": "unknown"
+  },
+  {
+    "name": "oats alone does not establish gluten",
+    "contains": [
+      "gluten"
+    ],
+    "may": [],
+    "levels": {
+      "oats": "contains"
+    },
+    "visibility": "unknown"
+  },
+  {
+    "name": "legume may policy hides peanut contains",
+    "contains": [],
+    "may": [
+      "legumes"
+    ],
+    "levels": {
+      "peanuts": "contains"
+    },
+    "visibility": "hidden"
+  },
+  {
+    "name": "partial implied group absence",
+    "contains": [
+      "legumes"
+    ],
+    "may": [],
+    "levels": {
+      "peanuts": "absent"
+    },
+    "visibility": "unknown"
+  },
+  {
+    "name": "nut group matches cashew",
+    "contains": [
+      "tree_nuts"
+    ],
+    "may": [],
+    "levels": {
+      "cashew": "contains"
+    },
+    "visibility": "hidden"
+  },
+  {
+    "name": "no filter",
+    "contains": [],
+    "may": [],
+    "levels": {},
+    "visibility": "visible"
+  }
+]
