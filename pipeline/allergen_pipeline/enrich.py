@@ -300,11 +300,62 @@ def _fetch_with_retry(
     raise last_error if last_error else RuntimeError(barcode)
 
 
-def load_manufacturer_claims(path: Path) -> dict[str, list[AllergenClaim]]:
+def _site_group(page_url: str | None):
+    """הקבוצה התאגידית שהאתר הזה שייך לה, או None כשאינו במרשם."""
+    from urllib.parse import urlsplit
+
+    from .catalog import manufacturers
+
+    if not page_url:
+        return None
+    host = urlsplit(page_url).netloc.lower().removeprefix("www.")
+    if not host:
+        return None
+    for group in manufacturers.GROUPS:
+        if not group.website:
+            continue
+        known = urlsplit(group.website).netloc.lower().removeprefix("www.")
+        if known and known == host:
+            return group
+    return None
+
+
+def _declaration_is_by_the_products_manufacturer(
+    page_url: str | None, catalog_manufacturer: str | None
+) -> bool:
+    """האם ההצהרה הגיעה מאתר היצרן של המוצר הזה.
+
+    שתי הזהויות נבדקות ולא אחת. לא די בכך שהטקסט הגיע מאתר יצרן כלשהו:
+    דף של אסם אינו מעיד על מוצר של תנובה, וזה בדיוק מה שקורה כשברקוד
+    ממוחזר או משויך בטעות. היעדר זיהוי משני הצדדים נחשב כישלון, כי
+    היעדר ידיעה אינו ראיה.
+    """
+    from .catalog import manufacturers
+
+    site = _site_group(page_url)
+    if site is None:
+        return False
+    owner = manufacturers.group_of(catalog_manufacturer)
+    return owner is not None and owner.id == site.id
+
+
+def load_manufacturer_claims(
+    path: Path,
+    manufacturer_by_barcode: dict[str, str | None] | None = None,
+) -> dict[str, list[AllergenClaim]]:
     """קורא קביעות יצרן שנשמרו על ידי fetch_manufacturers.
 
     הקביעות נטענות מקובץ ולא נמשכות ברשת בכל בנייה, כי אתרי היצרנים
     איטיים ואין סיבה להטריד אותם בכל ריצה.
+
+    כאן גם המקום היחיד שבו נולדת קביעת היעדר, כלומר הסימון הירוק.
+    ADR-0008 חוסם טקסט קמעונאי כראיית אריזה, ובצדק: שם מוצר בקובץ
+    שקיפות הוא מחרוזת קופה קטועה. דף היצרן הוא הצהרת היצרן עצמו על
+    המוצר שלו, וזו הראיה היחידה ש-ADR-0007 מתיר לצבוע בה ירוק.
+
+    התנאי מחמיר בכוונה ודורש את שתי הזהויות: שהדף שייך ליצרן שבמרשם,
+    ושהיצרן שרשום על המוצר בקטלוג הוא אותו יצרן. בלי הקטלוג אין את מי
+    לאמת, ואז אין ירוק כלל.
     """
     if not path.exists():
         return {}
@@ -313,20 +364,58 @@ def load_manufacturer_claims(path: Path) -> dict[str, list[AllergenClaim]]:
     except (OSError, json.JSONDecodeError):
         return {}
 
+    from .ingredients.free_from import FreeFromDetector
+
+    detector = FreeFromDetector.load()
+    known = manufacturer_by_barcode or {}
+
     claims_by_barcode: dict[str, list[AllergenClaim]] = {}
     for barcode, record in raw.items():
         observed_on = date.fromisoformat(record["observed_on"])
-        claims_by_barcode[barcode] = [
+        page_url = record.get("page_url")
+        claims = [
             AllergenClaim(
                 allergen_id=entry["allergen_id"],
                 level=Level(entry["level"]),
                 source=Source.MANUFACTURER,
                 observed_on=observed_on,
-                source_ref=record.get("page_url"),
+                source_ref=page_url,
                 level_inferred=bool(entry.get("level_inferred")),
             )
             for entry in record.get("claims", [])
         ]
+
+        declared, reduced = detector.detect(
+            record.get("name"), record.get("ingredients_text")
+        )
+        # הפחתה היא נוכחות, ולכן היא נרשמת בלי קשר לאימות הזהות.
+        claims.extend(
+            AllergenClaim(
+                allergen_id=claim.allergen_id,
+                level=Level.CONTAINS,
+                source=Source.MANUFACTURER,
+                observed_on=observed_on,
+                source_ref=page_url,
+            )
+            for claim in reduced
+        )
+        if declared and _declaration_is_by_the_products_manufacturer(
+            page_url, known.get(barcode)
+        ):
+            reduced_ids = {claim.allergen_id for claim in reduced}
+            claims.extend(
+                AllergenClaim(
+                    allergen_id=claim.allergen_id,
+                    level=Level.ABSENT,
+                    source=Source.DECLARED_FREE_FROM,
+                    observed_on=observed_on,
+                    source_ref=page_url,
+                )
+                for claim in declared
+                if claim.allergen_id not in reduced_ids
+            )
+
+        claims_by_barcode[barcode] = claims
     return claims_by_barcode
 
 

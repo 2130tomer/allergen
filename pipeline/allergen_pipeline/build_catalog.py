@@ -299,7 +299,12 @@ def _enrich(
         f"{len(relevant_rami)} מהן על מוצרים שבקטלוג."
     )
 
-    manufacturer = load_manufacturer_claims(arguments.manufacturer_claims)
+    # שמות היצרנים מהקטלוג מועברים כדי שהצהרת "ללא" תיבדק מול היצרן
+    # שרשום על המוצר. בלעדיהם אין את מי לאמת ולא נוצר סימון ירוק.
+    manufacturer = load_manufacturer_claims(
+        arguments.manufacturer_claims,
+        {barcode: product.manufacturer for barcode, product in products.items()},
+    )
     relevant = {
         barcode: claim_list
         for barcode, claim_list in manufacturer.items()
